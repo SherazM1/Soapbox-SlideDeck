@@ -99,21 +99,20 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
     bullet_box_name = "TextBox 2"
-    slide = prs.slides[3]  # 0-based, so Slide 4
+    slide = prs.slides[3]  # 0-based index for Slide 4
     found = False
 
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == bullet_box_name:
             for paragraph in shape.text_frame.paragraphs:
-                text = paragraph.text
-
-                if "Proposed Influencers" in text and "#" in text:
-                    paragraph.text = text.replace("#", str(metrics.get("Influencers", "")), 1)
-                elif "Proposed Engagements" in text and "#" in text:
-                    paragraph.text = text.replace("#", str(metrics.get("Engagements", "")), 1)
-                elif "Proposed Impressions" in text and "#" in text:
-                    paragraph.text = text.replace("#", str(metrics.get("Impressions", "")), 1)
-
+                for run in paragraph.runs:
+                    text = run.text
+                    if "Proposed Influencers" in paragraph.text and "#" in run.text:
+                        run.text = text.replace("#", str(metrics.get("Influencers", "")), 1)
+                    elif "Proposed Engagements" in paragraph.text and "#" in run.text:
+                        run.text = text.replace("#", str(metrics.get("Engagements", "")), 1)
+                    elif "Proposed Impressions" in paragraph.text and "#" in run.text:
+                        run.text = text.replace("#", str(metrics.get("Impressions", "")), 1)
             found = True
             break
 
