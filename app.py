@@ -62,7 +62,6 @@ def load_dataframe(src) -> pd.DataFrame:
 
 # PowerPoint Deck Generation (to be implemented per slide mapping)
 # ─────────────────────────────────────────────────────────────────────────────
-
 def extract_proposed_metrics_anywhere(df):
     """
     Find 'Proposed Metrics' anywhere in the sheet, then extract the next 3 rows
@@ -90,15 +89,23 @@ def extract_proposed_metrics_anywhere(df):
     metrics = dict(zip(names, values))
     return metrics
 
+
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_config):
     prs = Presentation(pptx_template_path)
+    # --- Only change: use the metrics dict for value lookup ---
+    try:
+        metrics = extract_proposed_metrics_anywhere(excel_df)
+    except Exception as e:
+        metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
+        print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
+
     for item in mapping_config:
         slide_idx = item['slide']
         shape_name = item['shape']
         placeholder = item['placeholder_phrase']
-        excel_col = item['excel_col']
+        metrics_key = item['metrics_key']  # CHANGED: get key to use in metrics dict
 
-        value = str(excel_df.iloc[0][excel_col]) if excel_col in excel_df.columns else ""
+        value = str(metrics.get(metrics_key, ""))  # CHANGED: lookup in metrics dict
 
         slide = prs.slides[slide_idx]
         found = False
@@ -122,19 +129,19 @@ mapping_config = [
         "slide": 3,  # Slide 4 (0-based)
         "shape": "TextBox 2",
         "placeholder_phrase": "Proposed Influencers",
-        "excel_col": "Influencers"
+        "metrics_key": "Influencers"   # <-- use dict key instead of DataFrame col
     },
     {
         "slide": 3,
         "shape": "TextBox 2",
         "placeholder_phrase": "Proposed Engagements",
-        "excel_col": "Engagements"
+        "metrics_key": "Engagements"
     },
     {
         "slide": 3,
         "shape": "TextBox 2",
         "placeholder_phrase": "Proposed Impressions",
-        "excel_col": "Impressions"
+        "metrics_key": "Impressions"
     },
 ]
 
