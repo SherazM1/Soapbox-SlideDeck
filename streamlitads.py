@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from app import load_dataframe, populate_pptx_from_excel, extract_proposed_metrics_anywhere
+from app import load_dataframe, populate_pptx_from_excel, extract_proposed_metrics_anywhere, mapping_config
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Page Setup
@@ -68,7 +68,10 @@ if st.button("Generate PowerPoint Recap Deck"):
     pptx_file = populate_pptx_from_excel(
         excel_df=df,
         pptx_template_path=pptx_template_path,
-        output_path=output_path # Expand later as more slides are added
+        output_path=output_path,
+        mapping_config= mapping_config
+        
+          # Expand later as more slides are added
     )
 
     with open(pptx_file, "rb") as f:
