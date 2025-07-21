@@ -89,7 +89,6 @@ def extract_proposed_metrics_anywhere(df):
     metrics = dict(zip(names, values))
     return metrics
 
-
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_config, user_inputs=None):
     prs = Presentation(pptx_template_path)
 
@@ -99,34 +98,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
-    bullet_box_name = "TextBox 2" # The text box with bullets/hashtags
-    
-    
-    print(f"Loaded {len(prs.slides)} slides")  
-    slide = prs.slides[3]
+    bullet_box_name = "TextBox 2"
+    slide = prs.slides[3]  # 0-based, so Slide 4
     found = False
-    print("Text shapes in Slide 4:")
+
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == bullet_box_name:
-            print(f"- {shape.name}: {shape.text[:50]}")
-            original_lines = shape.text.splitlines()
-            new_lines = []
-            for line in original_lines:
-                if 'Proposed Influencers' in line:
-                    new_line = line.replace('#', str(metrics.get('Influencers', '')), 1)
-                elif 'Proposed Engagements' in line:
-                    new_line = line.replace('#', str(metrics.get('Engagements', '')), 1)
-                elif 'Proposed Impressions' in line:
-                    new_line = line.replace('#', str(metrics.get('Impressions', '')), 1)
-                else:
-                    new_line = line
-                new_lines.append(new_line)
-            shape.text = "\n".join(new_lines)
+            for paragraph in shape.text_frame.paragraphs:
+                text = paragraph.text
+
+                if "Proposed Influencers" in text and "#" in text:
+                    paragraph.text = text.replace("#", str(metrics.get("Influencers", "")), 1)
+                elif "Proposed Engagements" in text and "#" in text:
+                    paragraph.text = text.replace("#", str(metrics.get("Engagements", "")), 1)
+                elif "Proposed Impressions" in text and "#" in text:
+                    paragraph.text = text.replace("#", str(metrics.get("Impressions", "")), 1)
+
             found = True
             break
 
     if not found:
-        print(f"Could not find a shape named '{bullet_box_name}'. Here are available text shape names on Slide 1:")
+        print(f"[ERROR] Could not find shape named '{bullet_box_name}' on Slide 4.")
         for shape in slide.shapes:
             if shape.has_text_frame:
                 print(f"- {shape.name}")
