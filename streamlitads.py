@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from app import load_dataframe, populate_pptx_from_excel, extract_proposed_metrics_anywhere, mapping_config
+from app import load_dataframe, populate_pptx_from_excel, extract_proposed_metrics_anywhere
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Page Setup
