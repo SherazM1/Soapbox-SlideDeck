@@ -92,63 +92,45 @@ def extract_proposed_metrics_anywhere(df):
 from pptx import Presentation
 
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_config, user_inputs=None):
-    """
-    Populate a PowerPoint template from Excel data using a mapping config.
-    - excel_df: DataFrame with your data.
-    - pptx_template_path: Path to the PowerPoint template to use.
-    - output_path: Where to save the populated PPTX.
-    - mapping_config: Dict describing how to map Excel columns to slide fields.
-    - user_inputs: Optional dict for extra custom fields/images per slide.
-    """
     prs = Presentation(pptx_template_path)
 
-    # ---- Slide 1: Proposed Program Details ----
     try:
         metrics = extract_proposed_metrics_anywhere(excel_df)
     except Exception as e:
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
-    bullet_label_box = "TextBox 2"    # Box with the bullet labels (no data)
-    value_box = "TextBox 11"          # Box with the data and bullets
+    bullet_box_name = "TextBox 2"  # The text box with bullets/hashtags
 
-    # Fill TextBox 2 with the bullets/labels
-    label_lines = [
-        "• Proposed Influencers:",
-        "• Proposed Engagements:",
-        "• Proposed Impressions:"
-    ]
-    label_text = "\n".join(label_lines)
-
-    # Fill TextBox 11 with just the values (in the same order, line by line)
-    value_lines = [
-        f"{metrics.get('Influencers', '')}",
-        f"{metrics.get('Engagements', '')}",
-        f"{metrics.get('Impressions', '')}"
-    ]
-    value_text = "\n".join(value_lines)
-
-    slide = prs.slides[0]  # First slide
-
-    found_label, found_value = False, False
+    slide = prs.slides[0]
+    found = False
     for shape in slide.shapes:
-        if shape.has_text_frame:
-            if shape.name == bullet_label_box:
-                shape.text = label_text
-                found_label = True
-            if shape.name == value_box:
-                shape.text = value_text
-                found_value = True
+        if shape.has_text_frame and shape.name == bullet_box_name:
+            original_lines = shape.text.splitlines()
+            new_lines = []
+            replacements = [
+                metrics.get('Influencers', ''),
+                metrics.get('Engagements', ''),
+                metrics.get('Impressions', '')
+            ]
+            rep_idx = 0
+            for line in original_lines:
+                # Only replace the first '#' in each line, in order
+                if '#' in line and rep_idx < len(replacements):
+                    new_line = line.replace('#', str(replacements[rep_idx]), 1)
+                    rep_idx += 1
+                else:
+                    new_line = line
+                new_lines.append(new_line)
+            shape.text = "\n".join(new_lines)
+            found = True
+            break
 
-    if not (found_label and found_value):
-        print("DEBUG: Could not find one or both target shapes. Found these text shapes on Slide 1:")
+    if not found:
+        print(f"Could not find a shape named '{bullet_box_name}'. Here are available text shape names on Slide 1:")
         for shape in slide.shapes:
             if shape.has_text_frame:
                 print(f"- {shape.name}")
-
-    # ---- Future: add logic for additional slides below as needed ----
-
-    # Optionally, apply user_inputs logic for custom fields/images here
 
     prs.save(output_path)
     return output_path
