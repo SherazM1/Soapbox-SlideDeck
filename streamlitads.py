@@ -45,30 +45,26 @@ engagements_increase = ""
 impressions_increase = ""
 
 try:
-    perc_row_idx = None
     for idx, row in df.iterrows():
-        if str(row["Unnamed: 15"]).strip().lower() == "percentage increase":
-            perc_row_idx = idx
-            break
-    if perc_row_idx is not None:
-        for offset in range(1, 10):
-            row_idx = perc_row_idx + offset
-            if row_idx >= len(df):
-                break
-            label = str(df.at[row_idx, "Unnamed: 14"]).strip().lower()
-            raw = df.at[row_idx, "Unnamed: 15"]
-            if pd.notna(raw):
-                try:
-                    val = float(raw) * 100
-                    pct_str = f"{val:.1f}%"
-                    if label == "engagements":
-                        engagements_increase = pct_str
-                    elif label == "impressions":
-                        impressions_increase = pct_str
-                except Exception:
-                    continue
+        label = str(row.get("Unnamed: 14", "")).strip().lower()
+        val = row.get("Unnamed: 15", "")
+
+        if pd.isna(val):
+            continue
+
+        try:
+            num = float(val)
+            pct_str = f"{num * 100:.1f}%"
+
+            if label == "impressions":
+                impressions_increase = pct_str
+            elif label == "engagements":
+                engagements_increase = pct_str
+        except:
+            continue
+
 except Exception as e:
-    st.warning("Error extracting percentage increases.")
+    st.warning("Error reading percent increases.")
 
 with st.container():
     st.markdown("#### What will appear on the slide:")

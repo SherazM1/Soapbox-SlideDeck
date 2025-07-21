@@ -126,32 +126,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     engagements_increase = ""
     impressions_increase = ""
 
-# Find where "Percentage Increase" is in the data
     try:
-        perc_row_idx = None
         for idx, row in excel_df.iterrows():
-            if str(row["Unnamed: 15"]).strip().lower() == "percentage increase":
-                perc_row_idx = idx
-                break
-        if perc_row_idx is not None:
-            for offset in range(1, 10):
-                row_idx = perc_row_idx + offset
-                if row_idx >= len(excel_df):
-                    break
-                label = str(excel_df.at[row_idx, "Unnamed: 14"]).strip().lower()
-                raw = excel_df.at[row_idx, "Unnamed: 15"]
-                if pd.notna(raw):
-                    try:
-                        val = float(raw) * 100
-                        pct_str = f"{val:.1f}%"
-                        if label == "engagements":
-                            engagements_increase = pct_str
-                        elif label == "impressions":
-                            impressions_increase = pct_str
-                    except Exception:
-                        continue
+            label = str(row.get("Unnamed: 14", "")).strip().lower()
+            val = row.get("Unnamed: 15", "")
+
+            if pd.isna(val):
+                pass
+
+        try:
+            num = float(val)
+            pct_str = f"{num * 100:.1f}%"
+
+            if label == "impressions":
+                impressions_increase = pct_str
+            elif label == "engagements":
+                engagements_increase = pct_str
+        except:
+                pass
+
     except Exception as e:
-        print("Error extracting percentage increases", e)
+        print("Error reading % increases:", e)
 
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
