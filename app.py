@@ -103,63 +103,55 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
     # ---------- Extract all other values needed for TextBox 15 ----------
-    # Social Posts & Stories
-    # BEFORE extraction, print columns
     print("COLUMNS:", list(excel_df.columns))
 
-# Extraction logic for Social Posts & Stories
+    # Extraction logic for Social Posts & Stories
     social_posts_value = ""
-    for idx, row in df.iterrows():
-        if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
-            social_posts_value = row["Unnamed: 11"]
-            break
-
-# (Optional) Print first few rows of DataFrame for visual inspection
-
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
+                social_posts_value = row["Unnamed: 11"]
+                break
 
     # Engagement Rate
     engagement_rate_value = ""
     for idx, row in excel_df.iterrows():
-        # Update "Metric" to the correct header if needed
         if str(row.iloc[0]).strip().lower() == "program er":
             engagement_rate_value = row.iloc[1]
             break
 
-    # Engagements (main number)
+    # ENGAGEMENTS
     engagements_value = ""
+    engagements_increase = ""
     if "Organic & Total" in excel_df.columns:
         for idx, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip().lower() == "total engagements":
                 engagements_value = row.iloc[1]
                 break
 
-    # Engagements Percentage Increase (Proposed Metrics block)
-    engagements_increase = ""
     if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
         for idx, row in excel_df.iterrows():
             if str(row["Proposed Metrics"]).strip().lower() == "engagements":
-                engagements_increase = row["Percentage Increase"]
-                break
+                val = row["Percentage Increase"]
+                if pd.notna(val):
+                    engagements_increase = f"{round(float(val) * 100, 1)}%"
 
-    # Impressions (main number)
+    # IMPRESSIONS
     impressions_value = ""
-    # Adjust column name if your sheet is different
-    for idx, row in excel_df.iterrows():
-        if "Impressions" in excel_df.columns:
+    impressions_increase = ""
+    if "Impressions" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
             first_col_val = str(row["Impressions"]).strip().lower()
-            if first_col_val == "total impressions":
+            if first_col_val in ["total impressions", "total"]:
                 impressions_value = row.iloc[1]
                 break
-            elif first_col_val == "total":
-                impressions_value = row.iloc[1]  # fallback
 
-    # Impressions Percentage Increase (Proposed Metrics block)
-    impressions_increase = ""
     if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
         for idx, row in excel_df.iterrows():
             if str(row["Proposed Metrics"]).strip().lower() == "impressions":
-                impressions_increase = row["Percentage Increase"]
-                break
+                val = row["Percentage Increase"]
+                if pd.notna(val):
+                    impressions_increase = f"{round(float(val) * 100, 1)}%"
 
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     bullet_box_name = "TextBox 2"
@@ -237,7 +229,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 print(f"- {shape.name}")
 
     prs.save(output_path)
-    return output_path
+    # No return
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI Entrypoint (optional, for testing automation)
