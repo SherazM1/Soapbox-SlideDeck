@@ -61,14 +61,24 @@ impressions_increase = ""
 if prop_col in df.columns and perc_col in df.columns:
     for _, row in df.iterrows():
         label = str(row[prop_col]).strip().lower()
-        raw_val   = row[perc_col]
-        raw_num = pd.to_numeric(raw_val, errors="coerce")
-        if pd.notna(raw_num):
-            pct_str = f"{raw_num * 100:.1f}%"
-            if label == "engagements":
-                engagements_increase = pct_str
-            elif label == "impressions":
-                impressions_increase = pct_str
+        raw   = row[perc_col]
+        if pd.isna(raw):
+            continue
+
+        # if it's already a string with “%”, just normalize whitespace
+        if isinstance(raw, str) and "%" in raw:
+            pct_str = raw.strip()
+        else:
+            # otherwise coerce to float then multiply
+            num = pd.to_numeric(raw, errors="coerce")
+            if pd.isna(num):
+                continue
+            pct_str = f"{num * 100:.1f}%"
+
+        if label == "engagements":
+            engagements_increase = pct_str
+        elif label == "impressions":
+            impressions_increase = pct_str
 # Engagement Rate
 
 
