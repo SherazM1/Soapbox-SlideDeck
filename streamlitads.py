@@ -32,14 +32,14 @@ st.markdown(
 st.header("Inputs")
 uploaded = st.file_uploader("Upload Excel or CSV", type=["xlsx", "csv"])
 if not uploaded:
-    st.info("Please upload a data file to see the dashboard below.")
+    st.info("Please upload an excel to see the populated template below.")
     st.stop()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Load & Preview Data
 # ─────────────────────────────────────────────────────────────────────────────
 df = load_dataframe(uploaded)
-st.subheader("Data Preview")
+st.subheader("Slide deck Preview")
 st.dataframe(df.head(10), height=200)
 
 # ─────────────────────────────────────────────────────────────────────────────
