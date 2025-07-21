@@ -99,12 +99,16 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
-    bullet_box_name = "TextBox 2"  # The text box with bullets/hashtags
-
+    bullet_box_name = "TextBox 2" # The text box with bullets/hashtags
+    
+    
+    print(f"Loaded {len(prs.slides)} slides")  
     slide = prs.slides[3]
     found = False
+    print("Text shapes in Slide 4:")
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == bullet_box_name:
+            print(f"- {shape.name}: {shape.text[:50]}")
             original_lines = shape.text.splitlines()
             new_lines = []
             for line in original_lines:
