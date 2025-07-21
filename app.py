@@ -93,20 +93,72 @@ def extract_proposed_metrics_anywhere(df):
 
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     from pptx import Presentation
-
     prs = Presentation(pptx_template_path)
 
-    # ---------- ORIGINAL LOGIC: TextBox 2 (Proposed Metrics) ----------
+    # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
     try:
         metrics = extract_proposed_metrics_anywhere(excel_df)
     except Exception as e:
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
+    # ---------- Extract all other values needed for TextBox 15 ----------
+    # Social Posts & Stories
+    social_posts_value = ""
+    if "Organic & Total" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip().lower() == "total number of posts with stories":
+                social_posts_value = row.iloc[1]
+                break
+
+    # Engagement Rate
+    engagement_rate_value = ""
+    for idx, row in excel_df.iterrows():
+        # Update "Metric" to the correct header if needed
+        if str(row.iloc[0]).strip().lower() == "program er":
+            engagement_rate_value = row.iloc[1]
+            break
+
+    # Engagements (main number)
+    engagements_value = ""
+    if "Organic & Total" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip().lower() == "total engagements":
+                engagements_value = row.iloc[1]
+                break
+
+    # Engagements Percentage Increase (Proposed Metrics block)
+    engagements_increase = ""
+    if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
+            if str(row["Proposed Metrics"]).strip().lower() == "engagements":
+                engagements_increase = row["Percentage Increase"]
+                break
+
+    # Impressions (main number)
+    impressions_value = ""
+    # Adjust column name if your sheet is different
+    for idx, row in excel_df.iterrows():
+        if "Impressions" in excel_df.columns:
+            first_col_val = str(row["Impressions"]).strip().lower()
+            if first_col_val == "total impressions":
+                impressions_value = row.iloc[1]
+                break
+            elif first_col_val == "total":
+                impressions_value = row.iloc[1]  # fallback
+
+    # Impressions Percentage Increase (Proposed Metrics block)
+    impressions_increase = ""
+    if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
+        for idx, row in excel_df.iterrows():
+            if str(row["Proposed Metrics"]).strip().lower() == "impressions":
+                impressions_increase = row["Percentage Increase"]
+                break
+
+    # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     bullet_box_name = "TextBox 2"
     slide = prs.slides[3]  # Slide 4 (0-indexed)
     found = False
-
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == bullet_box_name:
             for paragraph in shape.text_frame.paragraphs:
@@ -132,64 +184,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             if shape.has_text_frame:
                 print(f"- {shape.name}")
 
-    # ========== NEW LOGIC: TextBox 15 (Slide 4, index 3) ==========
+    # ---------- Fill TextBox 15 (Program Overview, same slide) ----------
     new_box_name = "TextBox 15"
     found = False
-
-    # --- Social Posts & Stories ---
-    social_posts_value = ""
-    if "Organic & Total" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
-            if str(row["Organic & Total"]).strip().lower() == "total number of posts with stories":
-                social_posts_value = row.iloc[1]
-                break
-
-    # --- Engagement Rate ---
-    engagement_rate_value = ""
-    for idx, row in excel_df.iterrows():
-        if str(row.iloc[0]).strip().lower() == "program er":
-            raw_val = row.iloc[1]
-            if isinstance(raw_val, str) and raw_val.startswith("#"):
-                engagement_rate_value = ""
-            else:
-                engagement_rate_value = raw_val
-            break
-
-    # --- Engagements Value ---
-    engagements_value = ""
-    if "Organic & Total" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
-            if str(row["Organic & Total"]).strip().lower() == "total engagements":
-                engagements_value = row.iloc[1]
-                break
-
-    # --- Engagements Percentage Increase ---
-    engagements_increase = ""
-    if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
-            if str(row["Proposed Metrics"]).strip().lower() == "engagements":
-                engagements_increase = row["Percentage Increase"]
-                break
-
-    # --- Impressions Value (w/ fallback) ---
-    impressions_value = ""
-    for idx, row in excel_df.iterrows():
-        first_col_val = str(row.iloc[0]).strip().lower()
-        if first_col_val == "total impressions":
-            impressions_value = row.iloc[1]
-            break
-        elif first_col_val == "total":
-            impressions_value = row.iloc[1]  # fallback
-
-    # --- Impressions Percentage Increase ---
-    impressions_increase = ""
-    if "Proposed Metrics" in excel_df.columns and "Percentage Increase" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
-            if str(row["Proposed Metrics"]).strip().lower() == "impressions":
-                impressions_increase = row["Percentage Increase"]
-                break
-
-    # --- Update TextBox 15 bullets ---
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == new_box_name:
             for paragraph in shape.text_frame.paragraphs:
@@ -235,6 +232,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
 
     prs.save(output_path)
     return output_path
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI Entrypoint (optional, for testing automation)
 # ─────────────────────────────────────────────────────────────────────────────
