@@ -61,14 +61,14 @@ impressions_increase = ""
 if prop_col in df.columns and perc_col in df.columns:
     for _, row in df.iterrows():
         label = str(row[prop_col]).strip().lower()
-        raw   = row[perc_col]
-        if pd.notna(raw):
-            pct_str = f"{raw * 100:.1f}%"
+        raw_val   = row[perc_col]
+        raw_num = pd.to_numeric(raw_val, errors="coerce")
+        if pd.notna(raw_num):
+            pct_str = f"{raw_num * 100:.1f}%"
             if label == "engagements":
                 engagements_increase = pct_str
             elif label == "impressions":
                 impressions_increase = pct_str
-
 # Engagement Rate
 
 
