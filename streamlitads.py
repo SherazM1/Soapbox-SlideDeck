@@ -69,7 +69,6 @@ if st.button("Generate PowerPoint Recap Deck"):
         excel_df=df,
         pptx_template_path=pptx_template_path,
         output_path=output_path,
-        mapping_config= mapping_config
         
           # Expand later as more slides are added
     )
