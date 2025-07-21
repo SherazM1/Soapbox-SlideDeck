@@ -1,5 +1,3 @@
-# app.py
-
 import os
 import sys
 import json
@@ -59,9 +57,7 @@ def load_dataframe(src) -> pd.DataFrame:
         raise ValueError(f"Unsupported file type: {ext}")
 
 # ─────────────────────────────────────────────────────────────────────────────
-
-
-# PowerPoint Deck Generation (to be implemented per slide mapping)
+# PowerPoint Deck Generation
 # ─────────────────────────────────────────────────────────────────────────────
 
 def extract_proposed_metrics_anywhere(df):
@@ -91,6 +87,7 @@ def extract_proposed_metrics_anywhere(df):
     metrics = dict(zip(names, values))
     return metrics
 
+
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     prs = Presentation(pptx_template_path)
 
@@ -119,33 +116,38 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             engagement_rate_value = row.iloc[1]
             break
 
-    # pick the right column names (fall back on the Unnamed ones)
+    # ---------- Updated: % INCREASE Extraction ----------
+    # pick the right column names
     prop_col = "Unnamed: 14"  # where “Engagements” / “Impressions” lives
-    perc_col = "Unnamed: 15"  # where the decimal % lives
+    perc_col = "Unnamed: 15"  # where the raw decimal % lives
 
-# ENGAGEMENTS % INCREASE
+    # ENGAGEMENTS % INCREASE
     engagements_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row[prop_col]).strip().lower() == "engagements":
                 raw = row[perc_col]
-            if pd.notna(raw):
-                # raw is e.g. 2.556 → 255.6%
-                engagements_increase = f"{raw * 100:.1f}%"
-            break
+                # only format if it's not NaN
+                if pd.notna(raw):
+                    num = pd.to_numeric(raw, errors="coerce")
+                    if pd.notna(num):
+                        engagements_increase = f"{num * 100:.1f}%"
+                break
 
-# IMPRESSIONS % INCREASE
+    # IMPRESSIONS % INCREASE
     impressions_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row[prop_col]).strip().lower() == "impressions":
                 raw = row[perc_col]
-            if pd.notna(raw):
-                impressions_increase = f"{raw * 100:.1f}%"
-            break
+                if pd.notna(raw):
+                    num = pd.to_numeric(raw, errors="coerce")
+                    if pd.notna(num):
+                        impressions_increase = f"{num * 100:.1f}%"
+                break
 
     print("Engagements % increase:", engagements_increase)   # → “255.6%”
-    print("Impressions % increase:", impressions_increase)
+    print("Impressions % increase:", impressions_increase)   # → “429.4%”
 
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     bullet_box_name = "TextBox 2"
@@ -202,7 +204,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 elif "Engagements" in full_text and "% increase" in full_text:
                     for run in paragraph.runs:
                         if "% increase" in run.text:
-                            run.text = run.text.replace("% increase", f"{engagements_increase}% increase")
+                            run.text = run.text.replace("% increase", f"{engagements_increase} increase")
                 # Impressions (main number)
                 elif "Impressions" in full_text and "#" in full_text and "% increase" not in full_text:
                     for run in paragraph.runs:
@@ -212,7 +214,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 elif "Impressions" in full_text and "% increase" in full_text:
                     for run in paragraph.runs:
                         if "% increase" in run.text:
-                            run.text = run.text.replace("% increase", f"{impressions_increase}% increase")
+                            run.text = run.text.replace("% increase", f"{impressions_increase} increase")
             found = True
             break
 
