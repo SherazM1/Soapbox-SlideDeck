@@ -101,7 +101,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
 
     bullet_box_name = "TextBox 2"  # The text box with bullets/hashtags
 
-    slide = prs.slides[0]
+    slide = prs.slides[3]
     found = False
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == bullet_box_name:
