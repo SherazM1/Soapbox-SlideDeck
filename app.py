@@ -1,3 +1,5 @@
+# app.py
+
 import os
 import sys
 import json
@@ -57,9 +59,8 @@ def load_dataframe(src) -> pd.DataFrame:
         raise ValueError(f"Unsupported file type: {ext}")
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PowerPoint Deck Generation
+# Proposed Metrics Extraction
 # ─────────────────────────────────────────────────────────────────────────────
-
 def extract_proposed_metrics_anywhere(df):
     """
     Find 'Proposed Metrics' anywhere in the sheet, then extract the next 3 rows
@@ -84,10 +85,11 @@ def extract_proposed_metrics_anywhere(df):
             break
     if not found:
         raise ValueError("'Proposed Metrics' not found in any column.")
-    metrics = dict(zip(names, values))
-    return metrics
+    return dict(zip(names, values))
 
-
+# ─────────────────────────────────────────────────────────────────────────────
+# PowerPoint Deck Generation
+# ─────────────────────────────────────────────────────────────────────────────
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     prs = Presentation(pptx_template_path)
 
@@ -101,40 +103,36 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     # ---------- Extract all other values needed for TextBox 15 ----------
     print("COLUMNS:", list(excel_df.columns))
 
-    # Extraction logic for Social Posts & Stories
+    # Social Posts & Stories
     social_posts_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
+        for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
                 social_posts_value = row["Unnamed: 11"]
                 break
 
     # Engagement Rate
     engagement_rate_value = ""
-    for idx, row in excel_df.iterrows():
+    for _, row in excel_df.iterrows():
         if str(row.iloc[0]).strip().lower() == "program er":
             engagement_rate_value = row.iloc[1]
             break
 
-    # ---------- Updated: % INCREASE Extraction ----------
-    # pick the right column names
-    prop_col = "Unnamed: 14"  # where “Engagements” / “Impressions” lives
-    perc_col = "Unnamed: 15"  # where the raw decimal % lives
+    # ---------- NEW: Engagements & Impressions % INCREASE ----------
+    prop_col = "Unnamed: 14"  # where "Engagements" / "Impressions" labels live
+    perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
 
-    # ENGAGEMENTS % INCREASE
     engagements_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row[prop_col]).strip().lower() == "engagements":
                 raw = row[perc_col]
-                # only format if it's not NaN
                 if pd.notna(raw):
                     num = pd.to_numeric(raw, errors="coerce")
                     if pd.notna(num):
                         engagements_increase = f"{num * 100:.1f}%"
                 break
 
-    # IMPRESSIONS % INCREASE
     impressions_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -146,88 +144,70 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                         impressions_increase = f"{num * 100:.1f}%"
                 break
 
-    print("Engagements % increase:", engagements_increase)   # → “255.6%”
-    print("Impressions % increase:", impressions_increase)   # → “429.4%”
+    print("Engagements % increase:", engagements_increase)
+    print("Impressions % increase:", impressions_increase)
 
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
-    bullet_box_name = "TextBox 2"
     slide = prs.slides[3]  # Slide 4 (0-indexed)
-    found = False
     for shape in slide.shapes:
-        if shape.has_text_frame and shape.name == bullet_box_name:
-            for paragraph in shape.text_frame.paragraphs:
-                full_text = paragraph.text.strip()
-                if "Proposed Influencers" in full_text and "#" in full_text:
-                    for run in paragraph.runs:
+        if shape.has_text_frame and shape.name == "TextBox 2":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                if "Proposed Influencers" in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Influencers", "")))
-                elif "Proposed Engagements" in full_text and "#" in full_text:
-                    for run in paragraph.runs:
+                elif "Proposed Engagements" in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Engagements", "")))
-                elif "Proposed Impressions" in full_text and "#" in full_text:
-                    for run in paragraph.runs:
+                elif "Proposed Impressions" in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
-            found = True
             break
 
-    if not found:
-        print(f"[ERROR] Could not find shape named '{bullet_box_name}' on Slide 4.")
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                print(f"- {shape.name}")
-
-    # ---------- Fill TextBox 15 (Program Overview, same slide) ----------
-    new_box_name = "TextBox 15"
-    found = False
+    # ---------- Fill TextBox 15 (Program Overview) ----------
     for shape in slide.shapes:
-        if shape.has_text_frame and shape.name == new_box_name:
-            for paragraph in shape.text_frame.paragraphs:
-                full_text = paragraph.text.strip()
+        if shape.has_text_frame and shape.name == "TextBox 15":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
                 # Social Posts & Stories
-                if "Social Posts & Stories" in full_text and "#" in full_text:
-                    for run in paragraph.runs:
+                if "Social Posts & Stories" in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(social_posts_value))
                 # Engagement Rate
-                elif "Engagement Rate" in full_text and "#" in full_text:
-                    for run in paragraph.runs:
+                elif "Engagement Rate" in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(engagement_rate_value))
-                # Engagements (main number)
-                elif "Engagements" in full_text and "#" in full_text and "% increase" not in full_text:
-                    for run in paragraph.runs:
+                # Engagements (main)
+                elif text.startswith("Engagements") and "#" in text and "% increase" not in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Engagements", "")))
-                # Engagements Percentage Increase
-                elif "Engagements" in full_text and "% increase" in full_text:
-                    for run in paragraph.runs:
+                # Engagements % increase
+                elif "Engagements" in text and "% increase" in text:
+                    for run in para.runs:
                         if "% increase" in run.text:
                             run.text = run.text.replace("% increase", f"{engagements_increase} increase")
-                # Impressions (main number)
-                elif "Impressions" in full_text and "#" in full_text and "% increase" not in full_text:
-                    for run in paragraph.runs:
+                # Impressions (main)
+                elif text.startswith("Impressions") and "#" in text and "% increase" not in text:
+                    for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
-                # Impressions Percentage Increase
-                elif "Impressions" in full_text and "% increase" in full_text:
-                    for run in paragraph.runs:
+                # Impressions % increase
+                elif "Impressions" in text and "% increase" in text:
+                    for run in para.runs:
                         if "% increase" in run.text:
                             run.text = run.text.replace("% increase", f"{impressions_increase} increase")
-            found = True
             break
-
-    if not found:
-        print(f"[ERROR] Could not find shape named '{new_box_name}' on Slide 4.")
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                print(f"- {shape.name}")
 
     prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CLI Entrypoint (optional, for testing automation)
+# CLI Entrypoint (optional, for testing)
 # ─────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import argparse
