@@ -52,50 +52,25 @@ for idx, row in df.iterrows():
         social_posts_value = row["Unnamed: 11"]
         break
 
-# Engagement Rate
-engagement_rate_value = ""
-for idx, row in df.iterrows():
-    if str(row.iloc[0]).strip().lower() == "program er":
-        raw_val = row.iloc[1]
-        if isinstance(raw_val, str) and raw_val.startswith("#"):
-            engagement_rate_value = ""
-        else:
-            engagement_rate_value = raw_val
-        break
+prop_col = "Unnamed: 14"    # where "engagements" / "impressions" labels live
+perc_col = "Unnamed: 15"    # where the raw decimals (e.g. 2.556) live
 
-# Engagements value
-engagements_value = ""
-if "Organic & Total" in df.columns:
-    for idx, row in df.iterrows():
-        if str(row["Organic & Total"]).strip().lower() == "total engagements":
-            engagements_value = row.iloc[1]
-            break
-
-# Engagements % increase
 engagements_increase = ""
-if "Proposed Metrics" in df.columns and "Percentage Increase" in df.columns:
-    for idx, row in df.iterrows():
-        if str(row["Proposed Metrics"]).strip().lower() == "engagements":
-            engagements_increase = row["Percentage Increase"]
-            break
-
-# Impressions value (w/ fallback)
-impressions_value = ""
-for idx, row in df.iterrows():
-    first_col_val = str(row.iloc[0]).strip().lower()
-    if first_col_val == "total impressions":
-        impressions_value = row.iloc[1]
-        break
-    elif first_col_val == "total":
-        impressions_value = row.iloc[1]  # fallback
-
-# Impressions % increase
 impressions_increase = ""
-if "Proposed Metrics" in df.columns and "Percentage Increase" in df.columns:
-    for idx, row in df.iterrows():
-        if str(row["Proposed Metrics"]).strip().lower() == "impressions":
-            impressions_increase = row["Percentage Increase"]
-            break
+
+if prop_col in df.columns and perc_col in df.columns:
+    for _, row in df.iterrows():
+        label = str(row[prop_col]).strip().lower()
+        raw   = row[perc_col]
+        if pd.notna(raw):
+            pct_str = f"{raw * 100:.1f}%"
+            if label == "engagements":
+                engagements_increase = pct_str
+            elif label == "impressions":
+                impressions_increase = pct_str
+
+# Engagement Rate
+
 
 with st.container():
     st.markdown("#### What will appear on the slide:")
@@ -105,9 +80,8 @@ with st.container():
 - **Proposed Impressions:** {metrics.get('Impressions','')}
 
 - **Social Posts & Stories:** {social_posts_value}
-- **Engagement Rate:** {engagement_rate_value}%
-- **Engagements:** {engagements_value} ({engagements_increase}% increase)
-- **Impressions:** {impressions_value} ({impressions_increase}% increase)
+- **Engagements:** ({engagements_increase} increase)
+- **Impressions:** ({impressions_increase} increase)
 """)
     st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
 
