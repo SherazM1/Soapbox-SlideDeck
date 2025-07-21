@@ -59,25 +59,34 @@ perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
 engagements_increase = ""
 impressions_increase = ""
 
-if prop_col in df.columns and perc_col in df.columns:
+# ENGAGEMENTS % INCREASE
+engagements_increase = ""
+if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
     for _, row in df.iterrows():
-        label = str(row[prop_col]).strip().lower()
-        raw   = row[perc_col]
-        if pd.isna(raw):
-            continue
+        if str(row["Unnamed: 14"]).strip().lower() == "engagements":
+            raw = row["Unnamed: 15"]
+            if pd.notna(raw):
+                try:
+                    num = float(raw)
+                    engagements_increase = f"{num * 100:.1f}%"
+                except Exception:
+                    pass
+            break  # only look at the first match
 
-        if isinstance(raw, str) and "%" in raw:
-            pct_str = raw.strip()
-        else:
-            num = pd.to_numeric(raw, errors="coerce")
-            if pd.isna(num):
-                continue
-            pct_str = f"{num * 100:.1f}%"
+# IMPRESSIONS % INCREASE
+impressions_increase = ""
+if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
+    for _, row in df.iterrows():
+        if str(row["Unnamed: 14"]).strip().lower() == "impressions":
+            raw = row["Unnamed: 15"]
+            if pd.notna(raw):
+                try:
+                    num = float(raw)
+                    impressions_increase = f"{num * 100:.1f}%"
+                except Exception:
+                    pass
+            break
 
-        if label == "engagements":
-            engagements_increase = pct_str
-        elif label == "impressions":
-            impressions_increase = pct_str
 
 with st.container():
     st.markdown("#### What will appear on the slide:")

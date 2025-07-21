@@ -122,27 +122,34 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     prop_col = "Unnamed: 14"  # where "Engagements" / "Impressions" labels live
     perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
 
+   # ENGAGEMENTS % INCREASE
     engagements_increase = ""
-    if prop_col in excel_df.columns and perc_col in excel_df.columns:
-        for _, row in excel_df.iterrows():
-            if str(row[prop_col]).strip().lower() == "engagements":
-                raw = row[perc_col]
+    if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip().lower() == "engagements":
+                raw = row["Unnamed: 15"]
                 if pd.notna(raw):
-                    num = pd.to_numeric(raw, errors="coerce")
-                    if pd.notna(num):
+                    try:
+                        num = float(raw)
                         engagements_increase = f"{num * 100:.1f}%"
+                    except Exception:
+                        pass
+                break  # only look at the first match
+
+# IMPRESSIONS % INCREASE
+    impressions_increase = ""
+    if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip().lower() == "impressions":
+                raw = row["Unnamed: 15"]
+                if pd.notna(raw):
+                    try:
+                        num = float(raw)
+                        impressions_increase = f"{num * 100:.1f}%"
+                    except Exception:
+                        pass
                 break
 
-    impressions_increase = ""
-    if prop_col in excel_df.columns and perc_col in excel_df.columns:
-        for _, row in excel_df.iterrows():
-            if str(row[prop_col]).strip().lower() == "impressions":
-                raw = row[perc_col]
-                if pd.notna(raw):
-                    num = pd.to_numeric(raw, errors="coerce")
-                    if pd.notna(num):
-                        impressions_increase = f"{num * 100:.1f}%"
-                break
 
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
