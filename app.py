@@ -127,29 +127,31 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     impressions_increase = ""
 
 # Find where "Percentage Increase" is in the data
-    perc_row_idx = None
-    for idx, row in df.iterrows():
-        if str(row["Unnamed: 15"]).strip().lower() == "percentage increase":
-            perc_row_idx = idx
-            break
-
-    if perc_row_idx is not None:
-        for offset in range(1, 10):  # look up to 10 rows below it
-            row_idx = perc_row_idx + offset
-            if row_idx >= len(df):
+    try:
+        perc_row_idx = None
+        for idx, row in excel_df.iterrows():
+            if str(row["Unnamed: 15"]).strip().lower() == "percentage increase":
+                perc_row_idx = idx
                 break
-            label = str(df.at[row_idx, "Unnamed: 14"]).strip().lower()
-            raw = df.at[row_idx, "Unnamed: 15"]
-            if pd.notna(raw):
-                try:
-                    val = float(raw) * 100
-                    pct_str = f"{val:.1f}%"
-                    if label == "engagements":
-                        engagements_increase = pct_str
-                    elif label == "impressions":
-                        impressions_increase = pct_str
-                except Exception:
-                    continue
+        if perc_row_idx is not None:
+            for offset in range(1, 10):
+                row_idx = perc_row_idx + offset
+                if row_idx >= len(excel_df):
+                    break
+                label = str(excel_df.at[row_idx, "Unnamed: 14"]).strip().lower()
+                raw = excel_df.at[row_idx, "Unnamed: 15"]
+                if pd.notna(raw):
+                    try:
+                        val = float(raw) * 100
+                        pct_str = f"{val:.1f}%"
+                        if label == "engagements":
+                            engagements_increase = pct_str
+                        elif label == "impressions":
+                            impressions_increase = pct_str
+                    except Exception:
+                        continue
+    except Exception as e:
+        print("Error extracting percentage increases", e)
 
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
