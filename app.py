@@ -89,7 +89,6 @@ def extract_proposed_metrics_anywhere(df):
     metrics = dict(zip(names, values))
     return metrics
 
-from pptx import Presentation
 
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_config, user_inputs=None):
     prs = Presentation(pptx_template_path)
@@ -108,17 +107,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
         if shape.has_text_frame and shape.name == bullet_box_name:
             original_lines = shape.text.splitlines()
             new_lines = []
-            replacements = [
-                metrics.get('Influencers', ''),
-                metrics.get('Engagements', ''),
-                metrics.get('Impressions', '')
-            ]
-            rep_idx = 0
             for line in original_lines:
-                # Only replace the first '#' in each line, in order
-                if '#' in line and rep_idx < len(replacements):
-                    new_line = line.replace('#', str(replacements[rep_idx]), 1)
-                    rep_idx += 1
+                if 'Proposed Influencers' in line:
+                    new_line = line.replace('#', str(metrics.get('Influencers', '')), 1)
+                elif 'Proposed Engagements' in line:
+                    new_line = line.replace('#', str(metrics.get('Engagements', '')), 1)
+                elif 'Proposed Impressions' in line:
+                    new_line = line.replace('#', str(metrics.get('Impressions', '')), 1)
                 else:
                     new_line = line
                 new_lines.append(new_line)
