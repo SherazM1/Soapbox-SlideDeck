@@ -47,13 +47,10 @@ except Exception as e:
 # ----- Extract new values for TextBox 15 -----
 # Social Posts & Stories
 social_posts_value = ""
-if "Organic & Total" in df.columns:
-    for idx, row in df.iterrows():
-        label = str(row["Organic & Total"]).strip().lower()
-        if label == "total number of posts with stories":
-            social_posts_value = row.iloc[1]  # This should grab 15
-            break
-
+for idx, row in df.iterrows():
+    if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
+        social_posts_value = row["Unnamed: 11"]
+        break
 
 # Engagement Rate
 engagement_rate_value = ""

@@ -109,18 +109,12 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
 
 # Extraction logic for Social Posts & Stories
     social_posts_value = ""
-    if "Organic & Total" in excel_df.columns:
-        for idx, row in excel_df.iterrows():
-            # Print every label in this column for the first few rows
-            print("ROW", idx, "LABEL:", row["Organic & Total"])
-            if str(row["Organic & Total"]).strip().lower() == "total number of posts with stories":
-                social_posts_value = row.iloc[1]
-                print("FOUND! Value:", social_posts_value)
-                break
-    print("Social Posts & Stories (final):", social_posts_value)
+    for idx, row in df.iterrows():
+        if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
+            social_posts_value = row["Unnamed: 11"]
+            break
 
 # (Optional) Print first few rows of DataFrame for visual inspection
-    print(excel_df.head(10))
 
 
     # Engagement Rate
