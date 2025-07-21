@@ -120,31 +120,32 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             break
 
     # pick the right column names (fall back on the Unnamed ones)
-    prop_col = "Proposed Metrics" if "Proposed Metrics" in excel_df.columns else "Unnamed: 14"
-    perc_col = "Percentage Increase" if "Percentage Increase" in excel_df.columns else "Unnamed: 15"
+    prop_col = "Unnamed: 14"  # where “Engagements” / “Impressions” lives
+    perc_col = "Unnamed: 15"  # where the decimal % lives
 
-    # ENGAGEMENTS %
+# ENGAGEMENTS % INCREASE
     engagements_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row[prop_col]).strip().lower() == "engagements":
-                val = row[perc_col]
-                if pd.notna(val):
-                    engagements_increase = f"{round(float(val) * 100, 1)}%"
-                break  # stop once we’ve found it
+                raw = row[perc_col]
+            if pd.notna(raw):
+                # raw is e.g. 2.556 → 255.6%
+                engagements_increase = f"{raw * 100:.1f}%"
+            break
 
-    # IMPRESSIONS %
+# IMPRESSIONS % INCREASE
     impressions_increase = ""
     if prop_col in excel_df.columns and perc_col in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row[prop_col]).strip().lower() == "impressions":
-                val = row[perc_col]
-                if pd.notna(val):
-                    impressions_increase = f"{round(float(val) * 100, 1)}%"
-                break
+                raw = row[perc_col]
+            if pd.notna(raw):
+                impressions_increase = f"{raw * 100:.1f}%"
+            break
 
-    print("Engagements ↑", engagements_increase)
-    print("Impressions ↑", impressions_increase)
+    print("Engagements % increase:", engagements_increase)   # → “255.6%”
+    print("Impressions % increase:", impressions_increase)
 
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     bullet_box_name = "TextBox 2"
