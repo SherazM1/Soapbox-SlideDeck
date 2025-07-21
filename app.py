@@ -142,8 +142,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     df = load_dataframe(args.input_file)
-    # mapping_config = ...  # Define your mapping per slide!
-    mapping_config = {}  # Placeholder
-
-    populate_pptx_from_excel(df, args.pptx_template, args.output, mapping_config)
+    populate_pptx_from_excel(df, args.pptx_template, args.output)
     print(f"Wrote {args.output}")
