@@ -40,20 +40,21 @@ st.header("Slide 4: Program Overview (Preview)")
 
 try:
     metrics = extract_proposed_metrics_anywhere(df)
-except Exception as e:
+except Exception:
     metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
     st.warning("Could not extract 'Proposed Metrics' from Excel. Please check formatting.")
 
 # ----- Extract new values for TextBox 15 -----
 # Social Posts & Stories
 social_posts_value = ""
-for idx, row in df.iterrows():
+for _, row in df.iterrows():
     if str(row["Organic & Total"]).strip() == "Total Number of Posts With Stories":
         social_posts_value = row["Unnamed: 11"]
         break
 
-prop_col = "Unnamed: 14"    # where "engagements" / "impressions" labels live
-perc_col = "Unnamed: 15"    # where the raw decimals (e.g. 2.556) live
+# Engagements & Impressions % increases
+prop_col = "Unnamed: 14"  # where the metric labels live
+perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
 
 engagements_increase = ""
 impressions_increase = ""
@@ -65,11 +66,9 @@ if prop_col in df.columns and perc_col in df.columns:
         if pd.isna(raw):
             continue
 
-        # if it's already a string with “%”, just normalize whitespace
         if isinstance(raw, str) and "%" in raw:
             pct_str = raw.strip()
         else:
-            # otherwise coerce to float then multiply
             num = pd.to_numeric(raw, errors="coerce")
             if pd.isna(num):
                 continue
@@ -79,8 +78,6 @@ if prop_col in df.columns and perc_col in df.columns:
             engagements_increase = pct_str
         elif label == "impressions":
             impressions_increase = pct_str
-# Engagement Rate
-
 
 with st.container():
     st.markdown("#### What will appear on the slide:")
@@ -95,7 +92,6 @@ with st.container():
 """)
     st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
 
-
 # ─────────────────────────────────────────────────────────────────────────────
 # Step 2: Generate + Download PowerPoint
 # ─────────────────────────────────────────────────────────────────────────────
@@ -108,15 +104,15 @@ if st.button("Generate PowerPoint Recap Deck"):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = f"recap_deck_output_{timestamp}.pptx"
 
-    pptx_file = populate_pptx_from_excel(
+    # write out the PPTX (no return value)
+    populate_pptx_from_excel(
         excel_df=df,
         pptx_template_path=pptx_template_path,
         output_path=output_path,
-        
-          # Expand later as more slides are added
     )
 
-    with open(pptx_file, "rb") as f:
+    # open the file we just saved
+    with open(output_path, "rb") as f:
         st.success("✅ Your recap deck is ready!")
         st.download_button(
             "⬇️ Download PowerPoint",
