@@ -107,8 +107,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
-    # All three bullet points are in a single text box named 'Proposed_Program_Details'
-    proposed_box_name = "Proposed_Program_Details"  # Name your text box this in PowerPoint
+    proposed_box_name = "Proposed Program Details"  # Exact name of your text box in the slide
 
     bullet_lines = [
         f"• Proposed Influencers: {metrics.get('Influencers', '')}",
@@ -118,10 +117,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, mapping_
     text_to_fill = "\n".join(bullet_lines)
 
     slide = prs.slides[0]  # First slide
+    found = False
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == proposed_box_name:
             shape.text = text_to_fill
-            break  # Found and filled, exit loop
+            found = True
+            break  # Stop after filling
+
+    if not found:
+        print(f"Could not find a shape named '{proposed_box_name}'. Here are available text shape names on Slide 1:")
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                print(f"- {shape.name}")
 
     # ---- Future: add logic for additional slides below as needed ----
 
