@@ -33,10 +33,10 @@ st.subheader("Preview: First 10 Rows of Data")
 st.dataframe(df.head(10), height=250)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Slide 1 Preview
+# Slide 4 Preview
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("---")
-st.header("Slide 1: Proposed Program Details (Preview)")
+st.header("Slide 4: Program Overview (Preview)")
 
 try:
     metrics = extract_proposed_metrics_anywhere(df)
@@ -44,14 +44,74 @@ except Exception as e:
     metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
     st.warning("Could not extract 'Proposed Metrics' from Excel. Please check formatting.")
 
+# ----- Extract new values for TextBox 15 -----
+# Social Posts & Stories
+social_posts_value = ""
+if "Organic & Total" in df.columns:
+    for idx, row in df.iterrows():
+        if str(row["Organic & Total"]).strip().lower() == "total number of posts with stories":
+            social_posts_value = row.iloc[1]
+            break
+
+# Engagement Rate
+engagement_rate_value = ""
+for idx, row in df.iterrows():
+    if str(row.iloc[0]).strip().lower() == "program er":
+        raw_val = row.iloc[1]
+        if isinstance(raw_val, str) and raw_val.startswith("#"):
+            engagement_rate_value = ""
+        else:
+            engagement_rate_value = raw_val
+        break
+
+# Engagements value
+engagements_value = ""
+if "Organic & Total" in df.columns:
+    for idx, row in df.iterrows():
+        if str(row["Organic & Total"]).strip().lower() == "total engagements":
+            engagements_value = row.iloc[1]
+            break
+
+# Engagements % increase
+engagements_increase = ""
+if "Proposed Metrics" in df.columns and "Percentage Increase" in df.columns:
+    for idx, row in df.iterrows():
+        if str(row["Proposed Metrics"]).strip().lower() == "engagements":
+            engagements_increase = row["Percentage Increase"]
+            break
+
+# Impressions value (w/ fallback)
+impressions_value = ""
+for idx, row in df.iterrows():
+    first_col_val = str(row.iloc[0]).strip().lower()
+    if first_col_val == "total impressions":
+        impressions_value = row.iloc[1]
+        break
+    elif first_col_val == "total":
+        impressions_value = row.iloc[1]  # fallback
+
+# Impressions % increase
+impressions_increase = ""
+if "Proposed Metrics" in df.columns and "Percentage Increase" in df.columns:
+    for idx, row in df.iterrows():
+        if str(row["Proposed Metrics"]).strip().lower() == "impressions":
+            impressions_increase = row["Percentage Increase"]
+            break
+
 with st.container():
     st.markdown("#### What will appear on the slide:")
     st.markdown(f"""
 - **Proposed Influencers:** {metrics.get('Influencers','')}
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
+
+- **Social Posts & Stories:** {social_posts_value}
+- **Engagement Rate:** {engagement_rate_value}%
+- **Engagements:** {engagements_value} ({engagements_increase}% increase)
+- **Impressions:** {impressions_value} ({impressions_increase}% increase)
 """)
-    st.caption("These values will be automatically inserted into Slide 1 of your recap deck.")
+    st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Step 2: Generate + Download PowerPoint
