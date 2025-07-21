@@ -59,34 +59,30 @@ perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
 engagements_increase = ""
 impressions_increase = ""
 
-# ENGAGEMENTS % INCREASE
-engagements_increase = ""
-if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
-    for _, row in df.iterrows():
-        if str(row["Unnamed: 14"]).strip().lower() == "engagements":
-            raw = row["Unnamed: 15"]
-            if pd.notna(raw):
-                try:
-                    num = float(raw)
-                    engagements_increase = f"{num * 100:.1f}%"
-                except Exception:
-                    pass
-            break  # only look at the first match
+# Find where "Percentage Increase" is in the data
+perc_row_idx = None
+for idx, row in df.iterrows():
+    if str(row["Unnamed: 15"]).strip().lower() == "percentage increase":
+        perc_row_idx = idx
+        break
 
-# IMPRESSIONS % INCREASE
-impressions_increase = ""
-if "Unnamed: 14" in df.columns and "Unnamed: 15" in df.columns:
-    for _, row in df.iterrows():
-        if str(row["Unnamed: 14"]).strip().lower() == "impressions":
-            raw = row["Unnamed: 15"]
-            if pd.notna(raw):
-                try:
-                    num = float(raw)
-                    impressions_increase = f"{num * 100:.1f}%"
-                except Exception:
-                    pass
+if perc_row_idx is not None:
+    for offset in range(1, 10):  # look up to 10 rows below it
+        row_idx = perc_row_idx + offset
+        if row_idx >= len(df):
             break
-
+        label = str(df.at[row_idx, "Unnamed: 14"]).strip().lower()
+        raw = df.at[row_idx, "Unnamed: 15"]
+        if pd.notna(raw):
+            try:
+                val = float(raw) * 100
+                pct_str = f"{val:.1f}%"
+                if label == "engagements":
+                    engagements_increase = pct_str
+                elif label == "impressions":
+                    impressions_increase = pct_str
+            except Exception:
+                continue
 
 with st.container():
     st.markdown("#### What will appear on the slide:")
