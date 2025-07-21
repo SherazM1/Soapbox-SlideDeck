@@ -89,8 +89,6 @@ def extract_proposed_metrics_anywhere(df):
     metrics = dict(zip(names, values))
     return metrics
 
-from pptx import Presentation
-
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     prs = Presentation(pptx_template_path)
 
