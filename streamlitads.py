@@ -2,16 +2,17 @@ import os
 import streamlit as st
 import pandas as pd
 from app import load_dataframe, populate_pptx_from_excel
+import aspose.slides as slides
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helper for slide preview (requires aspose.slides)
 # ─────────────────────────────────────────────────────────────────────────────
-import aspose.slides as slides
+
 
 def save_slide1_as_png(pptx_path, out_path):
     with slides.Presentation(pptx_path) as presentation:
         slide = presentation.slides[0]
-        img = slide.get_thumbnail(2, 2)  # 2x scale for better quality
+        img = slide.get_thumbnail(1280, 720)  # 2x scale for better quality
         img.save(out_path, "PNG")
 
 # ─────────────────────────────────────────────────────────────────────────────
