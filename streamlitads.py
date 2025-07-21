@@ -1,15 +1,24 @@
-# streamlit_app.py
-
 import os
 import streamlit as st
+import pandas as pd
+from app import load_dataframe, populate_pptx_from_excel
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Helper for slide preview (requires aspose.slides)
+# ─────────────────────────────────────────────────────────────────────────────
+import aspose.slides as slides
 
+def save_slide1_as_png(pptx_path, out_path):
+    with slides.Presentation(pptx_path) as presentation:
+        slide = presentation.slides[0]
+        img = slide.get_thumbnail(2, 2)  # 2x scale for better quality
+        img.save(out_path, "PNG")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Page config & branding
 # ─────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="SOAPBOX Recap Deck App ",
+    page_title="SOAPBOX Recap Deck App",
     page_icon="✎",
     layout="wide",
 )
@@ -19,81 +28,62 @@ if os.path.exists("logo.png"):
 
 st.title("Recap Deck Editor")
 st.markdown(
-    "Upload your data, edit your recaps, and export the full slideshow all in here!"
+    "Upload your Excel, preview, edit fields (coming soon), and export your influencer recap deck."
 )
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Group Management
-# ─────────────────────────────────────────────────────────────────────────────
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Inputs: File, Client, Date
 # ─────────────────────────────────────────────────────────────────────────────
-st.header("Inputs")
+st.header("Step 1: Upload Data File")
 uploaded = st.file_uploader("Upload Excel or CSV", type=["xlsx", "csv"])
 if not uploaded:
-    st.info("Please upload an excel to see the populated template below.")
+    st.info("Please upload your Excel/CSV to see and generate your recap deck.")
     st.stop()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Load & Preview Data
 # ─────────────────────────────────────────────────────────────────────────────
 df = load_dataframe(uploaded)
-st.subheader("Slide deck Preview")
-st.dataframe(df.head(10), height=200)
+st.subheader("Preview: First 10 Rows of Data")
+st.dataframe(df.head(10), height=250)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Compute & Display Metrics
+# Populate slide 1 and show preview
 # ─────────────────────────────────────────────────────────────────────────────
-m = compute_metrics(df)
+st.markdown("---")
+st.header("Live Preview: Slide 1 (Proposed Program Details)")
 
-col1, col2 = st.columns([3, 1])
-with col1:
-    st.subheader(f"{m['above']}/{m['total']} ({m['pct_above']:.1f}%) products ≥ {int(m['threshold'])}%")
-    pie_buf = make_pie_bytes(m)
-    st.image(pie_buf, caption="Score Distribution", use_column_width=False)
+pptx_template_path = "template.pptx"
+temp_pptx = "temp_slide1_populated.pptx"
+slide_img = "slide1_preview.png"
 
-with col2:
-    st.subheader("Key Metrics")
-    st.write(f"- **Average CQS:** {m['avg_cqs']:.1f}%")
-    st.write(f"- **SKUs ≥ {int(m['threshold'])}%:** {m['above']}")
-    st.write(f"- **SKUs < {int(m['threshold'])}%:** {m['below']}")
-    st.write(f"- **Buybox Ownership:** {m['buybox']:.1f}%")
+# Populate only slide 1 with "Proposed Program Details"
+# (mapping_config is not needed for slide 1 now)
+_ = populate_pptx_from_excel(df, pptx_template_path, temp_pptx, mapping_config={})
+
+# Save slide 1 as PNG
+save_slide1_as_png(temp_pptx, slide_img)
+
+if os.path.exists(slide_img):
+    st.image(slide_img, use_column_width=True, caption="Slide 1 Preview")
+else:
+    st.warning("Could not generate slide preview image.")
 
 st.markdown("---")
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Top 5 & Below Tables
+# Export PowerPoint Deck
 # ─────────────────────────────────────────────────────────────────────────────
-st.subheader("Top 5 SKUs by Content Quality Score")
-top5 = get_top_skus(df)
-st.dataframe(top5, height=200)
+st.header("Step 2: Export Recap Deck PowerPoint")
 
-st.subheader(f"SKUs Below {int(m['threshold'])}%")
-skus_below = get_skus_below(df)
-st.dataframe(skus_below, height=300)
-
-# Export SKUs Below CSV
-csv_data = skus_below.to_csv(index=False).encode("utf-8")
-st.download_button(
-    "⬇️ Download SKUs Below CSV",
-    data=csv_data,
-    file_name="skus_below.csv",
-    mime="text/csv"
-)
-
-st.markdown("---")
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Export Full Dashboard PDF
-# ─────────────────────────────────────────────────────────────────────────────
-st.header("Export Recap Deck Powerpoint")
-if st.button("Generate Powerpoint"):
-    pdf_bytes = generate_full_report(uploaded, client_name, rpt_date, client_notes)
-    st.success("✅ Powerpoint ready!")
-    st.download_button(
-        "⬇️ Download Powerpoint",
-        data=pdf_bytes,
-        file_name="powepoint.pptx",
-        mime="application/pdf"
-    )
+if st.button("Generate PowerPoint Recap Deck"):
+    output_path = "recap_deck_output.pptx"
+    pptx_file = populate_pptx_from_excel(df, pptx_template_path, output_path, mapping_config={})
+    with open(pptx_file, "rb") as f:
+        st.success("✅ PowerPoint deck is ready!")
+        st.download_button(
+            "⬇️ Download PowerPoint",
+            data=f,
+            file_name="recap_deck.pptx",
+            mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        )
