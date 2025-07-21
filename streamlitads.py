@@ -49,9 +49,11 @@ except Exception as e:
 social_posts_value = ""
 if "Organic & Total" in df.columns:
     for idx, row in df.iterrows():
-        if str(row["Organic & Total"]).strip().lower() == "total number of posts with stories":
-            social_posts_value = row.iloc[1]
+        label = str(row["Organic & Total"]).strip().lower()
+        if label == "total number of posts with stories":
+            social_posts_value = row.iloc[1]  # This should grab 15
             break
+
 
 # Engagement Rate
 engagement_rate_value = ""
