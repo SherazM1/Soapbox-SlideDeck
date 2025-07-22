@@ -180,8 +180,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if shape.name == "Picture 12":  # Left box
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
 # RIGHT image
     if images and "slide_8_second" in images and images["slide_8_second"] is not None:
@@ -193,8 +193,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if shape.name == "Picture 13":  # Right box
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
     if images and "slide_8_third" in images and images["slide_8_third"] is not None:
         img_bytes = images["slide_8_third"].read()
@@ -205,8 +205,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if shape.name == "Picture 16":  # Left box
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
 # RIGHT image
     if images and "slide_8_fourth" in images and images["slide_8_fourth"] is not None:
@@ -218,8 +218,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if shape.name == "Picture 17":  # Right box
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
     # Social Posts & Stories
     social_posts_value = ""
