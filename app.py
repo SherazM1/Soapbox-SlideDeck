@@ -182,37 +182,36 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
         if shape.has_text_frame and shape.name == "TextBox 15":
             for para in shape.text_frame.paragraphs:
                 text = para.text.strip()
-                # Social Posts & Stories
+            # Social Posts & Stories
                 if "Social Posts & Stories" in text:
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(social_posts_value))
-                # Engagement Rate
+            # Engagement Rate
                 elif "Engagement Rate" in text:
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(engagement_rate_value))
-                # Engagements (main)
+            # Engagements (main value and percent increase handled here)
                 elif "Engagements" in text:
                     for run in para.runs:
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", str(engagements_value))
-                # Engagements % increase
-                elif "Engagements" in text and "% increase" in text:
-                    for run in para.runs:
-                        if "% increase" in run.text:
-                            run.text = run.text.replace("#", engagements_increase)
-                # Impressions (main)
+                    # Main value replacement
+                        if "# Engagements" in run.text:
+                            run.text = run.text.replace("#", str(engagements_value), 1)
+                    # Percent increase replacement
+                        if "#% increase" in run.text:
+                            run.text = run.text.replace("#", str(engagements_increase), 1)
+            # Impressions (main)
                 elif text.startswith("Impressions") and "#" in text and "% increase" not in text:
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
-                # Impressions % increase
+            # Impressions % increase
                 elif "Impressions" in text and "% increase" in text:
                     for run in para.runs:
                         if "% increase" in run.text:
                             run.text = run.text.replace("#", impressions_increase)
-            break
+        break
 
     prs.save(output_path)
 
