@@ -103,10 +103,12 @@ def format_compact_number(n):
 
 # PowerPoint Deck Generation
 # ─────────────────────────────────────────────────────────────────────────────
-def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
+def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=None):
     prs = Presentation(pptx_template_path)
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
+
+
     try:
         metrics = extract_proposed_metrics_anywhere(excel_df)
     except Exception as e:
@@ -115,6 +117,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
 
     # ---------- Extract all other values needed for TextBox 15 ----------
     print("COLUMNS:", list(excel_df.columns))
+
+    if images and "slide_6" in images and images["slide_6"] is not None:
+        slide = prs.slides[5]  # Slide 6 (0-indexed)
+        slide_6_img = images["slide_6"]
+        img_bytes = slide_6_img.read()
+        temp_img_path = "temp_slide_6_img.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        
+        # Remove the placeholder if needed, and insert at same location/size
+        for shape in slide.shapes:
+            if shape.name == "Picture 2":
+                left = shape.left
+                top = shape.top
+                width = shape.width
+                height = shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+
+        slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
 
     # Social Posts & Stories
     social_posts_value = ""
@@ -283,6 +306,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                     if "40" in run.text and "K" in run.text:
                         run.text = run.text.replace("40", str(organic_saves))
                         run.text = run.text.replace("K", "")
+
+
         prs.save(output_path)
                         
       
