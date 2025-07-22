@@ -250,19 +250,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
         if shape.has_text_frame and shape.name == "TextBox 19":
             for para in shape.text_frame.paragraphs:
                 runs = para.runs
-                i = 0
-                while i < len(runs) - 1:
-                    if runs[i].text.strip() == "10" and runs[i + 1].text.strip() == "K":
-                        runs[i].text = str(organic_likes)
-                        runs[i + 1].text = ""  # Remove the 'K'
-                        break  # Stop after first replacement
-                i += 1
-            # Fallback: If '10 K' somehow is in a single run
-                for run in para.runs:
-                    if "10 K" in run.text:
-                        run.text = run.text.replace("10 K", str(organic_likes))
+                for i in range(len(runs) - 1):
+                # Look for a run with "10" (possibly with a space) followed by "K" (possibly with a space)
+                    if runs[i].text.strip() == "10" and runs[i+1].text.strip() == "K":
+                        runs[i].text = str(organic_likes)  # Replace "10" with your value
+                        runs[i+1].text = ""                # Remove the "K"
+                        break  # Only do the first match
             break
-    
+
         prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
