@@ -249,15 +249,19 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 19":
             for para in shape.text_frame.paragraphs:
+                full_text = ''.join([run.text for run in para.runs])
                 text = para.text.strip()
                 if "Total Likes" in text:
                     for run in para.runs:
                         if "10 K" in run.text:
-                            run.text = run.text.replace("10 K", str(organic_likes))
+                            new_text = full_text.replace("10 K", str(organic_likes))
+                            idx = 0
+                            for run in para.runs:
+                                run_len = len(run.text)
+                                run.text = new_text[idx:idx + run_len]
+                                idx += run_len
+            break
 
-
-
-    
         prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
