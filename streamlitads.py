@@ -44,22 +44,17 @@ for _, row in df.iterrows():
 engagements_increase = ""
 impressions_increase = ""
 
-for _, row in df.iterrows():
-    label = str(row["Unnamed: 14"]).strip().lower()
-    if label == "engagements":
-        val = row["Unnamed: 15"]
-        if pd.notna(val):
-            try:
-                engagements_increase = f"{float(val) * 100:.1f}%"
-            except:
-                continue
-    elif label == "impressions":
-        val = row["Unnamed: 15"]
-        if pd.notna(val):
-            try:
-                impressions_increase = f"{float(val) * 100:.1f}%"
-            except:
-                continue
+try:
+    engagement_val = df.at[5, "Unnamed: 15"]
+    impression_val = df.at[4, "Unnamed: 15"]
+
+    if pd.notna(engagement_val):
+        engagements_increase = f"{float(engagement_val) * 100:.1f}%"
+    if pd.notna(impression_val):
+        impressions_increase = f"{float(impression_val) * 100:.1f}%"
+except Exception as e:
+    st.warning("⚠️ Could not extract fixed-position % increases.")
+
 
 
 with st.container():
