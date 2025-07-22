@@ -275,21 +275,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 for run in para.runs:
                     if "10" in run.text and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
-        # Comments (20)
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    if "20" in run.text and "K" in run.text:
-                        run.text = run.text.replace("20", str(organic_comments))
-        # Shares (30)
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    if "30" in run.text and "K" in run.text:
-                        run.text = run.text.replace("30", str(organic_shares))
-        # Saves (40)
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    if "40" in run.text and "K" in run.text:
-                        run.text = run.text.replace("40", str(organic_saves))
+        
             break
 
                         
