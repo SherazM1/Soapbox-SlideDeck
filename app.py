@@ -127,26 +127,32 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     impressions_increase = ""
 
     try:
-        for idx, row in excel_df.iterrows():
-            label = str(row.get("Unnamed: 14", "")).strip().lower()
-            val = row.get("Unnamed: 15", "")
+    # Find the row where "Percentage Increase" label is
+        for idx, row in df.iterrows():
+            if str(row.get("Unnamed: 15", "")).strip().lower() == "percentage increase":
+                base_idx = idx
+                break
+        else:
+            base_idx = None
 
-            if pd.isna(val):
-                pass
-
-        try:
-            num = float(val)
-            pct_str = f"{num * 100:.1f}%"
-
-            if label == "impressions":
-                impressions_increase = pct_str
-            elif label == "engagements":
-                engagements_increase = pct_str
-        except:
-                pass
-
+    # If we found the base row
+        if base_idx is not None:
+            for offset in range(1, 5):  # Search just a few rows under the header
+                label = str(df.at[base_idx + offset, "Unnamed: 14"]).strip().lower()
+                raw = df.at[base_idx + offset, "Unnamed: 15"]
+                if pd.notna(raw):
+                    try:
+                        pct = float(raw) * 100
+                        pct_str = f"{pct:.1f}%"
+                        if label == "engagements":
+                            engagements_increase = pct_str
+                        elif label == "impressions":
+                            impressions_increase = pct_str
+                    except:
+                        continue
     except Exception as e:
-        print("Error reading % increases:", e)
+        print("Warning: Could not extract % increases.")
+
 
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)

@@ -44,27 +44,35 @@ for _, row in df.iterrows():
 engagements_increase = ""
 impressions_increase = ""
 
+engagements_increase = ""
+impressions_increase = ""
+
 try:
+    # Find the row where "Percentage Increase" label is
     for idx, row in df.iterrows():
-        label = str(row.get("Unnamed: 14", "")).strip().lower()
-        val = row.get("Unnamed: 15", "")
+        if str(row.get("Unnamed: 15", "")).strip().lower() == "percentage increase":
+            base_idx = idx
+            break
+    else:
+        base_idx = None
 
-        if pd.isna(val):
-            continue
-
-        try:
-            num = float(val)
-            pct_str = f"{num * 100:.1f}%"
-
-            if label == "impressions":
-                impressions_increase = pct_str
-            elif label == "engagements":
-                engagements_increase = pct_str
-        except:
-            continue
-
+    # If we found the base row
+    if base_idx is not None:
+        for offset in range(1, 5):  # Search just a few rows under the header
+            label = str(df.at[base_idx + offset, "Unnamed: 14"]).strip().lower()
+            raw = df.at[base_idx + offset, "Unnamed: 15"]
+            if pd.notna(raw):
+                try:
+                    pct = float(raw) * 100
+                    pct_str = f"{pct:.1f}%"
+                    if label == "engagements":
+                        engagements_increase = pct_str
+                    elif label == "impressions":
+                        impressions_increase = pct_str
+                except:
+                    continue
 except Exception as e:
-    st.warning("Error reading percent increases.")
+    st.warning("Could not extract % increases.")
 
 with st.container():
     st.markdown("#### What will appear on the slide:")
