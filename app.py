@@ -247,7 +247,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     
     slide = prs.slides[8]
     for shape in slide.shapes:
-        if shape.has_text_frame and shape.name == "Textbox 19":
+        if shape.has_text_frame and shape.name == "TextBox 19":
             for para in shape.text_frame.paragraphs:
                 text = para.text.strip()
                 if "Total Likes" in text:
