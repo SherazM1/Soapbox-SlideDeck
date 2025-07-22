@@ -186,14 +186,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Comments":
-                organic_likes = row["Unnamed: 11"]
+                organic_comments = row["Unnamed: 11"]
                 break
 
     organic_shares = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Shares":
-                organic_likes = row["Unnamed: 11"]
+                organic_shares = row["Unnamed: 11"]
                 break
 
 
@@ -201,7 +201,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Saves":
-                organic_likes = row["Unnamed: 11"]
+                organic_saves = row["Unnamed: 11"]
                 break
 
 
