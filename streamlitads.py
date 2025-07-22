@@ -47,11 +47,19 @@ for _, row in df.iterrows():
         break
 
 engagement_rate_value = ""
-for _, row in df.iterrows():
-        if str(row["Organic & Total"]).strip() == "Program ER":
-            engagement_rate_value = row["Unnamed: 11"]
-            engagement_rate_value = round(float(engagement_rate_value) * 100, 1)
-            break
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Program ER":
+                engagement_rate_value = row["Unnamed: 11"]
+                engagement_rate_value = float(engagement_rate_value) * 100
+                engagement_rate_value = str(engagement_rate_value)
+                if engagement_rate_value.startswith("0."):
+                    engagement_rate_value = engagement_rate_value[1:]
+# Truncate to two decimal places without rounding:
+            dot_idx = engagement_rate_value.find(".")
+            if dot_idx != -1:
+                engagement_rate_value = engagement_rate_value[:dot_idx + 3]  # Keep 2 decimal digits after dot
+                break
 
 impressions_value = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
