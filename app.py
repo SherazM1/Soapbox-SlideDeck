@@ -194,17 +194,17 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                             run.text = run.text.replace("#", str(engagement_rate_value))
                 # Engagements (main)
                 elif "Engagements" in text and "#% increase" in text:
-                    run_texts = [run.text for run in para.runs]
-                    full_text = ''.join(run_texts)
-    # Replace in order: first # = main value, second # = percent
-                    new_text = full_text.replace('#', str(engagements_value), 1)
-                    new_text = new_text.replace('#', str(engagements_increase), 1)
-    # Split back into runs
-                    idx = 0
+                    main_done = False
+                    percent_done = False
                     for run in para.runs:
-                        run_len = len(run.text)
-                        run.text = new_text[idx:idx+run_len]
-                        idx += run_len
+        # Replace ONLY the first '#' (main value)
+                        if "#" in run.text and not main_done and "% increase" not in run.text:
+                            run.text = run.text.replace("#", str(engagements_value), 1)
+                            main_done = True
+        # Replace ONLY the '#' before '% increase' (percent value)
+                        if "#% increase" in run.text and not percent_done:
+                            run.text = run.text.replace("#", str(engagements_increase), 1)
+                            percent_done = True
                 # Impressions (main)
                 elif text.startswith("Impressions") and "#" in text and "% increase" not in text:
                     for run in para.runs:
