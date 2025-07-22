@@ -193,7 +193,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(engagement_rate_value))
                 # Engagements (main)
-                elif "Engagements" in text and "#" in text and "% increase" not in text:
+                elif "Engagements" in text and "% increase" not in text:
                     for run in para.runs:
                         if "#" in run.text:
                             formatted_val = format_compact_number(engagements_value)
