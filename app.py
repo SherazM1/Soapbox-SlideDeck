@@ -124,8 +124,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     impressions_increase = ""
 
     try:
-        engagement_val = df.at[5, "Unnamed: 15"]
-        impression_val = df.at[4, "Unnamed: 15"]
+        engagement_val = excel_df.at[5, "Unnamed: 15"]
+        impression_val = excel_df.at[4, "Unnamed: 15"]
 
         if pd.notna(engagement_val):
             engagements_increase = f"{float(engagement_val) * 100:.1f}%"
