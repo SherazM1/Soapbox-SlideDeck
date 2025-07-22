@@ -242,9 +242,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                             main_done = True
         # Replace ONLY the '#' before '% increase' (percent value)
                         if "#% increase" in run.text and not percent_done:
-                            run.text = run.text.rslide = prs.slides[8]
+                            run.text = run.text.replace("#", str(impressions_increase), 1)
+                            percent_done = True
     
-    slide = prs.slides[9]
+    slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "Textbox 19":
             for para in shape.text_frame.paragraphs:

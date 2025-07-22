@@ -25,7 +25,7 @@ st.subheader("Preview: First 50 Rows of Data")
 st.dataframe(df.head(50), height=250)
 
 st.markdown("---")
-st.header("Slide 4: Program Overview (Preview)")
+st.header("Slides: Data Preview")
 
 try:
     metrics = extract_proposed_metrics_anywhere(df)
