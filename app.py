@@ -252,6 +252,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 for run in para.runs:
                     if "10" and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
+                for run in para.runs:
+                    if run.text.strip() == "K":
+                        run.text = ""
+            break
 
         prs.save(output_path)
 
