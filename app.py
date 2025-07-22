@@ -251,7 +251,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             for para in shape.text_frame.paragraphs:
                 full_text = ''.join([run.text for run in para.runs])
                 text = para.text.strip()
-                if "Total Likes" in text:
+                if "Likes" in text:
                     for run in para.runs:
                         if "10 K" in run.text:
                             new_text = full_text.replace("10 K", str(organic_likes))
