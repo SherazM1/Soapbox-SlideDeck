@@ -42,7 +42,7 @@ for _, row in df.iterrows():
 
 engagements_value = ""
 for _, row in df.iterrows():
-    if str(row["Organic & Total"]).strip().lower() == "total engagements":
+    if str(row["Organic & Total"]).strip() == "Total Engagements":
         engagements_value = row["Unnamed: 11"]
         break
 
