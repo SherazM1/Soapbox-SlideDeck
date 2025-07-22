@@ -21,8 +21,8 @@ if not uploaded:
     st.stop()
 
 df = load_dataframe(uploaded)
-st.subheader("Preview: First 10 Rows of Data")
-st.dataframe(df.head(10), height=250)
+st.subheader("Preview: First 50 Rows of Data")
+st.dataframe(df.head(50), height=250)
 
 st.markdown("---")
 st.header("Slide 4: Program Overview (Preview)")

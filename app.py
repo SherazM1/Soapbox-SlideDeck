@@ -132,6 +132,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 engagements_value = row["Unnamed: 11"]
                 break
 
+    impressions_value = ""
+    
+
     # Engagement Rate
     engagement_rate_value = ""
     for _, row in excel_df.iterrows():
