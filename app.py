@@ -270,12 +270,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 19":
-        # Likes (10)
             for para in shape.text_frame.paragraphs:
                 for run in para.runs:
-                    if "10" in run.text and "K" in run.text:
+                    if "10" and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
-        
             break
 
                         
