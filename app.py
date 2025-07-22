@@ -175,6 +175,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
 
+    organic_likes = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Likes":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     slide = prs.slides[3]  # Slide 4 (0-indexed)
     for shape in slide.shapes:
@@ -234,10 +242,22 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                             main_done = True
         # Replace ONLY the '#' before '% increase' (percent value)
                         if "#% increase" in run.text and not percent_done:
-                            run.text = run.text.replace("#", str(impressions_increase), 1)
-                            percent_done = True
+                            run.text = run.text.rslide = prs.slides[8]
+    
+    slide = prs.slides[9]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "Textbox 19":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                if "Total Likes" in text:
+                    for run in para.runs:
+                        if "10 K" in run.text:
+                            run.text = run.text.replace("10 K", str(organic_likes))
 
-    prs.save(output_path)
+
+
+    
+        prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI Entrypoint (optional, for testing)

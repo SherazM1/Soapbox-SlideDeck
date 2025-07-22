@@ -81,11 +81,21 @@ try:
 except Exception as e:
     st.warning("⚠️ Could not extract fixed-position % increases.")
 
+            
+organic_likes = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Likes":
+                organic_likes = row["Unnamed: 11"]
+                break
 
 
-with st.container():
-    st.markdown("#### What will appear on the slide:")
-    st.markdown(f'''
+col1, col2 = st.columns(2)
+
+with col1:
+    with st.container():
+        st.markdown("#### What will appear on **Slide 4:**")
+        st.markdown(f'''
 - **Proposed Influencers:** {metrics.get('Influencers','')}
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
@@ -94,7 +104,19 @@ with st.container():
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
 - **Impressions:** {impressions_value} ({impressions_increase} increase)
 ''')
-    st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
+        st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
+
+with col2:
+    with st.container():
+        st.markdown("#### What will appear on **Slide 9:**")
+        st.markdown(f'''
+- **Organic Likes:** {organic_likes}
+- **Organic Comments:**
+- **Organic Shares:** 
+- **Organic Saves:** 
+''')
+        st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
+
 
 st.markdown("---")
 st.header("Step 2: Download Recap Deck")
