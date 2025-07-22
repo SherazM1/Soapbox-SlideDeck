@@ -266,33 +266,25 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                             run.text = run.text.replace("#", str(impressions_increase), 1)
                             percent_done = True
     
-    number_map = {
-    "10": str(organic_likes),
-    "20": str(organic_comments),
-    "30": str(organic_shares),
-    "40": str(organic_saves),
-}
-
     slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 19":
             for para in shape.text_frame.paragraphs:
-                runs = para.runs
-                i = 0
-                while i < len(runs) - 2:
-                    num_part = runs[i].text.strip()
-                    zero_part = runs[i+1].text.strip()
-                    k_part = runs[i+2].text.strip()
-                    candidate = num_part + zero_part
-                # Only match if k_part is "K" and candidate is in number_map
-                    if zero_part == "0" and k_part == "K" and candidate in number_map:
-                        runs[i].text = number_map[candidate]
-                        runs[i+1].text = ""
-                        runs[i+2].text = ""  # Remove the "K"
-                        i += 3  # Skip ahead
-                    else:
-                        i += 1
-            break
+                for run in para.runs:
+                    if "10" in run.text and "K" in run.text:
+                        run.text = run.text.replace("10", str(organic_likes))
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "20" in run.text and "K" in run.text:
+                        run.text = run.text.replace("20", str(organic_comments))
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "30" in run.text and "K" in run.text:
+                        run.text = run.text.replace("30", str(organic_shares))
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "40" in run.text and "K" in run.text:
+                        run.text = run.text.replace("40", str(organic_saves))
 
                         
         prs.save(output_path)
