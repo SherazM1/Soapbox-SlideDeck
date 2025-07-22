@@ -181,7 +181,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 elif "Engagements" in text and "% increase" in text:
                     for run in para.runs:
                         if "% increase" in run.text:
-                            run.text = run.text.replace("% increase", f"{engagements_increase} increase")
+                            run.text = run.text.replace("#", engagements_increase)
                 # Impressions (main)
                 elif text.startswith("Impressions") and "#" in text and "% increase" not in text:
                     for run in para.runs:
@@ -191,7 +191,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 elif "Impressions" in text and "% increase" in text:
                     for run in para.runs:
                         if "% increase" in run.text:
-                            run.text = run.text.replace("% increase", f"{impressions_increase} increase")
+                            run.text = run.text.replace("#", impressions_increase)
             break
 
     prs.save(output_path)
