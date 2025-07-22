@@ -195,7 +195,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 # Engagements (main)
                 elif "Engagements" in text and "#% increase" in text:
                     for run in para.runs:
-                        if "# Engagements" in run.text:
+                        if "Engagements" in run.text:
                             run.text = run.text.replace("#", str(engagements_value), 1)
                         if "#% increase" in run.text:
                             run.text = run.text.replace("#", str(engagements_increase), 1)
