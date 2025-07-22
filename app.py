@@ -273,21 +273,19 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 for run in para.runs:
                     if "10" in run.text and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
+                        run.text = run.text.replace("K", "")
                     if "20" in run.text and "K" in run.text:
                         run.text = run.text.replace("20", str(organic_comments))
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
+                        run.text = run.text.replace("K", "")
                     if "30" in run.text and "K" in run.text:
                         run.text = run.text.replace("30", str(organic_shares))
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
+                        run.text = run.text.replace("K", "")
                     if "40" in run.text and "K" in run.text:
                         run.text = run.text.replace("40", str(organic_saves))
-
-                        
+                        run.text = run.text.replace("K", "")
         prs.save(output_path)
+                        
+      
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI Entrypoint (optional, for testing)
