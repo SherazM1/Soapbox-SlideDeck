@@ -90,6 +90,28 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 break
 
 
+organic_comments = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Comments":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+organic_shares = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Shares":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+organic_saves = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Saves":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -111,9 +133,9 @@ with col2:
         st.markdown("#### What will appear on **Slide 9:**")
         st.markdown(f'''
 - **Organic Likes:** {organic_likes}
-- **Organic Comments:**
-- **Organic Shares:** 
-- **Organic Saves:** 
+- **Organic Comments:** {organic_comments}
+- **Organic Shares:** {organic_shares}
+- **Organic Saves:** {organic_saves}
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 

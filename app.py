@@ -182,6 +182,28 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 organic_likes = row["Unnamed: 11"]
                 break
 
+    organic_comments = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Comments":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+    organic_shares = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Shares":
+                organic_likes = row["Unnamed: 11"]
+                break
+
+
+    organic_saves = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Saves":
+                organic_likes = row["Unnamed: 11"]
+                break
+
 
     # ---------- Fill TextBox 2 (Proposed Metrics) ----------
     slide = prs.slides[3]  # Slide 4 (0-indexed)
@@ -252,8 +274,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 for run in para.runs:
                     if "10" and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
+                    if "20" and "K" in run.text:
+                        run.text = run.text.replace("20", str(organic_comments))
+                    if "30" and "K" in run.text:
+                        run.text = run.text.replace("30", str(organic_shares))
+                    if "40" and "K" in run.text:
+                        run.text = run.text.replace("40", str(organic_saves))
+            break
                         
-
         prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
