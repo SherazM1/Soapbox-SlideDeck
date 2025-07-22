@@ -181,27 +181,26 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             if str(row["Organic & Total"]).strip() == "Total Likes":
                 organic_likes = row["Unnamed: 11"]
                 break
-
-    organic_comments = ""
+    
+    organic_likes = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
-            if str(row["Organic & Total"]).strip() == "Total Comments":
-                organic_comments = row["Unnamed: 11"]
+            if str(row["Organic & Total"]).strip() == "Total Likes":
+                organic_likes = row["Unnamed: 11"]
+                break
+    
+    organic_likes = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Likes":
+                organic_likes = row["Unnamed: 11"]
                 break
 
-    organic_shares = ""
+    organic_likes = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
-            if str(row["Organic & Total"]).strip() == "Total Shares":
-                organic_shares = row["Unnamed: 11"]
-                break
-
-
-    organic_saves = ""
-    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
-        for _, row in excel_df.iterrows():
-            if str(row["Organic & Total"]).strip() == "Total Saves":
-                organic_saves = row["Unnamed: 11"]
+            if str(row["Organic & Total"]).strip() == "Total Likes":
+                organic_likes = row["Unnamed: 11"]
                 break
 
 
@@ -274,9 +273,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 for run in para.runs:
                     if "10" and "K" in run.text:
                         run.text = run.text.replace("10", str(organic_likes))
-            break
-
+        
                         
+
         prs.save(output_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
