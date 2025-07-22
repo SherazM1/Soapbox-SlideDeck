@@ -107,119 +107,73 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     prs = Presentation(pptx_template_path)
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
-
-
     try:
         metrics = extract_proposed_metrics_anywhere(excel_df)
     except Exception as e:
         metrics = {"Impressions": "", "Engagements": "", "Influencers": ""}
         print(f"Warning: Could not extract Proposed Metrics from Excel: {e}")
 
-    # ---------- Extract all other values needed for TextBox 15 ----------
     print("COLUMNS:", list(excel_df.columns))
 
+    # Slide 6
     if images and "slide_6" in images and images["slide_6"] is not None:
-        slide = prs.slides[5]  # Slide 6 (0-indexed)
-        slide_6_img = images["slide_6"]
-        img_bytes = slide_6_img.read()
+        slide = prs.slides[5]
+        img_bytes = images["slide_6"].read()
         temp_img_path = "temp_slide_6_img.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
-        
-        # Remove the placeholder if needed, and insert at same location/size
         for shape in slide.shapes:
             if shape.name == "Picture 2":
-                left = shape.left
-                top = shape.top
-                width = shape.width
-                height = shape.height
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
 
-        slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-
-    # Slide 7 (0-indexed: slide 6)
+    # Slide 7
     slide = prs.slides[6]
-
-# LEFT image
     if images and "slide_7_left" in images and images["slide_7_left"] is not None:
         img_bytes = images["slide_7_left"].read()
         temp_img_path = "temp_slide_7_left.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
         for shape in slide.shapes:
-            if shape.name == "Picture 3":  # Left box
+            if shape.name == "Picture 3":
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
-# RIGHT image
     if images and "slide_7_right" in images and images["slide_7_right"] is not None:
         img_bytes = images["slide_7_right"].read()
         temp_img_path = "temp_slide_7_right.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
         for shape in slide.shapes:
-            if shape.name == "Picture 2":  # Right box
+            if shape.name == "Picture 2":
                 left, top, width, height = shape.left, shape.top, shape.width, shape.height
                 slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
                 break
-    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
-
-
-    
+    # Slide 8 (FOUR images)
     slide = prs.slides[7]
-    if images and "slide_8_first" in images and images["slide_8_first"] is not None:
-        img_bytes = images["slide_8_first"].read()
-        temp_img_path = "temp_slide_8_first.jpg"
-        with open(temp_img_path, "wb") as f:
-            f.write(img_bytes)
-        for shape in slide.shapes:
-            if shape.name == "Picture 12":  # Left box
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-                break
-
-# RIGHT image
-    if images and "slide_8_second" in images and images["slide_8_second"] is not None:
-        img_bytes = images["slide_8_second"].read()
-        temp_img_path = "temp_slide_8_second.jpg"
-        with open(temp_img_path, "wb") as f:
-            f.write(img_bytes)
-        for shape in slide.shapes:
-            if shape.name == "Picture 13":  # Right box
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-                break
-
-    if images and "slide_8_third" in images and images["slide_8_third"] is not None:
-        img_bytes = images["slide_8_third"].read()
-        temp_img_path = "temp_slide_8_third.jpg"
-        with open(temp_img_path, "wb") as f:
-            f.write(img_bytes)
-        for shape in slide.shapes:
-            if shape.name == "Picture 16":  # Left box
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-                break
-
-# RIGHT image
-    if images and "slide_8_fourth" in images and images["slide_8_fourth"] is not None:
-        img_bytes = images["slide_8_fourth"].read()
-        temp_img_path = "temp_slide_8_fourth.jpg"
-        with open(temp_img_path, "wb") as f:
-            f.write(img_bytes)
-        for shape in slide.shapes:
-            if shape.name == "Picture 17":  # Right box
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-                break
+    slide8_img_configs = [
+        ("slide_8_first",  "Picture 12", "temp_slide_8_first.jpg"),
+        ("slide_8_second", "Picture 13", "temp_slide_8_second.jpg"),
+        ("slide_8_third",  "Picture 16", "temp_slide_8_third.jpg"),
+        ("slide_8_fourth", "Picture 17", "temp_slide_8_fourth.jpg"),
+    ]
+    for img_key, shape_name, temp_path in slide8_img_configs:
+        if images and img_key in images and images[img_key] is not None:
+            img_bytes = images[img_key].read()
+            with open(temp_path, "wb") as f:
+                f.write(img_bytes)
+            for shape in slide.shapes:
+                if shape.name == shape_name:
+                    left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                    slide.shapes._spTree.remove(shape._element)
+                    slide.shapes.add_picture(temp_path, left, top, width=width, height=height)
+                    break
 
     # Social Posts & Stories
     social_posts_value = ""
@@ -229,7 +183,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 social_posts_value = row["Unnamed: 11"]
                 break
 
-
+    # Engagements
     engagements_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -237,6 +191,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 engagements_value = row["Unnamed: 11"]
                 break
 
+    # Impressions
     impressions_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -244,7 +199,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if cell_value in ("Total", "Total Impressions"):
                 impressions_value = row["Unnamed: 11"]
                 break
-    
 
     # Engagement Rate
     engagement_rate_value = ""
@@ -256,20 +210,17 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 engagement_rate_value = str(engagement_rate_value)
                 if engagement_rate_value.startswith("0."):
                     engagement_rate_value = engagement_rate_value[1:]
-# Truncate to two decimal places without rounding:
-            dot_idx = engagement_rate_value.find(".")
-            if dot_idx != -1:
-                engagement_rate_value = engagement_rate_value[:dot_idx + 3]  # Keep 2 decimal digits after dot
+                dot_idx = engagement_rate_value.find(".")
+                if dot_idx != -1:
+                    engagement_rate_value = engagement_rate_value[:dot_idx + 3]
                 break
 
-    # ---------- NEW: Engagements & Impressions % INCREASE ----------
+    # Engagements & Impressions % INCREASE
     engagements_increase = ""
     impressions_increase = ""
-
     try:
         engagement_val = excel_df.at[5, "Unnamed: 15"]
         impression_val = excel_df.at[4, "Unnamed: 15"]
-
         if pd.notna(engagement_val):
             engagements_increase = f"{float(engagement_val) * 100:.1f}%"
         if pd.notna(impression_val):
@@ -280,20 +231,23 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
 
+    # Organic Likes
     organic_likes = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Likes":
                 organic_likes = row["Unnamed: 11"]
                 break
-    
+
+    # Organic Comments
     organic_comments = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Comments":
                 organic_comments = row["Unnamed: 11"]
                 break
-    
+
+    # Organic Shares
     organic_shares = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -301,6 +255,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 organic_shares = row["Unnamed: 11"]
                 break
 
+    # Organic Saves
     organic_saves = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -308,9 +263,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 organic_saves = row["Unnamed: 11"]
                 break
 
-
-    # ---------- Fill TextBox 2 (Proposed Metrics) ----------
-    slide = prs.slides[3]  # Slide 4 (0-indexed)
+    # Fill TextBox 2 (Proposed Metrics)
+    slide = prs.slides[3]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 2":
             for para in shape.text_frame.paragraphs:
@@ -329,7 +283,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                             run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
             break
 
-    # ---------- Fill TextBox 15 (Program Overview) ----------
+    # Fill TextBox 15 (Program Overview)
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 15":
             for para in shape.text_frame.paragraphs:
@@ -349,11 +303,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     main_done = False
                     percent_done = False
                     for run in para.runs:
-        # Replace ONLY the first '#' (main value)
                         if "#" in run.text and not main_done and "% increase" not in run.text:
                             run.text = run.text.replace("#", str(engagements_value), 1)
                             main_done = True
-        # Replace ONLY the '#' before '% increase' (percent value)
                         if "#% increase" in run.text and not percent_done:
                             run.text = run.text.replace("#", str(engagements_increase), 1)
                             percent_done = True
@@ -362,15 +314,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     main_done = False
                     percent_done = False
                     for run in para.runs:
-        # Replace ONLY the first '#' (main value)
                         if "#" in run.text and not main_done and "% increase" not in run.text:
                             run.text = run.text.replace("#", str(impressions_value), 1)
                             main_done = True
-        # Replace ONLY the '#' before '% increase' (percent value)
                         if "#% increase" in run.text and not percent_done:
                             run.text = run.text.replace("#", str(impressions_increase), 1)
                             percent_done = True
-    
+
+    # Fill TextBox 19 (Slide 9 vertical fields)
     slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 19":
