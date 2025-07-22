@@ -44,35 +44,23 @@ for _, row in df.iterrows():
 engagements_increase = ""
 impressions_increase = ""
 
-engagements_increase = ""
-impressions_increase = ""
+for _, row in df.iterrows():
+    label = str(row["Unnamed: 14"]).strip().lower()
+    if label == "engagements":
+        val = row["Unnamed: 15"]
+        if pd.notna(val):
+            try:
+                engagements_increase = f"{float(val) * 100:.1f}%"
+            except:
+                continue
+    elif label == "impressions":
+        val = row["Unnamed: 15"]
+        if pd.notna(val):
+            try:
+                impressions_increase = f"{float(val) * 100:.1f}%"
+            except:
+                continue
 
-try:
-    # Find the row where "Percentage Increase" label is
-    for idx, row in df.iterrows():
-        if str(row.get("Unnamed: 15", "")).strip().lower() == "percentage increase":
-            base_idx = idx
-            break
-    else:
-        base_idx = None
-
-    # If we found the base row
-    if base_idx is not None:
-        for offset in range(1, 5):  # Search just a few rows under the header
-            label = str(df.at[base_idx + offset, "Unnamed: 14"]).strip().lower()
-            raw = df.at[base_idx + offset, "Unnamed: 15"]
-            if pd.notna(raw):
-                try:
-                    pct = float(raw) * 100
-                    pct_str = f"{pct:.1f}%"
-                    if label == "engagements":
-                        engagements_increase = pct_str
-                    elif label == "impressions":
-                        impressions_increase = pct_str
-                except:
-                    continue
-except Exception as e:
-    st.warning("Could not extract % increases.")
 
 with st.container():
     st.markdown("#### What will appear on the slide:")
