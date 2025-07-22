@@ -46,6 +46,14 @@ for _, row in df.iterrows():
         engagements_value = row["Unnamed: 11"]
         break
 
+impressions_value = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            cell_value = str(row["Organic & Total"]).strip()
+            if cell_value in ("Total", "Total Impressions"):
+                impressions_value = row["Unnamed: 11"]
+                break
+
 
 # Percent Increases
 engagements_increase = ""
@@ -72,7 +80,7 @@ with st.container():
 - **Proposed Impressions:** {metrics.get('Impressions','')}
 - **Social Posts & Stories:** {social_posts_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
-- **Impressions:** ({impressions_increase} increase)
+- **Impressions:** {impressions_value} ({impressions_increase} increase)
 ''')
     st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
 

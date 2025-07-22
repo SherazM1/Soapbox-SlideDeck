@@ -133,6 +133,12 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 break
 
     impressions_value = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            cell_value = str(row["Organic & Total"]).strip()
+            if cell_value in ("Total", "Total Impressions"):
+                impressions_value = row["Unnamed: 11"]
+                break
     
 
     # Engagement Rate
@@ -209,16 +215,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                             run.text = run.text.replace("#", str(engagements_increase), 1)
                             percent_done = True
                 # Impressions (main)
-                elif text.startswith("Impressions") and "#" in text and "% increase" not in text:
+                elif "Impressions" in text and "#% increase" in text:
+                    main_done = False
+                    percent_done = False
                     for run in para.runs:
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
-                # Impressions % increase
-                elif "Impressions" in text and "% increase" in text:
-                    for run in para.runs:
-                        if "% increase" in run.text:
-                            run.text = run.text.replace("#", impressions_increase)
-            break
+        # Replace ONLY the first '#' (main value)
+                        if "#" in run.text and not main_done and "% increase" not in run.text:
+                            run.text = run.text.replace("#", str(impressions_value), 1)
+                            main_done = True
+        # Replace ONLY the '#' before '% increase' (percent value)
+                        if "#% increase" in run.text and not percent_done:
+                            run.text = run.text.replace("#", str(impressions_increase), 1)
+                            percent_done = True
 
     prs.save(output_path)
 
