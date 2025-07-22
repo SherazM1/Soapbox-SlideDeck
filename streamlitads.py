@@ -40,6 +40,13 @@ for _, row in df.iterrows():
         social_posts_value = row["Unnamed: 11"]
         break
 
+engagements_value = ""
+for _, row in df.iterrows():
+    if str(row["Organic & Total"]).strip().lower() == "total engagements":
+        engagements_value = row["Unnamed: 11"]
+        break
+
+
 # Percent Increases
 engagements_increase = ""
 impressions_increase = ""

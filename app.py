@@ -112,6 +112,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 social_posts_value = row["Unnamed: 11"]
                 break
 
+
+    engagements_value = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Engagements":
+                engagement_value = row["Unnamed: 11"]
+                break
+
     # Engagement Rate
     engagement_rate_value = ""
     for _, row in excel_df.iterrows():
@@ -176,7 +184,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                 elif text.startswith("Engagements") and "#" in text and "% increase" not in text:
                     for run in para.runs:
                         if "#" in run.text:
-                            run.text = run.text.replace("#", str(metrics.get("Engagements", "")))
+                            run.text = run.text.replace("#", str(engagements_value))
                 # Engagements % increase
                 elif "Engagements" in text and "% increase" in text:
                     for run in para.runs:
