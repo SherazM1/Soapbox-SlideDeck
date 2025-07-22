@@ -143,10 +143,11 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
 
     # Engagement Rate
     engagement_rate_value = ""
-    for _, row in excel_df.iterrows():
-        if str(row.iloc[0]).strip().lower() == "program er":
-            engagement_rate_value = row.iloc[1]
-            break
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Program ER":
+                engagement_rate_value = row["Unnamed: 11"]
+                break
 
     # ---------- NEW: Engagements & Impressions % INCREASE ----------
     engagements_increase = ""

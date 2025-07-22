@@ -46,6 +46,12 @@ for _, row in df.iterrows():
         engagements_value = row["Unnamed: 11"]
         break
 
+engagement_rate_value = ""
+for _, row in df.iterrows():
+        if str(row["Organic & Total"]).strip() == "Program ER":
+            engagement_rate_value = row["Unnamed: 11"]
+            break
+
 impressions_value = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
         for _, row in df.iterrows():
@@ -79,6 +85,7 @@ with st.container():
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
 - **Social Posts & Stories:** {social_posts_value}
+- **Engagement Rate:** {engagement_rate_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
 - **Impressions:** {impressions_value} ({impressions_increase} increase)
 ''')
