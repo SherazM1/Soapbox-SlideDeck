@@ -8,6 +8,7 @@ import io
 from io import BytesIO
 from pptx import Presentation
 
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
@@ -119,40 +120,19 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
             break
 
     # ---------- NEW: Engagements & Impressions % INCREASE ----------
-    prop_col = "Unnamed: 14"  # where "Engagements" / "Impressions" labels live
-    perc_col = "Unnamed: 15"  # where the raw decimals (e.g. 2.556) live
-
-   # ENGAGEMENTS % INCREASE
     engagements_increase = ""
     impressions_increase = ""
 
     try:
-    # Find the row where "Percentage Increase" label is
-        for idx, row in df.iterrows():
-            if str(row.get("Unnamed: 15", "")).strip().lower() == "percentage increase":
-                base_idx = idx
-                break
-        else:
-            base_idx = None
+        engagement_val = df.at[5, "Unnamed: 15"]
+        impression_val = df.at[4, "Unnamed: 15"]
 
-    # If we found the base row
-        if base_idx is not None:
-            for offset in range(1, 5):  # Search just a few rows under the header
-                label = str(df.at[base_idx + offset, "Unnamed: 14"]).strip().lower()
-                raw = df.at[base_idx + offset, "Unnamed: 15"]
-                if pd.notna(raw):
-                    try:
-                        pct = float(raw) * 100
-                        pct_str = f"{pct:.1f}%"
-                        if label == "engagements":
-                            engagements_increase = pct_str
-                        elif label == "impressions":
-                            impressions_increase = pct_str
-                    except:
-                        continue
+        if pd.notna(engagement_val):
+            engagements_increase = f"{float(engagement_val) * 100:.1f}%"
+        if pd.notna(impression_val):
+            impressions_increase = f"{float(impression_val) * 100:.1f}%"
     except Exception as e:
-        print("Warning: Could not extract % increases.")
-
+        print("could not find value")
 
     print("Engagements % increase:", engagements_increase)
     print("Impressions % increase:", impressions_increase)
