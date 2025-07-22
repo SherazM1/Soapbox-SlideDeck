@@ -71,7 +71,7 @@ with st.container():
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
 - **Social Posts & Stories:** {social_posts_value}
-- **Engagements:** ({engagements_increase} increase)
+- **Engagements:** {engagements_value} ({engagements_increase} increase)
 - **Impressions:** ({impressions_increase} increase)
 ''')
     st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
