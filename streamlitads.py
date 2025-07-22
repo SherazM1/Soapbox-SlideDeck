@@ -139,19 +139,25 @@ with col2:
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 
+
+
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
+images = {
+    "slide_6": slide_6_img
+}
 
 st.markdown("---")
 st.header("Step 2: Download Recap Deck")
 pptx_template_path = "template.pptx"
 
 # 2. Create the images dictionary before calling the function
-images = {
-    "slide_6": slide_6_img
-}
+
 
 # 3. Generate PowerPoint with images passed in
 if st.button("Generate PowerPoint Recap Deck"):
+    images = {
+    "slide_6": slide_6_img
+}
     from datetime import datetime  # Make sure this is imported!
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = f"recap_deck_output_{timestamp}.pptx"
