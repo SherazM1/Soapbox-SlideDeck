@@ -89,6 +89,18 @@ def extract_proposed_metrics_anywhere(df):
     return dict(zip(names, values))
 
 # ─────────────────────────────────────────────────────────────────────────────
+def format_compact_number(n):
+    try:
+        n = float(n)
+        if n >= 1_000_000:
+            return f"{n / 1_000_000:.1f}MM"
+        elif n >= 1_000:
+            return f"{n / 1_000:.1f}K"
+        else:
+            return str(int(n))
+    except:
+        return str(n)
+
 # PowerPoint Deck Generation
 # ─────────────────────────────────────────────────────────────────────────────
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
@@ -181,10 +193,11 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(engagement_rate_value))
                 # Engagements (main)
-                elif text.startswith("Engagements") and "#" in text and "% increase" not in text:
+                elif "Engagements" in text and "#" in text and "% increase" not in text:
                     for run in para.runs:
                         if "#" in run.text:
-                            run.text = run.text.replace("#", str(engagements_value))
+                            formatted_val = format_compact_number(engagements_value)
+                            run.text = run.text.replace("#", formatted_val)
                 # Engagements % increase
                 elif "Engagements" in text and "% increase" in text:
                     for run in para.runs:
