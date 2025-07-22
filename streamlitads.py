@@ -50,6 +50,7 @@ engagement_rate_value = ""
 for _, row in df.iterrows():
         if str(row["Organic & Total"]).strip() == "Program ER":
             engagement_rate_value = row["Unnamed: 11"]
+            engagement_rate_value = round(float(engagement_rate_value) * 100, 1)
             break
 
 impressions_value = ""

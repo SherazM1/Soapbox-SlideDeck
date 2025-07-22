@@ -147,6 +147,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path):
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Program ER":
                 engagement_rate_value = row["Unnamed: 11"]
+                engagement_rate_value = round(float(engagement_rate_value) * 100, 1)
                 break
 
     # ---------- NEW: Engagements & Impressions % INCREASE ----------
