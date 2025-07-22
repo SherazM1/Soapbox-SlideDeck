@@ -138,6 +138,34 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
         slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
+    # Slide 7 (0-indexed: slide 6)
+    slide = prs.slides[6]
+
+# LEFT image
+    if images and "slide_7_left" in images and images["slide_7_left"] is not None:
+        img_bytes = images["slide_7_left"].read()
+        temp_img_path = "temp_slide_7_left.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 3":  # Left box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
+# RIGHT image
+    if images and "slide_7_right" in images and images["slide_7_right"] is not None:
+        img_bytes = images["slide_7_right"].read()
+        temp_img_path = "temp_slide_7_right.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 2":  # Right box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
     # Social Posts & Stories
     social_posts_value = ""

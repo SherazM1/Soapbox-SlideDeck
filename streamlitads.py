@@ -142,8 +142,19 @@ with col2:
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
+
+col_left, col_right = st.columns(2)
+with col_left:
+    slide_7_left_img = st.file_uploader("Slide 7 — Upload image for LEFT box - Organic", type=["png", "jpg", "jpeg"], key="slide7left")
+with col_right:
+    slide_7_right_img = st.file_uploader("Slide 7 — Upload image for RIGHT box - Paid", type=["png", "jpg", "jpeg"], key="slide7right")
+
+
 images = {
-    "slide_6": slide_6_img
+    "slide_6": slide_6_img,
+    "slide_7_left": slide_7_left_img,
+    "slide_7_right": slide_7_right_img
+
 }
 
 st.markdown("---")
@@ -156,7 +167,9 @@ pptx_template_path = "template.pptx"
 # 3. Generate PowerPoint with images passed in
 if st.button("Generate PowerPoint Recap Deck"):
     images = {
-    "slide_6": slide_6_img
+    "slide_6": slide_6_img,
+    "slide_7_left": slide_7_left_img,
+    "slide_7_right": slide_7_right_img
 }
     from datetime import datetime  # Make sure this is imported!
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
