@@ -150,10 +150,26 @@ with col_right:
     slide_7_right_img = st.file_uploader("Slide 7 — Upload image for RIGHT box - Paid", type=["png", "jpg", "jpeg"], key="slide7right")
 
 
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    slide_8_first_img = st.file_uploader("Slide 8 — 1st image (farthest left)", type=["png", "jpg", "jpeg"], key="slide8first")
+with col2:
+    slide_8_second_img = st.file_uploader("Slide 8 — 2nd image", type=["png", "jpg", "jpeg"], key="slide8second")
+with col3:
+    slide_8_third_img = st.file_uploader("Slide 8 — 3rd image", type=["png", "jpg", "jpeg"], key="slide8third")
+with col4:
+    slide_8_fourth_img = st.file_uploader("Slide 8 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide8fourth")
+
+
+
 images = {
     "slide_6": slide_6_img,
     "slide_7_left": slide_7_left_img,
-    "slide_7_right": slide_7_right_img
+    "slide_7_right": slide_7_right_img,
+    "slide_8_first": slide_8_first_img,
+    "slide_8_second": slide_8_second_img,
+    "slide_8_third": slide_8_third_img,
+    "slide_8_fourth": slide_8_fourth_img,
 
 }
 
@@ -169,7 +185,11 @@ if st.button("Generate PowerPoint Recap Deck"):
     images = {
     "slide_6": slide_6_img,
     "slide_7_left": slide_7_left_img,
-    "slide_7_right": slide_7_right_img
+    "slide_7_right": slide_7_right_img,
+    "slide_8_first": slide_8_first_img,
+    "slide_8_second": slide_8_second_img,
+    "slide_8_third": slide_8_third_img,
+    "slide_8_fourth": slide_8_fourth_img
 }
     from datetime import datetime  # Make sure this is imported!
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

@@ -167,6 +167,60 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 break
     slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
 
+
+
+    
+    slide = prs.slides[7]
+    if images and "slide_8_first" in images and images["slide_8_first"] is not None:
+        img_bytes = images["slide_8_first"].read()
+        temp_img_path = "temp_slide_8_first.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 12":  # Left box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
+# RIGHT image
+    if images and "slide_8_second" in images and images["slide_8_second"] is not None:
+        img_bytes = images["slide_8_second"].read()
+        temp_img_path = "temp_slide_8_second.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 13":  # Right box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
+    if images and "slide_8_third" in images and images["slide_8_third"] is not None:
+        img_bytes = images["slide_8_third"].read()
+        temp_img_path = "temp_slide_8_third.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 16":  # Left box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
+# RIGHT image
+    if images and "slide_8_fourth" in images and images["slide_8_fourth"] is not None:
+        img_bytes = images["slide_8_fourth"].read()
+        temp_img_path = "temp_slide_8_fourth.jpg"
+        with open(temp_img_path, "wb") as f:
+            f.write(img_bytes)
+        for shape in slide.shapes:
+            if shape.name == "Picture 17":  # Right box
+                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                slide.shapes._spTree.remove(shape._element)
+                break
+    slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+
     # Social Posts & Stories
     social_posts_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
