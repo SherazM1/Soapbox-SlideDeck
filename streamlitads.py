@@ -229,6 +229,15 @@ images = {
 
 }
 
+text_inputs = {
+         
+    "slide_6": influencer_slide_6,
+
+    
+    }   
+
+
+
 
 st.markdown("---")
 st.header("Step 2: Download Recap Deck")

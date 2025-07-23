@@ -454,15 +454,15 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                             run.text = run.text.replace("#", str(impressions_value))
     
     
-    
+    #slide 6 text
     slide = prs.slides[5]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 9":
             for para in shape.text_frame.paragraphs:
                 text = para.text.strip()
                 for run in para.runs:
-                    if "@influencerhandle" in run.text:
-                        run.text = run.text.replace("@influencerhandle", handle_slide_6)
+                    if "influencerhandle" in run.text:
+                        run.text = run.text.replace("influencerhandle", handle_slide_6)
 
 
 
