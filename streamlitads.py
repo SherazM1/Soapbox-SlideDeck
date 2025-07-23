@@ -112,7 +112,42 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 break
 
 
-col1, col2 = st.columns(2)
+organic_views_impressions = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Organic (Views)":
+                organic_views_impressions = row["Unnamed: 11"]
+                break
+
+
+
+organic_reach_impressions = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Organic (Reach)":
+                organic_reach_impressions = row["Unnamed: 11"]
+                break
+
+
+
+impressions_total = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            value = str(row["Organic & Total"]).strip().lower()
+            if value == "Total" or value == "Total Impressions":
+                impressions_total = row["Unnamed: 11"]
+                break
+            
+impressions_paid = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Paid":
+                impressions_paid = row["Unnamed: 11"]
+                break
+
+
+
+col1, col2, col3 = st.columns(3)
 
 with col1:
     with st.container():
@@ -138,6 +173,18 @@ with col2:
 - **Organic Saves:** {organic_saves}
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
+
+with col3:
+    with st.container():
+        st.markdown("#### What will appear on **Slides 10 and 11:***")
+        st.markdown(f'''
+- **Influencer Reach:** {organic_reach_impressions}
+- **Ad Impressions:** {impressions_paid}
+- **Total Views:** {organic_views_impressions}
+- **Total Impressions:** {impressions_total}
+         
+    ''')
+        
 
 
 

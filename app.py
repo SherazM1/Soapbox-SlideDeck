@@ -183,6 +183,43 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 social_posts_value = row["Unnamed: 11"]
                 break
 
+
+
+    organic_views_impressions = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Organic (Views)":
+                organic_views_impressions = row["Unnamed: 11"]
+                break
+
+
+
+    organic_reach_impressions = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Organic (Reach)":
+                organic_reach_impressions = row["Unnamed: 11"]
+                break
+
+
+
+    impressions_total = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            value = str(row["Organic & Total"]).strip().lower()
+            if value == "Total" or value == "Total Impressions":
+                impressions_total = row["Unnamed: 11"]
+                break
+
+    impressions_paid = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Paid":
+                impressions_paid = row["Unnamed: 11"]
+                break
+
+
+
     # Engagements
     engagements_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
