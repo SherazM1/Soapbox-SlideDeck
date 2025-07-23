@@ -103,8 +103,10 @@ def format_compact_number(n):
 
 # PowerPoint Deck Generation
 # ─────────────────────────────────────────────────────────────────────────────
-def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=None):
+def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=None, text_inputs=None):
     prs = Presentation(pptx_template_path)
+    handle_slide_6 = text_inputs.get("slide_6", "@default")
+
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
     try:
@@ -220,16 +222,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Organic (Reach)":
                 organic_reach_impressions = row["Unnamed: 11"]
-                break
-
-
-
-    impressions_total = ""
-    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
-        for _, row in excel_df.iterrows():
-            value = str(row["Organic & Total"]).strip().lower()
-            if value == "Total" or value == "Total Impressions":
-                impressions_total = row["Unnamed: 11"]
                 break
 
     impressions_paid = ""
@@ -460,6 +452,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(impressions_value))
+    
+    
+    
+    slide = prs.slides[5]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 9":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "@influencerhandle" in run.text:
+                        run.text = run.text.replace("@influencerhandle", handle_slide_6)
+
 
 
 

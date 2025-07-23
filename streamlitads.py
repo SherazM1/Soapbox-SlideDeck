@@ -177,6 +177,7 @@ with col3:
     ''')
         
 
+influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
@@ -228,6 +229,7 @@ images = {
 
 }
 
+
 st.markdown("---")
 st.header("Step 2: Download Recap Deck")
 pptx_template_path = "template.pptx"
@@ -250,11 +252,20 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_11_third": slide_11_third_img,
     "slide_11_fourth": slide_11_fourth_img,
 }
+    text_inputs = {
+         
+    "slide_6": influencer_slide_6,
+
+    
+    }     
+
+
+
     from datetime import datetime  # Make sure this is imported!
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = f"recap_deck_output_{timestamp}.pptx"
 
-    populate_pptx_from_excel(df, pptx_template_path, output_path, images=images)
+    populate_pptx_from_excel(df, pptx_template_path, output_path, images=images, text_inputs = text_inputs)
 
     with open(output_path, "rb") as f:
         st.success("✅ Your recap deck is ready!")
