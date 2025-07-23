@@ -128,17 +128,7 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 organic_reach_impressions = row["Unnamed: 11"]
                 break
 
-
-
-impressions_total = ""
-if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
-        for _, row in df.iterrows():
-            cell_value = str(row["Organic & Total"]).strip()
-            if cell_value in ("Total", "Total Impressions"):
-                impressions_value = row["Unnamed: 11"]
-                break
-            
-            
+                    
 impressions_paid = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
     for _, row in df.iterrows():
@@ -182,7 +172,7 @@ with col3:
 - **Influencer Reach:** {organic_reach_impressions}
 - **Ad Impressions:** {impressions_paid}
 - **Total Views:** {organic_views_impressions}
-- **Total Impressions:** {impressions_total}
+- **Total Impressions:** {impressions_value}
          
     ''')
         
