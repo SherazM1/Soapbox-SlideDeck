@@ -208,7 +208,7 @@ with col2:
 with col3:
      slide_11_third_img = st.file_uploader("Slide 11 — 3nd image", type=["png", "jpg", "jpeg"], key="slide11third")
 with col4:
-     slide_11_fourth_img = st.file_uploader("Slide 11 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide8fourth")
+     slide_11_fourth_img = st.file_uploader("Slide 11 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide11fourth")
                                            
      
 
