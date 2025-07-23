@@ -175,6 +175,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     slide.shapes.add_picture(temp_path, left, top, width=width, height=height)
                     break
 
+
+    #slide 11 (Four images)
+    slide = prs.slides[10]
+    slide11_img_configs = [
+        ("slide_11_first", "Picture 26", "temp_slide_11_first.jpg"),
+        ("slide_11_second", "Picture 15", "temp_slide_11_second.jpg"),
+        ("slide_11_third", "Picture 27", "temp_slide_11_third.jpg"),
+        ("slide_11_fourth", "Picture 31", "temp_slide_11_fourth.jpg")
+    ]
+    for img_key, shape_name, temp_path in slide11_img_configs:
+        if images and img_key in images and images[img_key] is not None:
+            img_bytes = images[img_key].read()
+            with open(temp_path, "wb") as f:
+                f.write(img_bytes)
+            for shape in slide.shapes:
+                if shape.name == shape_name:
+                    left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                    slide.shapes._spTree.remove(shape._element)
+                    slide.shapes.add_picture(temp_path, left, top, width=width, height=height)
+                    break
+
     # Social Posts & Stories
     social_posts_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
