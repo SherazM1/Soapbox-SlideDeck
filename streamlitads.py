@@ -173,7 +173,7 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
 
 total_post_engagements = (
     int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
-    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves)
+    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
 )
 
 

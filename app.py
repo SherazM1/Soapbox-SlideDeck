@@ -350,7 +350,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     
     total_post_engagements = (
     int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
-    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves)
+    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
 )
 
     
@@ -455,6 +455,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("##", str(paid_threesec))
                         run.text = run.text.replace("K", "")
     
+    #slide 9 last box
     slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 34":
