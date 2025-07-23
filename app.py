@@ -427,6 +427,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("K", "")
 
 # Paid – TextBox 11
+    slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 11":
             for para in shape.text_frame.paragraphs:
