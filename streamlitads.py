@@ -196,6 +196,7 @@ with col1:
 with col2:
     with st.container():
         st.markdown("#### What will appear on **Slide 9:**")
+        st.markdown("##### **MAKE SURE TO MANUALLY ADD CART TRANSFERS**  ")
         st.markdown(f'''
 - **Organic Likes:** {organic_likes}
 - **Organic Comments:** {organic_comments}

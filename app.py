@@ -464,7 +464,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     if "100" in run.text and "K" in run.text:
                         run.text = run.text.replace("100", str(total_post_engagements))
-                        run.text = run.text.replace("K", "K")
+                        run.text = run.text.replace("K", "")
 
 
     #slide 10
