@@ -408,6 +408,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(impressions_value))
     
+
+    #slide 11
     slide = prs.slides[10]
     for shape in slide.shapes:
             if shape.has_text_frame and shape.name == "TextBox 18":
