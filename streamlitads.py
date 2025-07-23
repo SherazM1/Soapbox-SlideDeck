@@ -265,7 +265,7 @@ if st.button("Generate PowerPoint Recap Deck"):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_path = f"recap_deck_output_{timestamp}.pptx"
 
-    populate_pptx_from_excel(df, pptx_template_path, output_path, images=images, text_inputs = text_inputs)
+    populate_pptx_from_excel(df, pptx_template_path, output_path, images=images, text_inputs=text_inputs)
 
     with open(output_path, "rb") as f:
         st.success("✅ Your recap deck is ready!")
