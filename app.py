@@ -365,7 +365,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Engagements":
                 total_engagements = row["Unnamed: 11"]
-                break
 
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]

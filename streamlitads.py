@@ -188,7 +188,7 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
         for _, row in df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Engagements":
                 total_engagements = row["Unnamed: 11"]
-                break
+                
 
 col1, col2, col3 = st.columns(3)
 
