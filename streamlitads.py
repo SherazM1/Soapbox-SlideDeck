@@ -176,6 +176,12 @@ total_post_engagements = (
     + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
 )
 
+story_engagements = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Story Engagements":
+                story_engagements = row["Unnamed: 11"]
+                break
 
 col1, col2, col3 = st.columns(3)
 
@@ -208,6 +214,7 @@ with col2:
 - **Paid Saves:** {paid_saves}
 - **3 Second Video Views:** {paid_threesec}
 - **Total Engagements** {total_post_engagements}
+- **Total Story Engagements** {story_engagements}
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 

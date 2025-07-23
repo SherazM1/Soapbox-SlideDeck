@@ -352,6 +352,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
     + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
 )
+    
+    story_engagements = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Total Story Engagements":
+                story_engagements = row["Unnamed: 11"]
+                break
 
     
     # Fill TextBox 2 (Proposed Metrics)
@@ -465,6 +472,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     if "100" in run.text and "K" in run.text:
                         run.text = run.text.replace("100", str(total_post_engagements))
                         run.text = run.text.replace("K", "")
+                    if "200" in run.text and "K" in run.text:
+                        run.text = run.text.replace("200", str(story_engagements))
+                        run.text = run.text.replace("K", "")
+    
 
 
     #slide 10
@@ -541,7 +552,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     if "influencerhandle" in run.text:
                         run.text = run.text.replace("influencerhandle", handle_slide_6)
 
-    #slide 9 paid box
     
 
 
