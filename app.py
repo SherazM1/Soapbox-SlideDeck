@@ -348,6 +348,12 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 paid_threesec = row["Dates"]
                 break
     
+    total_post_engagements = (
+    int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
+    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves)
+)
+
+    
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
     for shape in slide.shapes:
@@ -448,6 +454,17 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     if "##" in run.text and "K" in run.text:
                         run.text = run.text.replace("##", str(paid_threesec))
                         run.text = run.text.replace("K", "")
+    
+    slide = prs.slides[8]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 34":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "100" in run.text and "K" in run.text:
+                        run.text = run.text.replace("100", str(total_post_engagements))
+                        run.text = run.text.replace("K", "K")
+
 
     #slide 10
     slide = prs.slides[9]

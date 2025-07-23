@@ -171,6 +171,10 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 impressions_paid = row["Unnamed: 11"]
                 break
 
+total_post_engagements = (
+    int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
+    + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves)
+)
 
 
 col1, col2, col3 = st.columns(3)
@@ -202,6 +206,7 @@ with col2:
 - **Paid Shares:** {paid_shares}
 - **Paid Saves:** {paid_saves}
 - **3 Second Video Views:** {paid_threesec}
+- **Total Engagements** {total_post_engagements}
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 
