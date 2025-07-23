@@ -312,6 +312,44 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if str(row["Organic & Total"]).strip() == "Total Saves":
                 organic_saves = row["Unnamed: 11"]
                 break
+    
+    paid_likes = ""
+    if "Dates" in excel_df.columns and "Unnamed: 14" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Reactions":
+                paid_likes = row["Dates"]
+                break
+
+    paid_comments = ""
+    if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Comments":
+                paid_comments = row["Dates"]
+                break
+    
+    paid_shares = ""
+    if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Shares":
+                paid_shares = row["Dates"]
+                break
+
+    paid_saves = ""
+    if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Saves":
+                paid_saves = row["Dates"]
+                break 
+    
+    paid_threesec = ""
+    if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "3 sec vid views":
+                paid_threesec = row["Dates"]
+                break
+    
+
+
 
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
@@ -464,6 +502,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     if "influencerhandle" in run.text:
                         run.text = run.text.replace("influencerhandle", handle_slide_6)
 
+    #slide 9 paid box
+    slide = prs.slides[8]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 11":
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "10" in run.text and "K" in run.text:
+                        run.text = run.text.replace("10", str(paid_likes))
+                        run.text = run.text.replace("K", "")
+                    if "20" in run.text and "K" in run.text:
+                        run.text = run.text.replace("20", str(paid_comments))
+                        run.text = run.text.replace("K", "")
+                    if "30" in run.text and "K" in run.text:
+                        run.text = run.text.replace("30", str(paid_shares))
+                        run.text = run.text.replace("K", "")
+                    if "40" in run.text and "K" in run.text:
+                        run.text = run.text.replace("40", str(paid_saves))
+                        run.text = run.text.replace("K", "")
+                    if "##" in run.text and "K" in run.text:
+                        run.text = run.text.replace("##", str(paid_threesec))
+                        run.text = run.text.replace("K", "K")
 
 
 

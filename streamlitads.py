@@ -65,6 +65,41 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 impressions_value = row["Unnamed: 11"]
                 break
 
+paid_likes = ""
+if "Dates" in df.columns and "Unnamed: 14" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Reactions":
+                paid_likes = row["Dates"]
+                break
+
+paid_comments = ""
+if "Unnamed: 14" in df.columns and "Dates" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Comments":
+                paid_comments = row["Dates"]
+                break
+    
+paid_shares = ""
+if "Unnamed: 14" in df.columns and "Dates" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Shares":
+                paid_shares = row["Dates"]
+                break
+
+paid_saves = ""
+if "Unnamed: 14" in df.columns and "Dates" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "Saves":
+                paid_saves = row["Dates"]
+                break 
+    
+paid_threesec = ""
+if "Unnamed: 14" in df.columns and "Dates" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 14"]).strip() == "3 sec vid views":
+                paid_threesec = row["Dates"]
+                break
+
 
 # Percent Increases
 engagements_increase = ""
@@ -162,6 +197,11 @@ with col2:
 - **Organic Comments:** {organic_comments}
 - **Organic Shares:** {organic_shares}
 - **Organic Saves:** {organic_saves}
+- **Paid Likes:** {paid_likes}
+- **Paid Comments:** {paid_comments}
+- **Paid Shares:** {paid_shares}
+- **Paid Saves:** {paid_saves}
+- **3 Second Video Views:** {paid_threesec}
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 
@@ -175,6 +215,7 @@ with col3:
 - **Total Impressions:** {impressions_value}
          
     ''')
+
         
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
