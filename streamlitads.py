@@ -183,6 +183,13 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 story_engagements = row["Unnamed: 11"]
                 break
 
+paid_engagements = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+    for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Paid Engagements":
+                paid_engagements = row["Unnamed: 11"]
+                break
+
 total_engagements = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
         for _, row in df.iterrows():
@@ -190,7 +197,7 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 total_engagements = row["Unnamed: 11"]
                 
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     with st.container():
@@ -207,6 +214,16 @@ with col1:
         st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
 
 with col2:
+     with st.container():
+          st.markdown("#### What will appear on *Slide 7**")
+          st.markdown(f'''
+- **Paid Impressions:** {impressions_paid}
+- **Paid Engagements:** {paid_engagements}
+
+''')
+                      
+
+with col3:
     with st.container():
         st.markdown("#### What will appear on **Slide 9:**")
         st.markdown("##### **MAKE SURE TO MANUALLY ADD CART TRANSFERS**  ")
@@ -226,7 +243,7 @@ with col2:
 ''')
         st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 
-with col3:
+with col4:
     with st.container():
         st.markdown("#### What will appear on **Slides 10 and 11:**")
         st.markdown(f'''
