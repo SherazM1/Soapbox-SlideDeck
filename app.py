@@ -437,8 +437,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
+        
             
-
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
     for shape in slide.shapes:
