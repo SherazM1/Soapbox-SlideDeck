@@ -639,33 +639,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("influencerhandle", handle_slide_6)
 
     
-    #slide 7
-
-
-
-
-
-
-
-
-
-
     #slide 12
-    slide = prs.slides[11]  # Slide 12 if 0-indexed
+    slide = prs.slides[11]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
             for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                # Strip leading/trailing whitespace to be extra safe
-                    rt = run.text.strip()
-                    if rt == "$ CPE":
-                        run.text = f"${float(cpe):.2f} CPE"
-                    elif rt == "$ CPC":
-                        run.text = f"${float(cpc):.2f} CPC"
-                    elif rt == "% CTR":
-                        run.text = f"{float(ctr):.2f}% CTR"
-                    elif rt == "$ CPM":
-                        run.text = f"${float(cpm):.2f} CPM"
+                runs = para.runs
+            i = 0
+            while i < len(runs) - 1:
+                this_run = runs[i].text.strip()
+                next_run = runs[i + 1].text.strip()
+                # Handle $ CPE, $ CPC, $ CPM
+                if this_run == "$" and next_run == "CPE":
+                    runs[i].text = f"${float(cpe):.2f}"
+                elif this_run == "$" and next_run == "CPC":
+                    runs[i].text = f"${float(cpc):.2f}"
+                elif this_run == "$" and next_run == "CPM":
+                    runs[i].text = f"${float(cpm):.2f}"
+                # Handle % CTR
+                elif this_run == "%" and next_run == "CTR":
+                    runs[i].text = f"{float(ctr):.2f}%"
+                i += 1
 
 
     prs.save(output_path)
