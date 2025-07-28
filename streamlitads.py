@@ -347,6 +347,10 @@ with col5:
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 influencer_slide_7_left = st.text_input("Enter the Influencer Handle for the Organic Part of Slide 7", value="@influencerhandle")
 influencer_slide_7_right = st.text_input("Enter the Influencer Handle for the Paid Part of Slide 7", value="@influencerhandle")
+slide_7_likestext = st.text_input("Enter the Likes for the Organic Part of Slide 7", value="@influencerhandle")
+slide_7_commentstext = st.text_input("Enter the Comments for the Organic Part of Slide 7", value="@influencerhandle")
+slide_7_viewstext = st.text_input("Enter the Views for the Organic Part of Slide 7", value="@influencerhandle")
+slide_7_reachtext = st.text_input("Enter the Social Reach for the Organic Part of Slide 7", value="@influencerhandle")
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
@@ -402,7 +406,11 @@ text_inputs = {
          
     "slide_6": influencer_slide_6,
     "slide_7_left": influencer_slide_7_left,
-    "slide_7_right": influencer_slide_7_right
+    "slide_7_right": influencer_slide_7_right,
+    "slide_7_like": slide_7_likestext,
+    "slide_7_comment": slide_7_commentstext,
+    "slide_7_view": slide_7_viewstext,
+    "slide_7_reaches": slide_7_reachtext
 
 
     }   
@@ -436,7 +444,11 @@ if st.button("Generate PowerPoint Recap Deck"):
          
     "slide_6": influencer_slide_6,
     "slide_7_left": influencer_slide_7_left,
-    "slide_7_right": influencer_slide_7_right
+    "slide_7_right": influencer_slide_7_right,
+    "slide_7_like": slide_7_likestext,
+    "slide_7_comment": slide_7_commentstext,
+    "slide_7_view": slide_7_viewstext,
+    "slide_7_reaches": slide_7_reachtext
     
     }     
 

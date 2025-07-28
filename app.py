@@ -108,6 +108,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     handle_slide_6 = text_inputs.get("slide_6", "@default")
     handle_slide_7_left = text_inputs.get("slide_7_left", "@default")
     handle_slide_7_right = text_inputs.get("slide_7_right", "@default")
+    slide_7_likes = text_inputs.get("slide_7_like", "@default")
+    slide_7_comments = text_inputs.get("slide_7_comment", "@default")
+    slide_7_views = text_inputs.get("slide_7_view", "@default")
+    slide_7_reach =  text_inputs.get("slide_7_reaches", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -663,8 +667,21 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for para in shape.text_frame.paragraphs:
                     text = para.text.strip()
                     for run in para.runs:
+                    # Replace influencer handle
                         if "influencerhandle" in run.text:
                             run.text = run.text.replace("influencerhandle", handle_slide_7_left)
+                    # Replace # in Likes
+                        if "#" in run.text and "Likes" in run.text:
+                            run.text = run.text.replace("#", str(slide_7_likes))
+                    # Replace # in Comments
+                        if "#" in run.text and "Comments" in run.text:
+                            run.text = run.text.replace("#", str(slide_7_comments))
+                    # Replace # in Views
+                        if "#" in run.text and "Views" in run.text:
+                            run.text = run.text.replace("#", str(slide_7_views))
+                    # Replace # in Social Reach
+                        if "#" in run.text and "Social Reach" in run.text:
+                            run.text = run.text.replace("#", str(slide_7_reach))
             elif "Paid" in shape.text:
                 for para in shape.text_frame.paragraphs:
                     text = para.text.strip()
