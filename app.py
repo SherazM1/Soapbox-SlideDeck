@@ -114,6 +114,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_reach =  text_inputs.get("slide_7_reaches", "@default")
     slide_7_engagements = text_inputs.get("slide_7_eng", "@default")
     slide_7_impressions = text_inputs.get("slide_7_impr", "@default")
+    text_slide_9 = text_inputs.get("slide_9", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -733,10 +734,17 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(p100))
+
+    
+    #slide 9 text
+    slide = prs.slides[8]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 2":
+            shape.text_frame.text = text_slide_9
+        
                 
 
-
-    prs.save(output_path)
+        prs.save(output_path)
                         
       
 
