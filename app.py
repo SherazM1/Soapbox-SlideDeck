@@ -106,6 +106,8 @@ def format_compact_number(n):
 def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=None, text_inputs=None):
     prs = Presentation(pptx_template_path)
     handle_slide_6 = text_inputs.get("slide_6", "@default")
+    handle_slide_7_left = text_inputs.get("slide_7_left", "@default")
+    handle_slide_7_right = text_inputs.get("slide_7_right", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -652,6 +654,20 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     if "influencerhandle" in run.text:
                         run.text = run.text.replace("influencerhandle", handle_slide_6)
+
+    #slide 7 text
+    slide = prs.slides[6]
+    replace_count = 0
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 9":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "influencerhandle" in run.text:
+                        run.text = run.text.replace("influencerhandle", handle_slide_7_left)
+                        replace_count += 1
+                    elif replace_count == 1:
+                        run.text = run.text.replace("influencerhandle", handle_slide_7_right)
 
     
     #slide 12

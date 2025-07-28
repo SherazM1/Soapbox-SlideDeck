@@ -345,6 +345,8 @@ with col5:
 
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
+influencer_slide_7_left = st.text_input("Enter the Influencer Handle for the Organic Part of Slide 7", value="@influencerhandle")
+influencer_slide_7_right = st.text_input("Enter the Influencer Handle for the Paid Part of Slide 7", value="@influencerhandle")
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
@@ -399,8 +401,10 @@ images = {
 text_inputs = {
          
     "slide_6": influencer_slide_6,
+    "slide_7_left": influencer_slide_7_left,
+    "slide_7_right": influencer_slide_7_right
 
-    
+
     }   
 
 
@@ -431,7 +435,8 @@ if st.button("Generate PowerPoint Recap Deck"):
     text_inputs = {
          
     "slide_6": influencer_slide_6,
-
+    "slide_7_left": influencer_slide_7_left,
+    "slide_7_right": influencer_slide_7_right
     
     }     
 
