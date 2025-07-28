@@ -327,10 +327,10 @@ with col5:
 - **CTR:** {ctr}
 - **CPM:** {cpm}
 - **ThruPlays:** {thruplays}
-- **Plays at 25%:" {p25}
-- **Plays at 50%:" {p50}
-- **Plays at 75%:" {p75}
-- **Plays at 100%:" {p100}
+- **Plays at 25%:** {p25}
+- **Plays at 50%:** {p50}
+- **Plays at 75%:** {p75}
+- **Plays at 100%:** {p100}
 
 ''')
           st.caption("These values will be automatically inserted into Slide 12 of your recap deck.")
