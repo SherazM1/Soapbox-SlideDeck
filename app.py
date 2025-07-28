@@ -649,8 +649,39 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 para.text = para.text.replace("% CTR", f"{float(ctr):.2f}% CTR")
                 para.text = para.text.replace("$ CPM", f"${float(cpm):.2f} CPM")
                 para.text = para.text.replace("#", str(thruplays))
-                
 
+
+
+    slide = prs.slides[11]
+    for shape in slide.shapes:
+            if shape.has_text_frame and shape.name == "TextBox 13":
+                for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(p25))
+
+            elif shape.has_text_frame and shape.name == "TextBox 11":
+                for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(p50))
+            
+            elif shape.has_text_frame and shape.name == "TextBox 3":
+                for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(p75))
+           
+            elif shape.has_text_frame and shape.name == "TextBox 26":
+                for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(p100))
+                
 
 
     prs.save(output_path)
