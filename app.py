@@ -581,10 +581,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     text = para.text.strip()
                     print(f"Run: '{run.text}'")
-                    if "# Engagements" in run.text:
+                    if "#" in run.text and "Engagements" in run.text:
                         run.text = run.text.replace("#", str(paid_engagements))
                         run.text = run.text.replace("Engagements", "Engagements")
-                    if "# Impressions" in run.text:
+                    if "#" in run.textt and "Impressions" in run.text:
                         run.text = run.text.replace("#", str(impressions_paid))
                         run.text = run.text.replace("Impressions", "Impressions")
 
