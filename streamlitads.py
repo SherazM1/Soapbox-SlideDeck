@@ -351,6 +351,8 @@ slide_7_likestext = st.text_input("Enter the Likes for the Organic Part of Slide
 slide_7_commentstext = st.text_input("Enter the Comments for the Organic Part of Slide 7", value="one")
 slide_7_viewstext = st.text_input("Enter the Views for the Organic Part of Slide 7", value="one")
 slide_7_reachtext = st.text_input("Enter the Social Reach for the Organic Part of Slide 7", value="one")
+slide_7_engage = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="ten")
+slide_7_impress = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="ten")
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
@@ -410,7 +412,9 @@ text_inputs = {
     "slide_7_like": slide_7_likestext,
     "slide_7_comment": slide_7_commentstext,
     "slide_7_view": slide_7_viewstext,
-    "slide_7_reaches": slide_7_reachtext
+    "slide_7_reaches": slide_7_reachtext,
+    "slide_7_eng": slide_7_engage,
+    "slide_7_impr": slide_7_impress,
 
 
     }   
@@ -448,7 +452,10 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_7_like": slide_7_likestext,
     "slide_7_comment": slide_7_commentstext,
     "slide_7_view": slide_7_viewstext,
-    "slide_7_reaches": slide_7_reachtext
+    "slide_7_reaches": slide_7_reachtext,
+    "slide_7_eng": slide_7_engage,
+    "slide_7_impr": slide_7_impress,
+
     
     }     
 

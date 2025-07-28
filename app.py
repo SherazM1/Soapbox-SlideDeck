@@ -112,6 +112,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_comments = text_inputs.get("slide_7_comment", "@default")
     slide_7_views = text_inputs.get("slide_7_view", "@default")
     slide_7_reach =  text_inputs.get("slide_7_reaches", "@default")
+    slide_7_engagements = text.inputs.get("slide_7_eng", "@default")
+    slide_7_impressions = text.inputs.get("slide_7_impr", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -677,11 +679,16 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                             run.text = run.text.replace("#", str(hashtag_values[value_index]))
                             value_index += 1
             elif "Paid" in shape.text:
+                hashtag_values_paid = [slide_7_engagements, slide_7_impressions]
+                value_index = 0
                 for para in shape.text_frame.paragraphs:
                     text = para.text.strip()
                     for run in para.runs:
                         if "influencerhandle" in run.text:
                             run.text = run.text.replace("influencerhandle", handle_slide_7_right)
+                        if "#" in run.text and value_index < len(hashtag_values_paid):
+                            run.text = run.text.replace("#", str(hashtag_values_paid[value_index]))
+                            value_index += 1
 
     
     #slide 12
