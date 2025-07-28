@@ -257,8 +257,13 @@ if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
 
+diversity_value = ""
+if "Diversity" in df.columns:
+        for idx, row in df.iterrows():
+            if str(row["Diversity"]).strip() == "Diversity":
+                diversity_value = df.iloc[idx + 1]["Diversity"]
                 
-                
+
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -273,6 +278,7 @@ with col1:
 - **Engagement Rate:** {engagement_rate_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
 - **Impressions:** {impressions_value} ({impressions_increase} increase)
+- **Diversity Rate:** {diversity_value}
 ''')
         st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
 
