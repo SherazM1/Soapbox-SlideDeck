@@ -112,8 +112,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_comments = text_inputs.get("slide_7_comment", "@default")
     slide_7_views = text_inputs.get("slide_7_view", "@default")
     slide_7_reach =  text_inputs.get("slide_7_reaches", "@default")
-    slide_7_engagements = text.inputs.get("slide_7_eng", "@default")
-    slide_7_impressions = text.inputs.get("slide_7_impr", "@default")
+    slide_7_engagements = text_inputs.get("slide_7_eng", "@default")
+    slide_7_impressions = text_inputs.get("slide_7_impr", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
