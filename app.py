@@ -657,17 +657,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     #slide 7 text
     slide = prs.slides[6]
-    replace_count = 0
+    box6_count = 0
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
+            box6_count = 0
             for para in shape.text_frame.paragraphs:
                 text = para.text.strip()
                 for run in para.runs:
                     if "influencerhandle" in run.text:
-                        run.text = run.text.replace("influencerhandle", handle_slide_7_left)
-                        replace_count += 1
-                    elif replace_count == 1:
-                        run.text = run.text.replace("influencerhandle", handle_slide_7_right)
+                        if box6_count == 1:
+                            run.text = run.text.replace("influencerhandle", handle_slide_7_left)
+                        elif box6_count == 2:
+                            run.text = run.text.replace("influencerhandle", handle_slide_7_right)
 
     
     #slide 12
