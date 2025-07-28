@@ -401,7 +401,44 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
             if str(row["Unnamed: 18"]).strip() == "CPM":
                 cpm = row["Unnamed: 17"]
+                break
     
+
+    thruplays = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "ThruPlays":
+                thruplays = row["Unnamed: 17"]
+                break
+
+    p25 = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.25":
+                p25 = row["Unnamed: 17"]
+                break
+
+    p50 = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.5":
+             p50 = row["Unnamed: 17"]
+             break
+
+    p75 = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.75":
+             p75 = row["Unnamed: 17"]
+             break
+
+    p100 = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+         if str(row["Unnamed: 18"]).strip() == "1":
+            p100 = row["Unnamed: 17"]
+
+
 
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]

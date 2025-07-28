@@ -222,6 +222,41 @@ if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
         for _, row in df.iterrows():
             if str(row["Unnamed: 18"]).strip() == "CPM":
                 cpm = row["Unnamed: 17"]
+
+thruplays = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "ThruPlays":
+                thruplays = row["Unnamed: 17"]
+                break
+
+p25 = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.25":
+                p25 = row["Unnamed: 17"]
+                break
+
+p50 = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.5":
+             p50 = row["Unnamed: 17"]
+             break
+
+p75 = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "0.75":
+             p75 = row["Unnamed: 17"]
+             break
+
+p100 = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+         if str(row["Unnamed: 18"]).strip() == "1":
+            p100 = row["Unnamed: 17"]
+
                 
                 
 
@@ -249,7 +284,6 @@ with col2:
 - **Paid Engagements:** {paid_engagements}
 
 ''')
-st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
 
                       
 with col3:
@@ -292,6 +326,11 @@ with col5:
 - **CPC:** {cpc}
 - **CTR:** {ctr}
 - **CPM:** {cpm}
+- **ThruPlays:** {thruplays}
+- **Plays at 25%:" {p25}
+- **Plays at 50%:" {p50}
+- **Plays at 75%:" {p75}
+- **Plays at 100%:" {p100}
 
 ''')
           st.caption("These values will be automatically inserted into Slide 12 of your recap deck.")
