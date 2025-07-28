@@ -648,6 +648,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 para.text = para.text.replace("$ CPC", f"${float(cpc):.2f} CPC")
                 para.text = para.text.replace("% CTR", f"{float(ctr):.2f}% CTR")
                 para.text = para.text.replace("$ CPM", f"${float(cpm):.2f} CPM")
+                para.text = para.text.replace("#", str(thruplays))
+                
 
 
 
