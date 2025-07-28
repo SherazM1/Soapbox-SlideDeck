@@ -373,6 +373,35 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Engagements":
                 total_engagements = row["Unnamed: 11"]
+                break
+
+    cpe = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPE":
+                cpe = row["Unnamed: 17"]
+                break
+    
+    cpc = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPC":
+                cpc = row["Unnamed: 17"]
+                break
+
+    ctr = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CTR":
+                ctr = row["Unnamed: 17"]
+                break
+
+    cpm = ""
+    if "Unnamed: 18" in excel_df.columns and "Unnamed: 17" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPM":
+                cpm = row["Unnamed: 17"]
+    
 
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
@@ -574,26 +603,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     
     #slide 7
-    slide = prs.slides[6]
-    for shape in slide.shapes:
-        if shape.has_text_frame and shape.name == "TextBox 6":
-            for para in shape.text_frame.paragraphs:
-                last_run_was_hash = False
-            for run in para.runs:
-                if run.text.strip() == "#":
-                    last_run_was_hash = True
-                    run.text = str(paid_engagements)  # Will be replaced if label is in next run
-                elif last_run_was_hash and "Engagements" in run.text:
-                    # No action needed, label already there
-                    last_run_was_hash = False
-                elif run.text.strip() == "#":
-                    last_run_was_hash = True
-                    run.text = str(impressions_paid)
-                elif last_run_was_hash and "Impressions" in run.text:
-                    # No action needed, label already there
-                    last_run_was_hash = False
-                else:
-                    last_run_was_hash = False
 
 
 

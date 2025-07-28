@@ -195,9 +195,37 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
         for _, row in df.iterrows():
             if str(row["Organic & Total"]).strip() == "Total Engagements":
                 total_engagements = row["Unnamed: 11"]
+
+cpe = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPE":
+                cpe = row["Unnamed: 17"]
+                break
+    
+cpc = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPC":
+                cpc = row["Unnamed: 17"]
+                break
+
+ctr = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CTR":
+                ctr = row["Unnamed: 17"]
+                break
+
+cpm = ""
+if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Unnamed: 18"]).strip() == "CPM":
+                cpm = row["Unnamed: 17"]
+                
                 
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     with st.container():
@@ -221,6 +249,8 @@ with col2:
 - **Paid Engagements:** {paid_engagements}
 
 ''')
+st.caption("These values will be automatically inserted into Slide 9 of your recap deck.")
+
                       
 with col3:
     with st.container():
@@ -252,8 +282,20 @@ with col4:
 - **Total Impressions:** {impressions_value}
          
     ''')
-
         
+with col5:
+     with st.container():
+          st.markdown("#### What will appear on **Slide 12:**")
+          st.markdown(f'''
+                      
+- **CPE:** {cpe}
+- **CPC:** {cpc}
+- **CTR:** {ctr}
+- **CPM:** {cpm}
+
+''')
+          st.caption("These values will be automatically inserted into Slide 12 of your recap deck.")
+
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 
