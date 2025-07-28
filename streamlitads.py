@@ -352,7 +352,7 @@ slide_7_commentstext = st.text_input("Enter the Comments for the Organic Part of
 slide_7_viewstext = st.text_input("Enter the Views for the Organic Part of Slide 7", value="one")
 slide_7_reachtext = st.text_input("Enter the Social Reach for the Organic Part of Slide 7", value="one")
 slide_7_engage = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="ten")
-slide_7_impress = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="ten")
+slide_7_impress = st.text_input("Enter the Impressions for the Paid Part of Slide 7", value="ten")
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
