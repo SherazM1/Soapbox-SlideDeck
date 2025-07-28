@@ -664,24 +664,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
             if "Organic" in shape.text:
+                hashtag_values = [slide_7_likes, slide_7_comments, slide_7_views, slide_7_reach]
+                value_index = 0
                 for para in shape.text_frame.paragraphs:
                     text = para.text.strip()
                     for run in para.runs:
-                    # Replace influencer handle
+                # Replace influencer handle
                         if "influencerhandle" in run.text:
                             run.text = run.text.replace("influencerhandle", handle_slide_7_left)
-                    # Replace # in Likes
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", slide_7_likes)
-                    # Replace # in Comments
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", slide_7_comments)
-                    # Replace # in Views
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", slide_7_views)
-                    # Replace # in Social Reach
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", slide_7_reach)
+                # Replace hashtags one by one in order
+                        if "#" in run.text and value_index < len(hashtag_values):
+                            run.text = run.text.replace("#", str(hashtag_values[value_index]))
+                            value_index += 1
             elif "Paid" in shape.text:
                 for para in shape.text_frame.paragraphs:
                     text = para.text.strip()
