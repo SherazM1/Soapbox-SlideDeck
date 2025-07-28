@@ -740,7 +740,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide = prs.slides[8]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 2":
-            shape.text_frame.text = text_slide_9
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                shape.text_frame.text = text_slide_9
         
                 
 
