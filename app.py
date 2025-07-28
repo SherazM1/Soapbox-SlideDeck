@@ -313,6 +313,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 organic_saves = row["Unnamed: 11"]
                 break
     
+    paid_engagements = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "Paid Engagements":
+                paid_engagements = row["Unnamed: 11"]
+                break
+    
     paid_likes = ""
     if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
         for _, row in excel_df.iterrows():
@@ -333,6 +340,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if str(row["Unnamed: 14"]).strip() == "Shares":
                 paid_shares = row["Dates"]
                 break
+
 
     paid_saves = ""
     if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
@@ -563,6 +571,24 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     if "influencerhandle" in run.text:
                         run.text = run.text.replace("influencerhandle", handle_slide_6)
+
+    
+    #slide 7
+    slide = prs.slides[6]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 6":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "#" in run.text and "Engagements" in run.text:
+                        run.text = run.text.replace("#", str(paid_engagements))
+       
+        if shape.has_text_frame and shape.name == "TextBox 6":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "#" in run.text and "Impressions" in run.text:
+                        run.text = run.text.replace("#", str(impressions_paid))
 
     
 
