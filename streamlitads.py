@@ -263,6 +263,7 @@ if "Diversity" in df.columns:
         for idx, row in df.iterrows():
             if str(row["Diversity"]).strip() == "Diversity":
                 diversity_value = df.iloc[idx + 1]["Diversity"]
+                break
                 
 
 

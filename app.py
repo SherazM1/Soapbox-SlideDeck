@@ -444,6 +444,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for idx, row in excel_df.iterrows():
             if str(row["Diversity"]).strip() == "Diversity":
                 diversity_value = excel_df.iloc[idx + 1]["Diversity"]
+                break
                 
 
 
