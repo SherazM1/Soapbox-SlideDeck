@@ -437,8 +437,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         for _, row in excel_df.iterrows():
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
+            break
+         
+    
+    diversity_value = ""
+    if "Diversity" in excel_df.columns:
+        col = df["Diversity"]
+        for idx, val in enumerate(col):
+            if str(val).strip() == "Diversity":
+                diversity_value = col.iloc[idx + 1]
+            break
+
         
-            
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
     for shape in slide.shapes:
@@ -457,7 +467,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(metrics.get("Impressions", "")))
-            break
+                
+
+            
 
     # Fill TextBox 15 (Program Overview)
     for shape in slide.shapes:
@@ -496,6 +508,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         if "#% increase" in run.text and not percent_done:
                             run.text = run.text.replace("#", str(impressions_increase), 1)
                             percent_done = True
+                elif "Diversity Rate" in text:
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(diversity_value))
 
     # Fill TextBox 19 (Slide 9 vertical fields)
     slide = prs.slides[8]
