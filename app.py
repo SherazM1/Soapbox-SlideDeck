@@ -644,6 +644,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
 
 
+
+
+
+
+
+
+    #slide 12
+    slide = prs.slides[11]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 6":
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "$ CPE" in run.text:
+                        run.text = f"${float(cpe):.2f} CPE"
+                    elif "$ CPC" in run.text:
+                        run.text = f"${float(cpc):.2f} CPC"
+                    elif "% CTR" in run.text:
+                        run.text = f"{float(ctr):.2f}% CTR"
+                    elif "$ CPM" in run.text:
+                        run.text = f"${float(cpm):.2f} CPM"
+
     prs.save(output_path)
                         
       
