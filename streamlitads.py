@@ -215,14 +215,13 @@ with col1:
 
 with col2:
      with st.container():
-          st.markdown("#### What will appear on *Slide 7**")
+          st.markdown("#### What will appear on **Slide 7:**")
           st.markdown(f'''
 - **Paid Impressions:** {impressions_paid}
 - **Paid Engagements:** {paid_engagements}
 
 ''')
                       
-
 with col3:
     with st.container():
         st.markdown("#### What will appear on **Slide 9:**")
