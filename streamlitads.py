@@ -256,6 +256,7 @@ if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
         for _, row in df.iterrows():
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
+            break
 
 diversity_value = ""
 if "Diversity" in df.columns:
