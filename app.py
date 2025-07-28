@@ -661,11 +661,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         if shape.has_text_frame and shape.name == "TextBox 6":
             if "Organic" in shape.text:
                 for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
                     for run in para.runs:
                         if "@influencerhandle" in run.text:
                             run.text = run.text.replace("@influencerhandle", handle_slide_7_left)
             elif "Paid" in shape.text:
                 for para in shape.text_frame.paragraphs:
+                    text = para.text.strip()
                     for run in para.runs:
                         if "@influencerhandle" in run.text:
                             run.text = run.text.replace("@influencerhandle", handle_slide_7_right)
