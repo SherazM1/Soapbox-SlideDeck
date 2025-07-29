@@ -116,6 +116,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_impressions = text_inputs.get("slide_7_impr", "@default")
     text_slide_9 = text_inputs.get("slide_9", "@default")
     text_slide_13 = text_inputs.get("slide_13", "@default")
+    text_slide_15 = text_inputs.get("slide_15", "@default")
+    text_slide_16 = text_inputs.get("slide_16", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -694,8 +696,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     
     #slide 12
-    # List of strings you want to fill, in the exact order of the bullets in your template
-    # ...existing code...
+
 
     slide = prs.slides[11]
     bullet_texts = [
@@ -858,6 +859,28 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     if "00/00/00 – 00/00/00" in run.text:
                         run.text = run.text.replace("00/00/00 – 00/00/00", str(text_slide_13))
+
+
+#slide 15 text
+    slide = prs.slides[14]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 5":
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "On a scale from 1 to 10, 10 being the most likely, how likely would you be able to recommend Ticket to Ride/Ticket to Ride: San Francisco to family and friends?" in run.text:
+                        run.text = run.text.replace("On a scale from 1 to 10, 10 being the most likely, how likely would you be able to recommend Ticket to Ride/Ticket to Ride: San Francisco to family and friends?", str(text_slide_15))
+
+
+#slide 16 text
+    slide = prs.slides[14]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 5":
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    if "What were your favorite parts of the game night Playing Ticket to Ride: San Fransisco?" in run.text: 
+                        run.text = run.text.replace("What were your favorite parts of the game night Playing Ticket to Ride: San Francisco?", str(text_slide_16))
+
+
 
          
     prs.save(output_path)
