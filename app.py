@@ -707,10 +707,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
-            para_texts = [para.text.strip() for para in shape.text_frame.paragraphs]
-            if "$ CPE" in para_texts and "$ CPC" in para_texts:
             # Replace text in existing runs to preserve formatting
-                for i, para in enumerate(shape.text_frame.paragraphs):
+            for i, para in enumerate(shape.text_frame.paragraphs):
                     if i < 4:
                         for run in para.runs:
                             if "$ CPE" in run.text:
