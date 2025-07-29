@@ -362,14 +362,6 @@ with col6:
 
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
-influencer_slide_7_left = st.text_input("Enter the Influencer Handle for the Organic Part of Slide 7", value="@influencerhandle")
-influencer_slide_7_right = st.text_input("Enter the Influencer Handle for the Paid Part of Slide 7", value="@influencerhandle")
-slide_7_likestext = st.text_input("Enter the Likes for the Organic Part of Slide 7", value="1")
-slide_7_commentstext = st.text_input("Enter the Comments for the Organic Part of Slide 7", value="2")
-slide_7_viewstext = st.text_input("Enter the Views for the Organic Part of Slide 7", value="3")
-slide_7_reachtext = st.text_input("Enter the Social Reach for the Organic Part of Slide 7", value="4")
-slide_7_engage = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="5")
-slide_7_impress = st.text_input("Enter the Impressions for the Paid Part of Slide 7", value="6")
 slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
 slide_13_text = st.text_input("Enter the date for Slide 13", value="12/1/26")
 slide_15_text = st.text_input("Enter the question for Slide 15", value="On a scale of 1 to 10...")
@@ -455,6 +447,46 @@ for box in influencer_boxes:
         "State": state,
         "Verbatim": verbatim,
     }
+
+
+st.markdown("### Enter Influencer Data for Slide 7")
+
+headers7 = [
+    "Type",
+    "Influencer Handle",
+    "Likes",
+    "Comments",
+    "Views",
+    "Social Reach",
+    "Engagements",
+    "Impressions",
+]
+header_cols7 = st.columns(len(headers7))
+for i, header in enumerate(headers7):
+    header_cols7[i].markdown(f"**{header}**")
+
+# Organic row
+row1 = st.columns(len(headers7))
+row1[0].markdown("Organic")
+influencer_slide_7_left = row1[1].text_input("", key="slide_7_left_handle", value="@influencerhandle")
+slide_7_likestext = row1[2].text_input("", key="slide_7_likes", value="1")
+slide_7_commentstext = row1[3].text_input("", key="slide_7_comments", value="2")
+slide_7_viewstext = row1[4].text_input("", key="slide_7_views", value="3")
+slide_7_reachtext = row1[5].text_input("", key="slide_7_reach", value="4")
+row1[6].markdown("-")  # Engagements N/A for Organic
+row1[7].markdown("-")  # Impressions N/A for Organic
+
+# Paid row
+row2 = st.columns(len(headers7))
+row2[0].markdown("Paid")
+influencer_slide_7_right = row2[1].text_input("", key="slide_7_right_handle", value="@influencerhandle")
+row2[2].markdown("-")  # Likes N/A for Paid
+row2[3].markdown("-")  # Comments N/A for Paid
+row2[4].markdown("-")  # Views N/A for Paid
+row2[5].markdown("-")  # Social Reach N/A for Paid
+slide_7_engage = row2[6].text_input("", key="slide_7_engage", value="5")
+slide_7_impress = row2[7].text_input("", key="slide_7_impress", value="6")
+
 
 
 st.markdown("### Enter Influencer Data for Each Box (for Slide 8)")
