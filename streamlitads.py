@@ -409,11 +409,11 @@ for box in influencer_boxes:
         state = st.text_input(f"{box['label']} - State", key=f"{box['key']}_state")
         verbatim = st.text_input(f"{box['label']} - Verbatim", key=f"{box['key']}_verbatim")
         influencer_inputs[box["textbox"]] = {
-            "@influencerhandle": handle,
+            "influencerhandle": handle,
             "##": reach,
             "City": city,
             "State": state,
-            '"Verbatim"': verbatim,
+            "Verbatim": verbatim,
         }
 
 

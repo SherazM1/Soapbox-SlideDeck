@@ -770,7 +770,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                 # Replace handle
                     if "influencerhandle" in run.text:
-                        run.text = run.text.replace("influencerhandle", replacements.get("@influencerhandle", ""))
+                        run.text = run.text.replace("influencerhandle", replacements.get("influencerhandle", ""))
                 # Replace reach
                     if "##" in run.text:
                         run.text = run.text.replace("##", replacements.get("##", ""))
@@ -779,9 +779,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("City, State", city_state)
                 # Replace verbatim (with or without quotes)
                     if "Verbatim" in run.text:
-                        run.text = run.text.replace('"Verbatim"', replacements.get('"Verbatim"', ''))
+                        run.text = run.text.replace("Verbatim", replacements.get("Verbatim", ''))
                     elif "Verbatim" in run.text:
-                        run.text = run.text.replace("Verbatim", replacements.get('"Verbatim"', ""))
+                        run.text = run.text.replace("Verbatim", replacements.get("Verbatim", ""))
 
          
     prs.save(output_path)
