@@ -696,27 +696,30 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     #slide 12
     # List of strings you want to fill, in the exact order of the bullets in your template
     slide = prs.slides[11]
-    textbox6_shapes = [shape for shape in slide.shapes if shape.has_text_frame and shape.name == "TextBox 6"]
+    bullet_texts = [
+    f"$ {cpe} CPE",
+    f"$ {cpc} CPC",
+    f"{ctr}% CTR",
+    f"$ {cpm} CPM",
+    ]
 
-# 1st TextBox 6: Bullets
-    if len(textbox6_shapes) > 0:
-        bullet_texts = [
-        f"$ {cpe} CPE",
-        f"$ {cpc} CPC",
-        f"{ctr}% CTR",
-        f"$ {cpm} CPM",
-        ]
-        for i, para in enumerate(textbox6_shapes[0].text_frame.paragraphs):
-            if i < 4:
-                para.clear()
-                para.add_run().text = bullet_texts[i]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 6":
+        # Is this the bullets box? (e.g., it contains "$ CPE" and "$ CPC")
+            para_texts = [para.text.strip() for para in shape.text_frame.paragraphs]
+            if "$ CPE" in para_texts and "$ CPC" in para_texts:
+            # This is your bullets box!
+                for i, para in enumerate(shape.text_frame.paragraphs):
+                    if i < 4:
+                        para.clear()
+                        para.add_run().text = bullet_texts[i]
+        # Is this the ThruPlays box? (e.g., contains "# ThruPlays")
+        elif any("# ThruPlays" in pt for pt in para_texts):
+            for para in shape.text_frame.paragraphs:
+                if "#" in para.text:
+                    para.clear()
+                    para.add_run().text = para.text.replace("#", str(thruplays))
 
-# 3rd TextBox 6: ThruPlays
-    if len(textbox6_shapes) > 2:
-        for para in textbox6_shapes[2].text_frame.paragraphs:
-            if "#" in para.text:
-                para.clear()
-                para.add_run().text = para.text.replace("#", str(thruplays))
 
 
 
