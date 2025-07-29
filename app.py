@@ -698,17 +698,21 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
             for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    if "$ CPE" in run.text:
-                        run.text = run.text.replace("$ CPE", f"${float(cpe):.2f} CPE")
-                    if "$ CPC" in run.text:
-                        run.text = run.text.replace("$ CPC", f"${float(cpc):.2f} CPC")
-                    if "% CTR" in run.text:
-                        run.text = run.text.replace("% CTR", f"{float(ctr):.2f}% CTR")
-                    if "$ CPM" in run.text:
-                        run.text = run.text.replace("$ CPM", f"${float(cpm):.2f} CPM")
-                    if "#" in run.text:
-                        run.text = run.text.replace("#", str(thruplays))
+            # Work with the full paragraph text as a string
+                new_text = para.text
+                if "$ CPE" in new_text:
+                    new_text = new_text.replace("$ CPE", f"${cpe} CPE")
+                if "$ CPC" in new_text:
+                    new_text = new_text.replace("$ CPC", f"${cpc} CPC")
+                if "% CTR" in new_text:
+                    new_text = new_text.replace("% CTR", f"{ctr}% CTR")
+                if "$ CPM" in new_text:
+                    new_text = new_text.replace("$ CPM", f"${cpm} CPM")
+                if "#" in new_text:
+                    new_text = new_text.replace("#", str(thruplays))
+            # Clear all runs, add one run with the new text (formatting will be inherited from the first run)
+            para.clear()
+            para.add_run().text = new_text
 
 
     slide = prs.slides[11]
