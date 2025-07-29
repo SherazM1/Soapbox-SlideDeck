@@ -833,14 +833,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 3":
             for para in shape.text_frame.paragraphs:
-            # Check if the entire paragraph matches the placeholder
-                if para.text.strip() == "00/00/00 – 00/00/00":
-                # Replace all runs in this paragraph with the new text, preserving formatting of the first run
-                    if para.runs:
-                        para.runs[0].text = str(text_slide_13)
-                    # Clear out any extra runs (if present)
-                        for run in para.runs[1:]:
-                            run.text = ""
+                if "00/00/00 – 00/00/00" in para.text:
+                # Replace in the full paragraph text
+                    new_text = para.text.replace("00/00/00 – 00/00/00", str(text_slide_13))
+                # Now update the paragraph: simplest is to clear all runs and add one run with new text
+                    para.clear()  # removes all runs
+                    para.add_run().text = new_text
+
 
          
     prs.save(output_path)
