@@ -695,6 +695,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     
     #slide 12
     # List of strings you want to fill, in the exact order of the bullets in your template
+    # ...existing code...
+
     slide = prs.slides[11]
     bullet_texts = [
     f"$ {cpe} CPE",
@@ -705,23 +707,31 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
-        # Is this the bullets box? (e.g., it contains "$ CPE" and "$ CPC")
             para_texts = [para.text.strip() for para in shape.text_frame.paragraphs]
             if "$ CPE" in para_texts and "$ CPC" in para_texts:
-            # This is your bullets box!
+            # Replace text in existing runs to preserve formatting
                 for i, para in enumerate(shape.text_frame.paragraphs):
                     if i < 4:
-                        para.clear()
-                        para.add_run().text = bullet_texts[i]
-        
-    
+                        for run in para.runs:
+                            if "$ CPE" in run.text:
+                                run.text = run.text.replace("$ CPE", bullet_texts[0])
+                            if "$ CPC" in run.text:
+                                run.text = run.text.replace("$ CPC", bullet_texts[1])
+                            if "% CTR" in run.text:
+                                run.text = run.text.replace("% CTR", bullet_texts[2])
+                            if "$ CPM" in run.text:
+                                run.text = run.text.replace("$ CPM", bullet_texts[3])
+
+# For ThruPlays
     slide = prs.slides[11]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
             for para in shape.text_frame.paragraphs:
                 if para.text.strip() == "# ThruPlays":
-                    para.clear()
-                    para.add_run().text = f"{thruplays} ThruPlays"
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(thruplays))
+# ...existing code...
 
 
 
