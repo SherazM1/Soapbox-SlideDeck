@@ -783,24 +783,32 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("Verbatim", replacements.get("Verbatim", ""))
 
 #slide 8 text inputs
-    slide = prs.slides[7]
+    slide = prs.slides[7]  # Use your slide index
     box_index = 0
+    metric_keys = ["# Likes", "# Comments", "# Views", "# Social Reach"]
+
     for shape in slide.shapes:
-        if shape.has_text_frame and shape_name == "TextBox 6":
+        if shape.has_text_frame and shape.name == "TextBox 6":
             if box_index < len(influencer_boxestwo):
-                replacementstwo = influencer_boxestwo[box_index]
-                for para in shape.text_frame.paragraphs:
-                    for run in para.runs:
+                replacements = influencer_boxestwo[box_index]
+                paras = shape.text_frame.paragraphs
+
+            # First paragraph: influencerhandle
+                if len(paras) > 0:
+                    for run in paras[0].runs:
                         if "influencerhandle" in run.text:
-                            run.text = run.text.replace("influencerhandle", replacementstwo.get("influencerhandle", ""))
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", replacementstwo.get("# Likes", ""))
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", replacementstwo.get("# Comments", ""))
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", replacementstwo.get("# Views", ""))
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", replacementstwo.get("# Social Reach", ""))
+                            run.text = run.text.replace("influencerhandle", replacements.get("influencerhandle", ""))
+
+            # Next paragraphs: metrics
+                for i, key in enumerate(metric_keys):
+                    para_idx = i + 1  # starts from second paragraph
+                    if para_idx < len(paras):
+                        for run in paras[para_idx].runs:
+                            if "#" in run.text:
+                                run.text = run.text.replace("#", replacements.get(key, ""))
+
+            box_index += 1
+
          
     prs.save(output_path)
                         
