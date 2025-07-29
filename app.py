@@ -714,12 +714,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         para.clear()
                         para.add_run().text = bullet_texts[i]
         # Is this the ThruPlays box? (e.g., contains "# ThruPlays")
-            elif any("# ThruPlays" in pt for pt in para_texts):
-                for para in shape.text_frame.paragraphs:
-                    if "#" in para.text:
-                        para.clear()
-                        para.add_run().text = para.text.replace("#", str(thruplays))
-
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 6":
+            for para in shape.text_frame.paragraphs:
+            # Only touch paragraphs with '# ThruPlays' in them
+                if "# ThruPlays" in para.text:
+                    para.clear()
+                    para.add_run().text = para.text.replace("#", str(thruplays))
 
 
 
