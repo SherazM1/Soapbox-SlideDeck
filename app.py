@@ -719,11 +719,9 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
             for para in shape.text_frame.paragraphs:
-                text = para.text.strip()
-            # Only touch paragraphs with '# ThruPlays' in them
-                if "# ThruPlays" in para.text:
+                if para.text.strip() == "# ThruPlays":
                     para.clear()
-                    para.add_run().text = para.text.replace("#", str(thruplays))
+                    para.add_run().text = f"{thruplays} ThruPlays"
 
 
 
