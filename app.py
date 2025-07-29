@@ -115,7 +115,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_engagements = text_inputs.get("slide_7_eng", "@default")
     slide_7_impressions = text_inputs.get("slide_7_impr", "@default")
     text_slide_9 = text_inputs.get("slide_9", "@default")
-    text_slide_13 = text_inputs.get("slide 13", "@default")
+    text_slide_13 = text_inputs.get("slide_13", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
