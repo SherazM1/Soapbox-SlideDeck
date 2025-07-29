@@ -770,7 +770,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                 # Replace handle
                     if "influencerhandle" in run.text:
-                        run.text = run.text.replace("@influencerhandle", replacements.get("@influencerhandle", ""))
+                        run.text = run.text.replace("influencerhandle", replacements.get("@influencerhandle", ""))
                 # Replace reach
                     if "##" in run.text:
                         run.text = run.text.replace("##", replacements.get("##", ""))
