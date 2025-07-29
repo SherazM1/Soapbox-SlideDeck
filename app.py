@@ -115,6 +115,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide_7_engagements = text_inputs.get("slide_7_eng", "@default")
     slide_7_impressions = text_inputs.get("slide_7_impr", "@default")
     text_slide_9 = text_inputs.get("slide_9", "@default")
+    text_slide_13 = text_inputs.get("slide 13", "@default")
 
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
@@ -825,6 +826,21 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 for run in para.runs:
                     if "27K" in run.text:
                         run.text = run.text.replace("27K", str(c2c_value))
+
+
+#slide 13 text
+    slide = prs.slides[12]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 3":
+            for para in shape.text_frame.paragraphs:
+            # Check if the entire paragraph matches the placeholder
+                if para.text.strip() == "00/00/00 – 00/00/00":
+                # Replace all runs in this paragraph with the new text, preserving formatting of the first run
+                    if para.runs:
+                        para.runs[0].text = str(text_slide_13)
+                    # Clear out any extra runs (if present)
+                        for run in para.runs[1:]:
+                            run.text = ""
 
          
     prs.save(output_path)

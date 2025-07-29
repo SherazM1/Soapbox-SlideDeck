@@ -371,6 +371,7 @@ slide_7_reachtext = st.text_input("Enter the Social Reach for the Organic Part o
 slide_7_engage = st.text_input("Enter the Engagements for the Paid Part of Slide 7", value="5")
 slide_7_impress = st.text_input("Enter the Impressions for the Paid Part of Slide 7", value="6")
 slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
+slide_13_text = st.text_input("Enter the date for Slide 13", value="12/1/26")
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
 
@@ -498,6 +499,7 @@ text_inputs = {
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
     "slide_9": slide_9_text,
+    "slide_13": slide_13_text,
     "influencer_boxes": influencer_inputs,
     "influencer_boxestwo": influencer_boxestwo_inputs
 
@@ -541,6 +543,7 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
     "slide_9": slide_9_text,
+    "slide_13": slide_13_text,
     "influencer_boxes": influencer_inputs,
     "influencer_boxestwo": influencer_boxestwo_inputs
 
