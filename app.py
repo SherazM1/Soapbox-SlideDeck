@@ -697,22 +697,26 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide = prs.slides[11]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
-            for para in shape.text_frame.paragraphs:
-            # Work with the full paragraph text as a string
-                new_text = para.text
-                if "$ CPE" in new_text:
-                    new_text = new_text.replace("$ CPE", f"${cpe} CPE")
-                if "$ CPC" in new_text:
-                    new_text = new_text.replace("$ CPC", f"${cpc} CPC")
-                if "% CTR" in new_text:
-                    new_text = new_text.replace("% CTR", f"{ctr}% CTR")
-                if "$ CPM" in new_text:
-                    new_text = new_text.replace("$ CPM", f"${cpm} CPM")
-                if "#" in new_text:
-                    new_text = new_text.replace("#", str(thruplays))
-            # Clear all runs, add one run with the new text (formatting will be inherited from the first run)
-            para.clear()
-            para.add_run().text = new_text
+            bullets = [
+            (f"$ {cpe} CPE", "$ CPE"),
+            (f"$ {cpc} CPC", "$ CPC"),
+            (f"{ctr}% CTR", "% CTR"),
+            (f"$ {cpm} CPM", "$ CPM"),
+        ]
+        bullet_idx = 0
+        for para in shape.text_frame.paragraphs:
+            # Only fill bullets (stop if we run out)
+            if bullet_idx < len(bullets) and bullets[bullet_idx][1] in para.text:
+                # Set the entire paragraph text to your value, keeps bullet/format
+                para.clear()
+                para.add_run().text = bullets[bullet_idx][0]
+                bullet_idx += 1
+            # Optionally, also replace thruplays if this para is the right one:
+            elif "# ThruPlays" in para.text:
+                new_text = para.text.replace("#", str(thruplays))
+                para.clear()
+                para.add_run().text = new_text
+
 
 
     slide = prs.slides[11]
