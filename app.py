@@ -793,14 +793,14 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     for run in para.runs:
                         if "influencerhandle" in run.text:
                             run.text = run.text.replace("influencerhandle", replacementstwo.get("influencerhandle", ""))
-                        if "# Likes" in run.text:
-                            run.text = run.text.replace("# Likes", replacementstwo.get("# Likes", ""))
-                        if "# Comments" in run.text:
-                            run.text = run.text.replace("# Comments", replacementstwo.get("# Comments", ""))
-                        if "# Views" in run.text:
-                            run.text = run.text.replace("# Views", replacementstwo.get("# Views", ""))
-                        if "# Social Reach" in run.text:
-                            run.text = run.text.replace("# Social Reach", replacementstwo.get("# Social Reach", ""))
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", replacementstwo.get("# Likes", ""))
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", replacementstwo.get("# Comments", ""))
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", replacementstwo.get("# Views", ""))
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", replacementstwo.get("# Social Reach", ""))
          
     prs.save(output_path)
                         
