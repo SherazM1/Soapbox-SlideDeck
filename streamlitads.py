@@ -431,43 +431,56 @@ influencer_boxestwo = [
 ]
 
 st.markdown("### Enter Influencer Data for Each Box (for Slide 5)")
+
+# Show headers
+headers = ["Influencer", "Handle", "Reach", "City", "State", "Verbatim"]
+header_cols = st.columns(len(headers))
+for i, header in enumerate(headers):
+    header_cols[i].markdown(f"**{header}**")
+
 influencer_inputs = {}
 
 for box in influencer_boxes:
-    with st.container():
-        st.markdown(f"**{box['label']}**")
-        handle = st.text_input(f"{box['label']} - Handle", key=f"{box['key']}_handle")
-        reach = st.text_input(f"{box['label']} - Social Reach", key=f"{box['key']}_reach")
-        city = st.text_input(f"{box['label']} - City", key=f"{box['key']}_city")
-        state = st.text_input(f"{box['label']} - State", key=f"{box['key']}_state")
-        verbatim = st.text_input(f"{box['label']} - Verbatim", key=f"{box['key']}_verbatim")
-        influencer_inputs[box["textbox"]] = {
-            "influencerhandle": handle,
-            "##": reach,
-            "City": city,
-            "State": state,
-            "Verbatim": verbatim,
-        }
+    cols = st.columns(len(headers))
+    cols[0].markdown(box['label'])
+    handle = cols[1].text_input("", key=f"{box['key']}_handle")
+    reach = cols[2].text_input("", key=f"{box['key']}_reach")
+    city = cols[3].text_input("", key=f"{box['key']}_city")
+    state = cols[4].text_input("", key=f"{box['key']}_state")
+    verbatim = cols[5].text_input("", key=f"{box['key']}_verbatim")
+    influencer_inputs[box["textbox"]] = {
+        "influencerhandle": handle,
+        "##": reach,
+        "City": city,
+        "State": state,
+        "Verbatim": verbatim,
+    }
 
 
-st.markdown("### Enter the Influencer Data for Each Box (for Slide 8)")
+st.markdown("### Enter Influencer Data for Each Box (for Slide 8)")
+
+headers8 = ["Influencer", "Handle", "# Likes", "# Comments", "# Views", "# Social Reach"]
+header_cols8 = st.columns(len(headers8))
+for i, header in enumerate(headers8):
+    header_cols8[i].markdown(f"**{header}**")
+
 influencer_boxestwo_inputs = []
 
 for box in influencer_boxestwo:
-    with st.container():
-        st.markdown(f"**{box['label']}**")
-        handle = st.text_input(f"{box['label']} - Handle", key=f"{box['key']}_handle")
-        likes = st.text_input(f"{box['label']} - # Likes", key=f"{box['key']}_likes")
-        comments = st.text_input(f"{box['label']} - # Comments", key=f"{box['key']}_comments")
-        views = st.text_input(f"{box['label']} - # Views", key=f"{box['key']}_views")
-        reach = st.text_input(f"{box['label']} - # Social Reach", key=f"{box['key']}_reach")
-        influencer_boxestwo_inputs.append({
-            "influencerhandle": handle,
-            "# Likes": likes,
-            "# Comments": comments,
-            "# Views": views,
-            "# Social Reach": reach,
-        })
+    cols = st.columns(len(headers8))
+    cols[0].markdown(box['label'])
+    handle = cols[1].text_input("", key=f"{box['key']}_handle")
+    likes = cols[2].text_input("", key=f"{box['key']}_likes")
+    comments = cols[3].text_input("", key=f"{box['key']}_comments")
+    views = cols[4].text_input("", key=f"{box['key']}_views")
+    reach = cols[5].text_input("", key=f"{box['key']}_reach")
+    influencer_boxestwo_inputs.append({
+        "influencerhandle": handle,
+        "# Likes": likes,
+        "# Comments": comments,
+        "# Views": views,
+        "# Social Reach": reach,
+    })
 
 # Save in text_inputs for backend use
 
