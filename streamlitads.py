@@ -386,7 +386,32 @@ with col3:
 with col4:
      slide_11_fourth_img = st.file_uploader("Slide 11 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide11fourth")
                                            
-     
+
+
+influencer_boxes = [
+    {"label": "Influencer Box 1", "key": "box_1", "textbox": "TextBox 62"},
+    {"label": "Influencer Box 2", "key": "box_2", "textbox": "TextBox 13"},
+    {"label": "Influencer Box 3", "key": "box_3", "textbox": "TextBox 9"},
+    {"label": "Influencer Box 4", "key": "box_4", "textbox": "TextBox 15"},
+    {"label": "Influencer Box 5", "key": "box_5", "textbox": "TextBox 11"},
+    {"label": "Influencer Box 6", "key": "box_6", "textbox": "TextBox 17"},
+]
+
+st.markdown("### Enter Influencer Data for Each Box (for Slide 5)")
+influencer_inputs = {}
+
+for box in influencer_boxes:
+    with st.container():
+        st.markdown(f"**{box['label']}**")
+        handle = st.text_input(f"{box['label']} - Handle", key=f"{box['key']}_handle")
+        reach = st.text_input(f"{box['label']} - Social Reach", key=f"{box['key']}_reach")
+        verbatim = st.text_input(f"{box['label']} - Verbatim", key=f"{box['key']}_verbatim")
+        influencer_inputs[box["textbox"]] = {
+            "@influencerhandle": handle,
+            "##": reach,
+            '"Verbatim"': verbatim,
+        }
+
 
 images = {
     "slide_6": slide_6_img,
@@ -415,7 +440,8 @@ text_inputs = {
     "slide_7_reaches": slide_7_reachtext,
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
-    "slide_9": slide_9_text
+    "slide_9": slide_9_text,
+    "influencer_boxes": influencer_inputs
 
 
     }   
@@ -456,7 +482,8 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_7_reaches": slide_7_reachtext,
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
-    "slide_9": slide_9_text
+    "slide_9": slide_9_text,
+    "influencer_boxes": influencer_inputs
 
     
     }     

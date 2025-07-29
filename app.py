@@ -742,8 +742,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(p100))
 
-
-
 # Slide 9 text (replace entire line if it matches the placeholder)
     slide = prs.slides[8]
     for shape in slide.shapes:
@@ -758,6 +756,18 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         for run in para.runs[1:]:
                             run.text = ""
 
+
+    influencer_boxes = text_inputs.get("influencer_boxes", {})
+
+#slide 5 text inputs
+    slide = prs.slides[4]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name in influencer_boxes:
+            for para in shape.text_frame.paragraphs:
+                for run in para.runs:
+                    for placeholder, value in influencer_boxes[shape.name].items():
+                        if placeholder in run.text:
+                            run.text = run.text.replace(placeholder, str(value))
          
     prs.save(output_path)
                         
