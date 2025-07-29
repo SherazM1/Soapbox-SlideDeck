@@ -397,6 +397,18 @@ influencer_boxes = [
     {"label": "Influencer Box 6", "key": "box_6", "textbox": "TextBox 17"},
 ]
 
+
+
+influencer_boxestwo = [
+    
+    {"label": "Influencer Box 1 (leftmost)", "key": "box2_1"},
+    {"label": "Influencer Box 2", "key": "box2_2"},
+    {"label": "Influencer Box 3", "key": "box2_3"},
+    {"label": "Influencer Box 4 (rightmost)", "key": "box2_4"},
+
+
+]
+
 st.markdown("### Enter Influencer Data for Each Box (for Slide 5)")
 influencer_inputs = {}
 
@@ -415,6 +427,29 @@ for box in influencer_boxes:
             "State": state,
             "Verbatim": verbatim,
         }
+
+
+st.markdown("### Enter the Influencer Data for Each Box (for Slide 8)")
+influencer_boxestwo_inputs = []
+
+for box in influencer_boxestwo:
+    with st.container():
+        st.markdown(f"**{box['label']}**")
+        handle = st.text_input(f"{box['label']} - Handle", key=f"{box['key']}_handle")
+        likes = st.text_input(f"{box['label']} - # Likes", key=f"{box['key']}_likes")
+        comments = st.text_input(f"{box['label']} - # Comments", key=f"{box['key']}_comments")
+        views = st.text_input(f"{box['label']} - # Views", key=f"{box['key']}_views")
+        reach = st.text_input(f"{box['label']} - # Social Reach", key=f"{box['key']}_reach")
+        influencer_boxestwo_inputs.append({
+            "influencerhandle": handle,
+            "# Likes": likes,
+            "# Comments": comments,
+            "# Views": views,
+            "# Social Reach": reach,
+        })
+
+# Save in text_inputs for backend use
+
 
 
 
@@ -446,7 +481,8 @@ text_inputs = {
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
     "slide_9": slide_9_text,
-    "influencer_boxes": influencer_inputs
+    "influencer_boxes": influencer_inputs,
+    "influencer_boxestwo": influencer_boxestwo_inputs
 
 
     }   
@@ -488,7 +524,8 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_7_eng": slide_7_engage,
     "slide_7_impr": slide_7_impress,
     "slide_9": slide_9_text,
-    "influencer_boxes": influencer_inputs
+    "influencer_boxes": influencer_inputs,
+    "influencer_boxestwo": influencer_boxestwo_inputs
 
     
     }     

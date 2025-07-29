@@ -708,8 +708,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         run.text = run.text.replace("$ CPM", f"${float(cpm):.2f} CPM")
                     if "#" in run.text:
                         run.text = run.text.replace("#", str(thruplays))
-# ...existing code...
-
 
 
     slide = prs.slides[11]
@@ -758,6 +756,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
 
     influencer_boxes = text_inputs.get("influencer_boxes", {})
+    influencer_boxestwo = text_inputs.get("influencer_boxestwo", [])
 
 #slide 5 text inputs
     slide = prs.slides[4]
@@ -783,6 +782,25 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     elif "Verbatim" in run.text:
                         run.text = run.text.replace("Verbatim", replacements.get("Verbatim", ""))
 
+#slide 8 text inputs
+    slide = prs.slides[7]
+    box_index = 0
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape_name == "TextBox 6":
+            if box_index < len(influencer_boxestwo):
+                replacementstwo = influencer_boxestwo[box_index]
+                for para in shape.text_frame.paragraphs:
+                    for run in para.runs:
+                        if "influencerhandle" in run.text:
+                            run.text = run.text.replace("influencerhandle", replacementstwo.get("influencerhandle", ""))
+                        if "# Likes" in run.text:
+                            run.text = run.text.replace("# Likes", replacementstwo.get("# Likes", ""))
+                        if "# Comments" in run.text:
+                            run.text = run.text.replace("# Comments", replacementstwo.get("# Comments", ""))
+                        if "# Views" in run.text:
+                            run.text = run.text.replace("# Views", replacementstwo.get("# Views", ""))
+                        if "# Social Reach" in run.text:
+                            run.text = run.text.replace("# Social Reach", replacementstwo.get("# Social Reach", ""))
          
     prs.save(output_path)
                         
