@@ -713,7 +713,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     if i < 4:
                         para.clear()
                         para.add_run().text = bullet_texts[i]
-        # Is this the ThruPlays box? (e.g., contains "# ThruPlays")
+        
     
     slide = prs.slides[11]
     for shape in slide.shapes:
