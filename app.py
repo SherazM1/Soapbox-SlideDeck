@@ -763,11 +763,26 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide = prs.slides[4]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name in influencer_boxes:
+            replacements = influencer_boxes[shape.name]
+        # Combine city/state if needed
+            city_state = f"{replacements.get('City','')}, {replacements.get('State','')}".strip(", ")
             for para in shape.text_frame.paragraphs:
                 for run in para.runs:
-                    for placeholder, value in influencer_boxes[shape.name].items():
-                        if placeholder in run.text:
-                            run.text = run.text.replace(placeholder, str(value))
+                # Replace handle
+                    if "@influencerhandle" in run.text:
+                        run.text = run.text.replace("@influencerhandle", replacements.get("@influencerhandle", ""))
+                # Replace reach
+                    if "##" in run.text:
+                        run.text = run.text.replace("##", replacements.get("##", ""))
+                # Replace city, state
+                    if "City, State" in run.text:
+                        run.text = run.text.replace("City, State", city_state)
+                # Replace verbatim (with or without quotes)
+                    if '"Verbatim"' in run.text:
+                        run.text = run.text.replace('"Verbatim"', replacements.get('"Verbatim"', ''))
+                    elif "Verbatim" in run.text:
+                        run.text = run.text.replace("Verbatim", replacements.get('"Verbatim"', ""))
+
          
     prs.save(output_path)
                         

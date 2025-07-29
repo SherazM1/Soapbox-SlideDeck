@@ -405,12 +405,17 @@ for box in influencer_boxes:
         st.markdown(f"**{box['label']}**")
         handle = st.text_input(f"{box['label']} - Handle", key=f"{box['key']}_handle")
         reach = st.text_input(f"{box['label']} - Social Reach", key=f"{box['key']}_reach")
+        city = st.text_input(f"{box['label']} - City", key=f"{box['key']}_city")
+        state = st.text_input(f"{box['label']} - State", key=f"{box['key']}_state")
         verbatim = st.text_input(f"{box['label']} - Verbatim", key=f"{box['key']}_verbatim")
         influencer_inputs[box["textbox"]] = {
             "@influencerhandle": handle,
             "##": reach,
+            "City": city,
+            "State": state,
             '"Verbatim"': verbatim,
         }
+
 
 
 images = {
