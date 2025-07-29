@@ -257,16 +257,21 @@ if "Unnamed: 18" in df.columns and "Unnamed: 17" in df.columns:
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
 
-diversity_value = ""
-if "Diversity" in df.columns:
-    col = df["Diversity"]
-    for idx, val in enumerate(col):
-        if str(val).strip() == "Diversity":
-            diversity_value = col.iloc[idx + 1]
-            break
+c2c_transfer = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "C2C Transfers":
+                c2c_transfer = row["Unnamed: 11"]
+                break
+    
+c2c_value = ""
+if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Organic & Total"]).strip() == "C2C Value": 
+                c2c_value = row["Unnamed: 11"]
 
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
     with st.container():
@@ -279,7 +284,7 @@ with col1:
 - **Engagement Rate:** {engagement_rate_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
 - **Impressions:** {impressions_value} ({impressions_increase} increase)
-- **Diversity Rate:** {diversity_value}
+
 
 ''')
         st.caption("These values will be automatically inserted into Slide 4 of your recap deck.")
@@ -342,6 +347,18 @@ with col5:
 
 ''')
           st.caption("These values will be automatically inserted into Slide 12 of your recap deck.")
+
+
+with col6:
+     with st.container():
+          st.markdown("#### What will appear on **Slide 13:**")
+          st.markdown(f'''
+- **C2C Transfers:** {c2c_transfer}
+- **C2C Value:** {c2c_value}
+                      
+ ''' )
+          st.caption("These values will be automatically inserted into Slide 13 of your recap deck.")
+        
 
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")

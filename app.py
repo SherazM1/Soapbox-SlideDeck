@@ -447,17 +447,21 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
          if str(row["Unnamed: 18"]).strip() == "1":
             p100 = row["Unnamed: 17"]
             break
+    
+    c2c_transfer = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "C2C Transfers":
+                c2c_transfer = row["Unnamed: 11"]
+                break
+    
+    c2c_value = ""
+    if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Organic & Total"]).strip() == "C2C Value": 
+                c2c_value = row["Unnamed: 11"]
          
     
-    diversity_value = ""
-    if "Diversity" in excel_df.columns:
-        col = df["Diversity"]
-        for idx, val in enumerate(col):
-            if str(val).strip() == "Diversity":
-                diversity_value = col.iloc[idx + 1]
-            break
-
-        
     # Fill TextBox 2 (Proposed Metrics)
     slide = prs.slides[3]
     for shape in slide.shapes:
@@ -517,10 +521,6 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         if "#% increase" in run.text and not percent_done:
                             run.text = run.text.replace("#", str(impressions_increase), 1)
                             percent_done = True
-                elif "Diversity Rate" in text:
-                    for run in para.runs:
-                        if "#" in run.text:
-                            run.text = run.text.replace("#", str(diversity_value))
 
     # Fill TextBox 19 (Slide 9 vertical fields)
     slide = prs.slides[8]
@@ -808,6 +808,23 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                                 run.text = run.text.replace("#", replacements.get(key, ""))
 
             box_index += 1
+            
+
+#slide 13 data
+    slide = prs.slide[12]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 5":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "10.6K" in run.text:
+                        run.text = run.text.replace("10.6K", str(c2c_transfer))
+        if shape.has_text_frame and shape.name == "TextBox 21":
+            for para in shape.text_frame.paragraphs:
+                text = para.text.strip()
+                for run in para.runs:
+                    if "27K" in run.text:
+                        run.text = run.text.replace("27K", str(c2c_value))
 
          
     prs.save(output_path)
