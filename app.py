@@ -875,13 +875,28 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     slide = prs.slides[15]
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 5":
-            for para in shape.text_frame.paragraphs:
-                if (para.text.strip() == "What were your favorite parts of the game night"
-                or para.text.strip() == "Playing Ticket to Ride: San Francisco?"):
-                    if para.runs:
-                        para.runs[0].text = str(text_slide_16)
-                        for run in para.runs[1:]:
-                            run.text = ""
+            found = False  # Track if we've already inserted the user text
+            paras_to_remove = []
+            for i, para in enumerate(shape.text_frame.paragraphs):
+                text = para.text.strip()
+                if (
+                text == "What were your favorite parts of the game night"
+                or text == "Playing Ticket to Ride: San Francisco?"
+                ):
+                    if not found:
+                        if para.runs:
+                            para.runs[0].text = str(text_slide_16)
+                            for run in para.runs[1:]:
+                                run.text = ""
+                    found = True  # Only insert user entry once
+                else:
+                    # Mark this extra placeholder paragraph for removal
+                    paras_to_remove.append(i)
+        # Remove the second matched paragraph (after loop, so we don't break indexing)
+        # Remove from the end so earlier indices remain correct
+        for idx in reversed(paras_to_remove):
+            shape.text_frame._element.remove(shape.text_frame.paragraphs[idx]._element)
+
 
 
 
