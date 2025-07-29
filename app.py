@@ -695,25 +695,28 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     
     #slide 12
     # List of strings you want to fill, in the exact order of the bullets in your template
-    bullet_texts = [
-    f"$ {cpe} CPE",
-    f"$ {cpc} CPC",
-    f"{ctr}% CTR",
-    f"$ {cpm} CPM",
-]
-
     slide = prs.slides[11]
-    for shape in slide.shapes:
-        if shape.has_text_frame and shape.name == "TextBox 6":
-            for i, para in enumerate(shape.text_frame.paragraphs):
-                if i < 4:  # Only for the first four bullets
-                    para.clear()
-                    para.add_run().text = bullet_texts[i]
-        elif "# ThruPlays" in para.text:
-            para.clear()
-            para.add_run().text = para.text.replace("#", str(thruplays))
-            # Optionally handle other lines (like thruplays) below
+    textbox6_shapes = [shape for shape in slide.shapes if shape.has_text_frame and shape.name == "TextBox 6"]
 
+# 1st TextBox 6: Bullets
+    if len(textbox6_shapes) > 0:
+        bullet_texts = [
+        f"$ {cpe} CPE",
+        f"$ {cpc} CPC",
+        f"{ctr}% CTR",
+        f"$ {cpm} CPM",
+        ]
+        for i, para in enumerate(textbox6_shapes[0].text_frame.paragraphs):
+            if i < 4:
+                para.clear()
+                para.add_run().text = bullet_texts[i]
+
+# 3rd TextBox 6: ThruPlays
+    if len(textbox6_shapes) > 2:
+        for para in textbox6_shapes[2].text_frame.paragraphs:
+            if "#" in para.text:
+                para.clear()
+                para.add_run().text = para.text.replace("#", str(thruplays))
 
 
 
