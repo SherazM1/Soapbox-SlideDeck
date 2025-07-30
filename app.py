@@ -377,7 +377,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     if diversity_col is not None:
     # Try to get the first non-empty, non-nan value under the Diversity column
-        for val in df[diversity_col]:
+        for val in excel_df[diversity_col]:
             if pd.notna(val) and str(val).strip() != "":
                 diversity_value = str(val).strip()
                 break
