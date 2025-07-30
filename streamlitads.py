@@ -324,6 +324,7 @@ with col2:
 - **Paid Engagements:** {paid_engagements}
 
 ''')
+          st.caption("These values will be automatically inserted into Slide 7 of your recap deck.")
 
                       
 with col3:
@@ -355,7 +356,8 @@ with col4:
 - **Total Views:** {organic_views_impressions}
 - **Total Impressions:** {impressions_value}
          
-    ''')
+''')
+        st.caption("These values will be automatically inserted into Slides 10 and 11 of your recap deck.")
         
 with col5:
      with st.container():
