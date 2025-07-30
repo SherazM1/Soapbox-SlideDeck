@@ -48,11 +48,8 @@ for _, row in df.iterrows():
 
 diversity_value = ""
 if "Diversity" in df.columns:
-    for idx, row in df.iterrows():
-        val = row["Diversity"]
-        if pd.notna(val):  # or: if str(val).strip() != "" for string check
-            diversity_value = val
-            break
+    # This gets the first row directly under the "Diversity" column header
+    diversity_value = df["Diversity"].iloc[0]
 
 
 engagement_rate_value = ""
