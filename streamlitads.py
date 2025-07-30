@@ -47,16 +47,18 @@ for _, row in df.iterrows():
         break
 
 diversity_value = ""
+diversity_col = None
+
+# Find the "Diversity" column (case/whitespace insensitive)
 for col in df.columns:
-    for i, value in enumerate(df[col]):
-        # Check if cell matches "Diversity" (case and whitespace insensitive)
-        if str(value).strip().lower() == "diversity":
-            # Try to read the cell directly below (i+1)
-            if i + 1 < len(df[col]):
-                diversity_value = df[col].iloc[i + 1]
-            break  # Stop after first match
-    if diversity_value:
-        break  # Stop searching after found
+    if str(col).strip().lower() == "Diversity":
+        diversity_col = col
+        break
+
+# If found, get the value directly below the header
+if diversity_col is not None:
+    diversity_value = df[diversity_col].iloc[0]
+
 
 
 engagement_rate_value = ""
