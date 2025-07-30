@@ -47,10 +47,16 @@ for _, row in df.iterrows():
         break
 
 diversity_value = ""
-if "Diversity" in df.iterrows():
-    # This gets the first row directly under the "Diversity" column header
-    diversity_value = df["Diversity"].iloc[0]
-    print("Diversity Value:", diversity_value)
+for col in df.columns:
+    for i, value in enumerate(df[col]):
+        # Check if cell matches "Diversity" (case and whitespace insensitive)
+        if str(value).strip().lower() == "diversity":
+            # Try to read the cell directly below (i+1)
+            if i + 1 < len(df[col]):
+                diversity_value = df[col].iloc[i + 1]
+            break  # Stop after first match
+    if diversity_value:
+        break  # Stop searching after found
 
 
 engagement_rate_value = ""

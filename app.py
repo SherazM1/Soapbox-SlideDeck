@@ -365,6 +365,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             if str(row["Dates"]).strip() == "Influencers":
                 influencer_count = row["Unnamed: 14"]
                 break
+    
 
 
 
