@@ -801,6 +801,42 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         for run in para.runs[1:]:
                             run.text = ""
 
+#slide 2 input
+    slide = prs.slides[1]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 7":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "January 1, 2025 – February 1, 2025":
+                    if para.runs:
+                        para.runs[0].text = str(date_slide_2)
+                        for run in para.runs[1:]:
+                            run.text = ""
+        if shape.has_text_frame and shape.name == "TextBox 8":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "CampaignHashtag":
+                    if para.runs:
+                        para.runs[0].text = str(hashtag_slide_2)
+                        for run in para.runs[1:]:
+                            run.text = ""
+
+#slide 3 input
+    slide = prs.slides[2]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 7":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "January 1, 2025 – February 1, 2025":
+                    if para.runs:
+                        para.runs[0].text = str(date_slide_3)
+                        for run in para.runs[1:]:
+                            run.text = ""
+        if shape.has_text_frame and shape.name == "TextBox 8":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "CampaignHashtag":
+                    if para.runs:
+                        para.runs[0].text = str(hashtag_slide_3)
+                        for run in para.runs[1:]:
+                            run.text = ""
+
                         
 
 
