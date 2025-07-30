@@ -793,7 +793,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         para.runs[0].text = str(date_slide_1)
                         for run in para.runs[1:]:
                             run.text = ""
-        elif shape.has_text_frame and shape.name == "TextBox 6":
+        if shape.has_text_frame and shape.name == "TextBox 6":
             for para in shape.text_frame.paragraphs:
                 if para.text.strip() == "CampaignHashtag":
                     if para.runs:
