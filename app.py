@@ -704,40 +704,24 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
 
     slide = prs.slides[11]
-    bullet_texts = [
-    f"$ {cpe} CPE",
-    f"$ {cpc} CPC",
-    f"{ctr}% CTR",
-    f"$ {cpm} CPM",
-    ]
-
-    found = False  # Only update the first correct TextBox 6
+    label_to_value = {
+    "CPE": f"${cpe}",
+    "CPC": f"${cpc}",
+    "CTR": f"{ctr}%",
+    "CPM": f"${cpm}",
+    }
 
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
-        # Check if this is the bullet box by matching the first bullet's text
-            if shape.text_frame.paragraphs and "$ CPE" in shape.text_frame.paragraphs[0].text:
-            # Optional: clear all paragraphs (or repurpose existing ones if you want)
-                while len(shape.text_frame.paragraphs) > 1:
-                    shape.text_frame._element.remove(shape.text_frame.paragraphs[1]._element)
+        # Find the correct bullet box by checking if it contains "CPE"
+            if any("CPE" in para.text for para in shape.text_frame.paragraphs):
+                for para in shape.text_frame.paragraphs:
+                    for label, value in label_to_value.items():
+                        if label in para.text:
+                            idx = para.text.find(label)
+                            para.text = para.text[:idx] + value + " " + para.text[idx:]
+                break  # Stop after updating the correct TextBox 6
 
-            # Replace the first paragraph and set the rest
-                for i, bullet in enumerate(bullet_texts):
-                    if i == 0:
-                    # First bullet: preserve formatting by only changing text of first run
-                        para = shape.text_frame.paragraphs[0]
-                        if para.runs:
-                            para.runs[0].text = bullet
-                        # Remove any additional runs in this paragraph
-                            for run in para.runs[1:]:
-                                run.text = ""
-                    else:
-                        para.text = bullet
-                else:
-                    para = shape.text_frame.add_paragraph()
-                    para.text = bullet
-            found = True
-            break  # Stop after updating the correct box
 
 
 # For ThruPlays
