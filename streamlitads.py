@@ -46,6 +46,15 @@ for _, row in df.iterrows():
         engagements_value = row["Unnamed: 11"]
         break
 
+diversity_value = ""
+if "Diversity" in df.columns:
+    for idx, row in df.iterrows():
+        val = row["Diversity"]
+        if pd.notna(val):  # or: if str(val).strip() != "" for string check
+            diversity_value = val
+            break
+
+
 engagement_rate_value = ""
 for _, row in df.iterrows():
     if str(row["Organic & Total"]).strip() == "Program ER":
@@ -289,6 +298,7 @@ with col1:
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
 - **Influencer Count:** {influencer_count}
+- **Diversity Rate:** {diversity_value}
 - **Social Posts & Stories:** {social_posts_value}
 - **Engagement Rate:** {engagement_rate_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
