@@ -366,7 +366,22 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 influencer_count = row["Unnamed: 14"]
                 break
     
+    diversity_value = ""
+    diversity_col = None
 
+# Normalize column names to string and strip whitespace
+    for col in excel_df.columns:
+        if str(col).strip().lower() == "diversity":
+            diversity_col = col
+            break
+
+    if diversity_col is not None:
+    # Try to get the first non-empty, non-nan value under the Diversity column
+        for val in df[diversity_col]:
+            if pd.notna(val) and str(val).strip() != "":
+                diversity_value = str(val).strip()
+                break
+    
 
 
     paid_saves = ""
@@ -511,6 +526,10 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(influencer_count))
+                elif "Diversity Rate" in text:
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(diversity_value))
                 # Social Posts & Stories
                 elif "Social Posts & Stories" in text:
                     for run in para.runs:
