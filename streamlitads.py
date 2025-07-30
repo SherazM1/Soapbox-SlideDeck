@@ -361,11 +361,31 @@ with col6:
         
 
 
+st.header("Enter Title Slide Info")
+
+cols = st.columns(3)  # 3 columns for 3 slides
+
+with cols[0]:
+    st.subheader("Slide 1")
+    slide_1_date = st.text_input("Date", value="January 1, 2025", key="slide_1_date")
+    slide_1_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_1_hashtag")
+
+with cols[1]:
+    st.subheader("Slide 2")
+    slide_2_date = st.text_input("Date", value="January 1, 2025", key="slide_2_date")
+    slide_2_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_2_hashtag")
+
+with cols[2]:
+    st.subheader("Slide 3")
+    slide_3_date = st.text_input("Date", value="January 1, 2025", key="slide_3_date")
+    slide_3_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_3_hashtag")
+
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
 slide_13_text = st.text_input("Enter the date for Slide 13", value="12/1/26")
 slide_15_text = st.text_input("Enter the question for Slide 15", value="On a scale of 1 to 10...")
 slide_16_text = st.text_input("Enter the question for Slide 16", value="What were your favorite parts...")
+
 
 
 slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
@@ -551,7 +571,15 @@ text_inputs = {
     "slide_15": slide_15_text,
     "slide_16": slide_16_text,
     "influencer_boxes": influencer_inputs,
-    "influencer_boxestwo": influencer_boxestwo_inputs
+    "influencer_boxestwo": influencer_boxestwo_inputs,
+    "slide_1_d": slide_1_date,
+    "slide_1_htg": slide_1_hashtag,
+    "slide_2_d": slide_2_date,
+    "slide_2_htg": slide_2_hashtag,
+    "slide_3_d": slide_3_date,
+    "slide_3_htg": slide_3_hashtag
+
+
 
 
     }   
@@ -597,9 +625,15 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_15": slide_15_text,
     "slide_16": slide_16_text,
     "influencer_boxes": influencer_inputs,
-    "influencer_boxestwo": influencer_boxestwo_inputs
+    "influencer_boxestwo": influencer_boxestwo_inputs,
+    "slide_1_d": slide_1_date,
+    "slide_1_htg": slide_1_hashtag,
+    "slide_2_d": slide_2_date,
+    "slide_2_htg": slide_2_hashtag,
+    "slide_3_d": slide_3_date,
+    "slide_3_htg": slide_3_hashtag
 
-    
+
     }     
 
 

@@ -118,7 +118,12 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     text_slide_13 = text_inputs.get("slide_13", "@default")
     text_slide_15 = text_inputs.get("slide_15", "@default")
     text_slide_16 = text_inputs.get("slide_16", "@default")
-
+    date_slide_1 = text_inputs.get("slide_1_d", "@default")
+    hashtag_slide_1 = text_inputs.get("slide_1_htg", "@default")
+    date_slide_2 = text_inputs.get("slide_2_d", "@default")
+    hashtag_slide_2 = text_inputs.get("slide_2_htg", "@default")
+    date_slide_3 = text_inputs.get("slide_3_d", "@default")
+    hashtag_slide_3 = text_inputs.get("slide_3_htg", "@default")
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
     try:
@@ -777,6 +782,25 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                     # Clear out any extra runs (if present)
                         for run in para.runs[1:]:
                             run.text = ""
+    
+    #slide 1 input
+    slide = prs.slides[0]
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 5":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "January 1, 2025 – February 1, 2025":
+                    if para.runs:
+                        para.runs[0].text = str(date_slide_1)
+        elif shape.has_text_frame and shape.name == "TextBox 6":
+            for para in shape.text_frame.paragraphs:
+                if para.text.strip() == "CampaignHashtag":
+                    if para.runs:
+                        para.runs[0].text = str(hashtag_slide_1)
+                        for run in para.runs[1:]:
+                            run.text = ""
+                        
+
+
 
 
     influencer_boxes = text_inputs.get("influencer_boxes", {})
