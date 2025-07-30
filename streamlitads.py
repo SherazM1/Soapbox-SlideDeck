@@ -49,16 +49,18 @@ for _, row in df.iterrows():
 diversity_value = ""
 diversity_col = None
 
-# Find the "Diversity" column (case/whitespace insensitive)
+# Normalize column names to string and strip whitespace
 for col in df.columns:
-    if str(col).strip().lower() == "Diversity":
+    if str(col).strip().lower() == "diversity":
         diversity_col = col
         break
 
-# If found, get the value directly below the header
 if diversity_col is not None:
-    diversity_value = df[diversity_col].iloc[0]
-
+    # Try to get the first non-empty, non-nan value under the Diversity column
+    for val in df[diversity_col]:
+        if pd.notna(val) and str(val).strip() != "":
+            diversity_value = str(val).strip()
+            break
 
 
 engagement_rate_value = ""
