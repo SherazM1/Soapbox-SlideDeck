@@ -124,6 +124,8 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
     hashtag_slide_2 = text_inputs.get("slide_2_htg", "@default")
     date_slide_3 = text_inputs.get("slide_3_d", "@default")
     hashtag_slide_3 = text_inputs.get("slide_3_htg", "@default")
+    slide_4_bullet1 = text_inputs.get("slide_4_b1", "@default")
+    slide_4_bullet2 = text_inputs.get("slide_4_b2", "@default")
 
     # ---------- Extract Proposed Metrics Block (TextBox 2) ----------
     try:
@@ -801,6 +803,27 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(p100))
 
+
+
+#slide 4 program goals
+    slide = prs.slides[3]  # Or whatever index slide 4 actually is (Python is 0-based)
+    for shape in slide.shapes:
+        if shape.has_text_frame and shape.name == "TextBox 10":
+            for para in shape.text_frame.paragraphs:
+            # Bullet 1
+                if para.text.strip() == "Create excitement and promote (brand) products available at (retailer).":
+                    if para.runs:
+                        para.runs[0].text = str(slide_4_bullet1)
+                        for run in para.runs[1:]:
+                            run.text = ""
+            # Bullet 2
+                if para.text.strip() == "Encourage shoppers to purchase the (brand and products)…":
+                    if para.runs:
+                        para.runs[0].text = str(slide_4_bullet2)
+                        for run in para.runs[1:]:
+                            run.text = ""
+
+
 # Slide 9 text (replace entire line if it matches the placeholder)
     slide = prs.slides[8]
     for shape in slide.shapes:
@@ -869,7 +892,7 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                         for run in para.runs[1:]:
                             run.text = ""
 
-                        
+
 
 
 

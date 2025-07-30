@@ -407,6 +407,9 @@ with cols[2]:
     slide_3_date = st.text_input("Date", value="January 1, 2025", key="slide3date")
     slide_3_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide3hashtag")
 
+
+slide_4_firstbullet = st.text_input("Enter the first bullet for the program goals", value="placeholder bullet")
+slide_4_secondbullet = st.text_input("Enter the first bullet for the program goals", value="placeholder again")
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
 slide_13_text = st.text_input("Enter the date for Slide 13", value="12/1/26")
@@ -578,6 +581,7 @@ images = {
     "slide_11_second": slide_11_second_img,
     "slide_11_third": slide_11_third_img,
     "slide_11_fourth": slide_11_fourth_img,
+    
 
 
 }
@@ -604,9 +608,9 @@ text_inputs = {
     "slide_2_d": slide_2_date,
     "slide_2_htg": slide_2_hashtag,
     "slide_3_d": slide_3_date,
-    "slide_3_htg": slide_3_hashtag
-
-
+    "slide_3_htg": slide_3_hashtag,
+    "slide_4_b1": slide_4_firstbullet,
+    "slide_4_b2": slide_4_secondbullet
 
 
     }   
@@ -658,7 +662,9 @@ if st.button("Generate PowerPoint Recap Deck"):
     "slide_2_d": slide_2_date,
     "slide_2_htg": slide_2_hashtag,
     "slide_3_d": slide_3_date,
-    "slide_3_htg": slide_3_hashtag
+    "slide_3_htg": slide_3_hashtag,
+    "slide_4_b1": slide_4_firstbullet,
+    "slide_4_b2": slide_4_secondbullet
 
 
     }     
