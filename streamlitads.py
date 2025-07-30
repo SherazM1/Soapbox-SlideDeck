@@ -367,18 +367,18 @@ cols = st.columns(3)  # 3 columns for 3 slides
 
 with cols[0]:
     st.subheader("Slide 1")
-    slide_1_date = st.text_input("Date", value="January 1, 2025", key="slide_1_date")
-    slide_1_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_1_hashtag")
+    slide_1_date = st.text_input("Date", value="January 1, 2025", key="slide1date")
+    slide_1_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide1hashtag")
 
 with cols[1]:
     st.subheader("Slide 2")
-    slide_2_date = st.text_input("Date", value="January 1, 2025", key="slide_2_date")
-    slide_2_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_2_hashtag")
+    slide_2_date = st.text_input("Date", value="January 1, 2025", key="slide2date")
+    slide_2_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide2hashtag")
 
 with cols[2]:
     st.subheader("Slide 3")
-    slide_3_date = st.text_input("Date", value="January 1, 2025", key="slide_3_date")
-    slide_3_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide_3_hashtag")
+    slide_3_date = st.text_input("Date", value="January 1, 2025", key="slide3date")
+    slide_3_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide3hashtag")
 
 influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
 slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
