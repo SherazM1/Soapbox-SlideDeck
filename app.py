@@ -705,29 +705,24 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     slide = prs.slides[11]
     label_to_value = {
-    "CPE": f"{cpe}",
-    "CPC": f"{cpc}",
-    "CTR": f"{ctr}",
-    "CPM": f"{cpm}",
+    "CPE": str(cpe),
+    "CPC": str(cpc),
+    "CTR": str(ctr),
+    "CPM": str(cpm),
     }
 
     for shape in slide.shapes:
         if shape.has_text_frame and shape.name == "TextBox 6":
-        # Find the correct box: must have "CPE" somewhere in its paragraphs
-            if any("CPE" in para.text for para in shape.text_frame.paragraphs):
+        # Find the right TextBox 6 by its content
+            if any(label in para.text for label in label_to_value.keys() for para in shape.text_frame.paragraphs):
                 for para in shape.text_frame.paragraphs:
                     for label, value in label_to_value.items():
-                    # Only process if label appears in this paragraph
                         if label in para.text:
-                            for run in para.runs:
-                                if label in run.text:
-                                # Insert value before the label
-                                    idx = run.text.find(label)
-                                    run.text = run.text[:idx] + value + " " + run.text[idx:]
-                                    break  # Only modify the first matching run per label
-                break  # Only modify the first matching TextBox 6
-
-
+                        # Prepend value and a space to the first run
+                            if para.runs:
+                                para.runs[0].text = f"{value} " + para.runs[0].text
+                            break  # Only update once per paragraph
+                break
 
 
 # For ThruPlays
