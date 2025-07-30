@@ -49,7 +49,7 @@ for _, row in df.iterrows():
 diversity_value = ""
 if "Diversity" in df.iterrows():
     # This gets the first row directly under the "Diversity" column header
-    diversity_value = df["Diversity"].iloc[0]
+    diversity_value = df["Diversity"].iloc[1]
 
 
 engagement_rate_value = ""
