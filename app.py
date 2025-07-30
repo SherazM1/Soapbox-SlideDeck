@@ -358,6 +358,15 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
                 paid_shares = row["Dates"]
                 break
 
+    
+    influencer_count = ""
+    if "Dates" in excel_df.columns and "Unnamed: 14" in excel_df.columns:
+        for _, row in excel_df.iterrows():
+            if str(row["Dates"]).strip() == "Influencers":
+                influencer_count = row["Unnamed: 14"]
+                break
+
+
 
     paid_saves = ""
     if "Unnamed: 14" in excel_df.columns and "Dates" in excel_df.columns:
@@ -497,8 +506,12 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         if shape.has_text_frame and shape.name == "TextBox 15":
             for para in shape.text_frame.paragraphs:
                 text = para.text.strip()
+                if "Influencers" in text:
+                    for run in para.runs:
+                        if "#" in run.text:
+                            run.text = run.text.replace("#", str(influencer_count))
                 # Social Posts & Stories
-                if "Social Posts & Stories" in text:
+                elif "Social Posts & Stories" in text:
                     for run in para.runs:
                         if "#" in run.text:
                             run.text = run.text.replace("#", str(social_posts_value))

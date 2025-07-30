@@ -147,6 +147,14 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 break
 
 
+influencer_count = ""
+if "Dates" in df.columns and "Unnamed: 14" in df.columns:
+        for _, row in df.iterrows():
+            if str(row["Dates"]).strip() == "Influencers":
+                influencer_count = row["Unnamed: 14"]
+                break
+
+
 organic_views_impressions = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
         for _, row in df.iterrows():
@@ -280,6 +288,7 @@ with col1:
 - **Proposed Influencers:** {metrics.get('Influencers','')}
 - **Proposed Engagements:** {metrics.get('Engagements','')}
 - **Proposed Impressions:** {metrics.get('Impressions','')}
+- **Influencer Count:** {influencer_count}
 - **Social Posts & Stories:** {social_posts_value}
 - **Engagement Rate:** {engagement_rate_value}
 - **Engagements:** {engagements_value} ({engagements_increase} increase)
