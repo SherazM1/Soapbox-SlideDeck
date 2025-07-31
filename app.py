@@ -145,10 +145,13 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
             f.write(img_bytes)
         for shape in slide.shapes:
             if shape.name == "Picture 2":
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                left, top = shape.left, shape.top
+            # Optional: Remove the placeholder box
                 slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+            # Add the image at the box's position, natural size
+                slide.shapes.add_picture(temp_img_path, left, top)
                 break
+
 
     # Slide 7
     slide = prs.slides[6]
