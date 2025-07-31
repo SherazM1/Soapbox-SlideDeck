@@ -7,6 +7,8 @@ import pandas as pd
 import io
 from io import BytesIO
 from pptx import Presentation
+from pptx.util import Inches
+from PIL import Image
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -136,20 +138,45 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
 
     print("COLUMNS:", list(excel_df.columns))
 
-    # Slide 6
     if images and "slide_6" in images and images["slide_6"] is not None:
         slide = prs.slides[5]
         img_bytes = images["slide_6"].read()
         temp_img_path = "temp_slide_6_img.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
+
+    # Read the image size in pixels
+        img = Image.open(temp_img_path)
+        img_width_px, img_height_px = img.size
+
+    # PowerPoint uses EMUs; there are 914400 EMUs per inch
+    # Typical image DPI is 96, so we convert pixels to inches
+        dpi = 96
+        img_width = int(img_width_px / dpi * 914400)
+        img_height = int(img_height_px / dpi * 914400)
+
         for shape in slide.shapes:
             if shape.name == "Picture 2":
                 left, top = shape.left, shape.top
-            # Optional: Remove the placeholder box
+                box_width, box_height = shape.width, shape.height
+
+            # --- Resize if necessary ---
+                scale = min(
+                    box_width / img_width if img_width > box_width else 1.0,
+                    box_height / img_height if img_height > box_height else 1.0
+                )
+                final_width = int(img_width * scale)
+                final_height = int(img_height * scale)
+
+            # Optional: Center inside the box if smaller than box
+                final_left = left + int((box_width - final_width) / 2)
+                final_top = top + int((box_height - final_height) / 2)
+
+            # Remove the old placeholder/image
                 slide.shapes._spTree.remove(shape._element)
-            # Add the image at the box's position, natural size
-                slide.shapes.add_picture(temp_img_path, left, top)
+
+            # Add image, resized if needed, centered in box
+                slide.shapes.add_picture(temp_img_path, final_left, final_top, width=final_width, height=final_height)
                 break
 
 
