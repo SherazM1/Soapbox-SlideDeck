@@ -187,66 +187,153 @@ def populate_pptx_from_excel(excel_df, pptx_template_path, output_path, images=N
         temp_img_path = "temp_slide_7_left.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
+
+    # Get natural image size in pixels
+        img = Image.open(temp_img_path)
+        img_width_px, img_height_px = img.size
+
+    # PowerPoint units (EMU)
+        dpi = 96
+        img_width = int(img_width_px / dpi * 914400)
+        img_height = int(img_height_px / dpi * 914400)
+
         for shape in slide.shapes:
             if shape.name == "Picture 3":
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
-                break
+                box_left, box_top = shape.left, shape.top
+                box_width, box_height = shape.width, shape.height
 
+            # Scale if needed
+                scale = min(
+                box_width / img_width if img_width > box_width else 1.0,
+                box_height / img_height if img_height > box_height else 1.0
+                )
+                final_width = int(img_width * scale)
+                final_height = int(img_height * scale)
+
+            # Center
+                final_left = box_left + int((box_width - final_width) / 2)
+                final_top = box_top + int((box_height - final_height) / 2)
+
+            # Remove old placeholder
+                slide.shapes._spTree.remove(shape._element)
+
+            # Add the image, centered & fitted
+                slide.shapes.add_picture(temp_img_path, final_left, final_top, width=final_width, height=final_height)
+                break
     if images and "slide_7_right" in images and images["slide_7_right"] is not None:
         img_bytes = images["slide_7_right"].read()
         temp_img_path = "temp_slide_7_right.jpg"
         with open(temp_img_path, "wb") as f:
             f.write(img_bytes)
+
+        img = Image.open(temp_img_path)
+        img_width_px, img_height_px = img.size
+
+        dpi = 96
+        img_width = int(img_width_px / dpi * 914400)
+        img_height = int(img_height_px / dpi * 914400)
+
         for shape in slide.shapes:
             if shape.name == "Picture 2":
-                left, top, width, height = shape.left, shape.top, shape.width, shape.height
+                box_left, box_top = shape.left, shape.top
+                box_width, box_height = shape.width, shape.height
+
+                scale = min(
+                    box_width / img_width if img_width > box_width else 1.0,
+                    box_height / img_height if img_height > box_height else 1.0
+                )
+                final_width = int(img_width * scale)
+                final_height = int(img_height * scale)
+
+                final_left = box_left + int((box_width - final_width) / 2)
+                final_top = box_top + int((box_height - final_height) / 2)
+
                 slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(temp_img_path, left, top, width=width, height=height)
+                slide.shapes.add_picture(temp_img_path, final_left, final_top, width=final_width, height=final_height)
                 break
 
     # Slide 8 (FOUR images)
     slide = prs.slides[7]
     slide8_img_configs = [
-        ("slide_8_first",  "Picture 12", "temp_slide_8_first.jpg"),
-        ("slide_8_second", "Picture 13", "temp_slide_8_second.jpg"),
-        ("slide_8_third",  "Picture 16", "temp_slide_8_third.jpg"),
-        ("slide_8_fourth", "Picture 17", "temp_slide_8_fourth.jpg"),
+    ("slide_8_first",  "Picture 12", "temp_slide_8_first.jpg"),
+    ("slide_8_second", "Picture 13", "temp_slide_8_second.jpg"),
+    ("slide_8_third",  "Picture 16", "temp_slide_8_third.jpg"),
+    ("slide_8_fourth", "Picture 17", "temp_slide_8_fourth.jpg"),
     ]
+
     for img_key, shape_name, temp_path in slide8_img_configs:
         if images and img_key in images and images[img_key] is not None:
             img_bytes = images[img_key].read()
             with open(temp_path, "wb") as f:
                 f.write(img_bytes)
-            for shape in slide.shapes:
-                if shape.name == shape_name:
-                    left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                    slide.shapes._spTree.remove(shape._element)
-                    slide.shapes.add_picture(temp_path, left, top, width=width, height=height)
-                    break
+
+        img = Image.open(temp_path)
+        img_width_px, img_height_px = img.size
+
+        dpi = 96
+        img_width = int(img_width_px / dpi * 914400)
+        img_height = int(img_height_px / dpi * 914400)
+
+        for shape in slide.shapes:
+            if shape.name == shape_name:
+                box_left, box_top = shape.left, shape.top
+                box_width, box_height = shape.width, shape.height
+
+                scale = min(
+                    box_width / img_width if img_width > box_width else 1.0,
+                    box_height / img_height if img_height > box_height else 1.0
+                )
+                final_width = int(img_width * scale)
+                final_height = int(img_height * scale)
+
+                final_left = box_left + int((box_width - final_width) / 2)
+                final_top = box_top + int((box_height - final_height) / 2)
+
+                slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_path, final_left, final_top, width=final_width, height=final_height)
+                break
 
 
     #slide 11 (Four images)
     slide = prs.slides[10]
     slide11_img_configs = [
-        ("slide_11_first", "Picture 26", "temp_slide_11_first.jpg"),
-        ("slide_11_second", "Picture 15", "temp_slide_11_second.jpg"),
-        ("slide_11_third", "Picture 27", "temp_slide_11_third.jpg"),
-        ("slide_11_fourth", "Picture 31", "temp_slide_11_fourth.jpg")
+    ("slide_11_first", "Picture 26", "temp_slide_11_first.jpg"),
+    ("slide_11_second", "Picture 15", "temp_slide_11_second.jpg"),
+    ("slide_11_third", "Picture 27", "temp_slide_11_third.jpg"),
+    ("slide_11_fourth", "Picture 31", "temp_slide_11_fourth.jpg")
     ]
+
     for img_key, shape_name, temp_path in slide11_img_configs:
         if images and img_key in images and images[img_key] is not None:
             img_bytes = images[img_key].read()
             with open(temp_path, "wb") as f:
                 f.write(img_bytes)
-            for shape in slide.shapes:
-                if shape.name == shape_name:
-                    left, top, width, height = shape.left, shape.top, shape.width, shape.height
-                    slide.shapes._spTree.remove(shape._element)
-                    slide.shapes.add_picture(temp_path, left, top, width=width, height=height)
-                    break
 
+        img = Image.open(temp_path)
+        img_width_px, img_height_px = img.size
+
+        dpi = 96
+        img_width = int(img_width_px / dpi * 914400)
+        img_height = int(img_height_px / dpi * 914400)
+
+        for shape in slide.shapes:
+            if shape.name == shape_name:
+                box_left, box_top = shape.left, shape.top
+                box_width, box_height = shape.width, shape.height
+
+                scale = min(
+                    box_width / img_width if img_width > box_width else 1.0,
+                    box_height / img_height if img_height > box_height else 1.0
+                )
+                final_width = int(img_width * scale)
+                final_height = int(img_height * scale)
+
+                final_left = box_left + int((box_width - final_width) / 2)
+                final_top = box_top + int((box_height - final_height) / 2)
+
+                slide.shapes._spTree.remove(shape._element)
+                slide.shapes.add_picture(temp_path, final_left, final_top, width=final_width, height=final_height)
+                break
     # Social Posts & Stories
     social_posts_value = ""
     if "Organic & Total" in excel_df.columns and "Unnamed: 11" in excel_df.columns:
