@@ -300,7 +300,7 @@ col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
     with st.container():
-        st.markdown("#### What will appear on **Slide 4:**")
+        st.markdown("#### What will appear on **The Program Overview Slide:**")
         st.markdown(f'''
 - **Proposed Influencers:** {metrics.get('Influencers','')}
 - **Proposed Engagements:** {metrics.get('Engagements','')}
