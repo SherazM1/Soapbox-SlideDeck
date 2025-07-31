@@ -318,7 +318,7 @@ with col1:
 
 with col2:
      with st.container():
-          st.markdown("#### What will appear on **Slide 7:**")
+          st.markdown("#### What will appear on **The High Performing Posts (2):**")
           st.markdown(f'''
 - **Paid Impressions:** {impressions_paid}
 - **Paid Engagements:** {paid_engagements}
@@ -329,7 +329,7 @@ with col2:
                       
 with col3:
     with st.container():
-        st.markdown("#### What will appear on **Slide 9:**")
+        st.markdown("#### What will appear on **Engagement Summary:**")
         st.markdown("##### **MAKE SURE TO MANUALLY ADD CART TRANSFERS**  ")
         st.markdown(f'''
 - **Organic Likes:** {organic_likes}
@@ -349,7 +349,7 @@ with col3:
 
 with col4:
     with st.container():
-        st.markdown("#### What will appear on **Slides 10 and 11:**")
+        st.markdown("#### What will appear on **Impressions Summary and Impressions Summary (images):**")
         st.markdown(f'''
 - **Influencer Reach:** {organic_reach_impressions}
 - **Ad Impressions:** {impressions_paid}
@@ -361,7 +361,7 @@ with col4:
         
 with col5:
      with st.container():
-          st.markdown("#### What will appear on **Slide 12:**")
+          st.markdown("#### What will appear on **Paid Social Overview:**")
           st.markdown(f'''
                       
 - **CPE:** {cpe}
@@ -380,7 +380,7 @@ with col5:
 
 with col6:
      with st.container():
-          st.markdown("#### What will appear on **Slide 13:**")
+          st.markdown("#### What will appear on **Click2Cart Recap:**")
           st.markdown(f'''
 - **C2C Transfers:** {c2c_transfer}
 - **C2C Value:** {c2c_value}
