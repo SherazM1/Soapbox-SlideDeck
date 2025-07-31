@@ -395,61 +395,61 @@ st.header("Enter Title Slide Info")
 cols = st.columns(3)  # 3 columns for 3 slides
 
 with cols[0]:
-    st.subheader("Slide 1")
+    st.subheader("Title Slide")
     slide_1_date = st.text_input("Date", value="January 1, 2025", key="slide1date")
     slide_1_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide1hashtag")
 
 with cols[1]:
-    st.subheader("Slide 2")
+    st.subheader("Title Slide 2 (5 images)")
     slide_2_date = st.text_input("Date", value="January 1, 2025", key="slide2date")
     slide_2_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide2hashtag")
 
 with cols[2]:
-    st.subheader("Slide 3")
+    st.subheader("Title Slide 3 (2 images)")
     slide_3_date = st.text_input("Date", value="January 1, 2025", key="slide3date")
     slide_3_hashtag = st.text_input("Hashtag", value="#CampaignHashtag", key="slide3hashtag")
 
 
 slide_4_firstbullet = st.text_input("Enter the first bullet for the program goals", value="placeholder bullet")
 slide_4_secondbullet = st.text_input("Enter the first bullet for the program goals", value="placeholder again")
-influencer_slide_6 = st.text_input("Enter the Influencer Handle for Slide 6", value="@influencerhandle")
-slide_9_text = st.text_input("Enter the Line for the Top Text of Slide 9", value="hey this is a placeholder")
-slide_13_text = st.text_input("Enter the date for Slide 13", value="12/1/26")
-slide_15_text = st.text_input("Enter the question for Slide 15", value="On a scale of 1 to 10...")
-slide_16_text = st.text_input("Enter the question for Slide 16", value="What were your favorite parts...")
+influencer_slide_6 = st.text_input("Enter the Influencer Handle for Program Assets", value="@influencerhandle")
+slide_9_text = st.text_input("Enter the Line for the Top Text of Engagements Summary", value="hey this is a placeholder")
+slide_13_text = st.text_input("Enter the date for Click2Cart Recap ", value="12/1/26")
+slide_15_text = st.text_input("Enter the question for Key Insights (1)", value="On a scale of 1 to 10...")
+slide_16_text = st.text_input("Enter the question for Key Insights (2)", value="What were your favorite parts...")
 
 
 
-slide_6_img = st.file_uploader("Upload image for Slide 6", type=["png", "jpg", "jpeg"])
+slide_6_img = st.file_uploader("Upload image for Program Assets", type=["png", "jpg", "jpeg"])
 
 col_left, col_right = st.columns(2)
 with col_left:
-    slide_7_left_img = st.file_uploader("Slide 7 — Upload image for LEFT box - Organic", type=["png", "jpg", "jpeg"], key="slide7left")
+    slide_7_left_img = st.file_uploader("High Performing Posts (2) — Upload image for LEFT box - Organic", type=["png", "jpg", "jpeg"], key="slide7left")
 with col_right:
-    slide_7_right_img = st.file_uploader("Slide 7 — Upload image for RIGHT box - Paid", type=["png", "jpg", "jpeg"], key="slide7right")
+    slide_7_right_img = st.file_uploader("High Performing Posts (2) — Upload image for RIGHT box - Paid", type=["png", "jpg", "jpeg"], key="slide7right")
 
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    slide_8_first_img = st.file_uploader("Slide 8 — 1st image (farthest left)", type=["png", "jpg", "jpeg"], key="slide8first")
+    slide_8_first_img = st.file_uploader("High Performing Posts (4) — 1st image (farthest left)", type=["png", "jpg", "jpeg"], key="slide8first")
 with col2:
-    slide_8_second_img = st.file_uploader("Slide 8 — 2nd image", type=["png", "jpg", "jpeg"], key="slide8second")
+    slide_8_second_img = st.file_uploader("High Performing Posts (4) - 2nd image", type=["png", "jpg", "jpeg"], key="slide8second")
 with col3:
-    slide_8_third_img = st.file_uploader("Slide 8 — 3rd image", type=["png", "jpg", "jpeg"], key="slide8third")
+    slide_8_third_img = st.file_uploader("High Performing Posts (4) - 3rd image", type=["png", "jpg", "jpeg"], key="slide8third")
 with col4:
-    slide_8_fourth_img = st.file_uploader("Slide 8 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide8fourth")
+    slide_8_fourth_img = st.file_uploader("High Performing Posts (4) - 4th image", type=["png", "jpg", "jpeg"], key="slide8fourth")
 
 
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-     slide_11_first_img = st.file_uploader("Slide 11 - 1st image (farthest left)", type=["png", "jpg", "jpeg"], key="slide11first")
+     slide_11_first_img = st.file_uploader("Impressions Summary - 1st image (farthest left)", type=["png", "jpg", "jpeg"], key="slide11first")
 with col2:
-     slide_11_second_img = st.file_uploader("Slide 11 — 2nd image", type=["png", "jpg", "jpeg"], key="slide11second")
+     slide_11_second_img = st.file_uploader("Impressions Summary — 2nd image", type=["png", "jpg", "jpeg"], key="slide11second")
 with col3:
-     slide_11_third_img = st.file_uploader("Slide 11 — 3nd image", type=["png", "jpg", "jpeg"], key="slide11third")
+     slide_11_third_img = st.file_uploader("Impressions Summary - 3rd image", type=["png", "jpg", "jpeg"], key="slide11third")
 with col4:
-     slide_11_fourth_img = st.file_uploader("Slide 11 — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide11fourth")
+     slide_11_fourth_img = st.file_uploader("Impressions Summary — 4th image (farthest right)", type=["png", "jpg", "jpeg"], key="slide11fourth")
                                            
 
 
@@ -474,7 +474,7 @@ influencer_boxestwo = [
 
 ]
 
-st.markdown("### Enter Influencer Data for Each Box (for Slide 5)")
+st.markdown("### Enter Influencer Feedback")
 
 # Show headers
 headers = ["Influencer", "Handle", "Reach", "City", "State", "Verbatim"]
@@ -501,7 +501,7 @@ for box in influencer_boxes:
     }
 
 
-st.markdown("### Enter Influencer Data for Slide 7")
+st.markdown("### Enter Influencer Data for High Performing Posts (2)")
 
 headers7 = [
     "Type",
@@ -541,7 +541,7 @@ slide_7_impress = row2[7].text_input("", key="slide_7_impress", value="6")
 
 
 
-st.markdown("### Enter Influencer Data for Each Box (for Slide 8)")
+st.markdown("### Enter Influencer Data for High Performing Posts (4)")
 
 headers8 = ["Influencer", "Handle", "# Likes", "# Comments", "# Views", "# Social Reach"]
 header_cols8 = st.columns(len(headers8))
