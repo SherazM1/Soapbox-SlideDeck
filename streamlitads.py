@@ -13,6 +13,7 @@ if os.path.exists("logo.png"):
 
 st.title("Recap Deck Editor")
 st.markdown("Upload your Excel, see a live preview of your slide, and download your PowerPoint recap deck.")
+st.markdown("Note: Upload all picture to the fields (even if u dont use all of them or the app crashes)")
 
 st.header("Step 1: Upload Data File")
 uploaded = st.file_uploader("Upload Excel or CSV", type=["xlsx", "csv"])
