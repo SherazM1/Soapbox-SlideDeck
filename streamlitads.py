@@ -197,10 +197,10 @@ if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
                 impressions_paid = row["Unnamed: 11"]
                 break
 
-##total_post_engagements = (
-    ##int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
-   ##+ int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
-##)
+total_post_engagements = (
+    int(organic_likes) + int(organic_comments) + int(organic_shares) + int(organic_saves)
+   + int(paid_likes) + int(paid_comments) + int(paid_shares) + int(paid_saves) + int(paid_threesec)
+)
 
 story_engagements = ""
 if "Organic & Total" in df.columns and "Unnamed: 11" in df.columns:
@@ -342,7 +342,7 @@ with col3:
 - **Paid Shares:** {paid_shares}
 - **Paid Saves:** {paid_saves}
 - **3 Second Video Views:** {paid_threesec}
-- **Total Post Engagements** 
+- **Total Post Engagements** {total_post_engagements}
 - **Total Story Engagements** {story_engagements}
 - **Total Engagements** {total_engagements}
 ''')
